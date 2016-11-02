@@ -5,10 +5,12 @@
 \title{Model fitting with CopulaOne}
 \usage{
 fitCopulaOne(par, dat, flag = 1, opt = "L-BFGS-B", se = F,
-  lower = c(0.1, 0.1), upper = c(5, 5), trace = 6, factr = 1e+09,
-  printlevel = 2)
+  lower = c(0.1, 0.1), upper = c(5, 5), trace = 0, factr = 1e+09,
+  printlevel = 0)
 }
 \arguments{
+\item{trace, }{printlevel: integers for optim() and nlm(), respectively. (default: 0,0)}
+
 \item{par:}{initial parameters for (a, b)}
 
 \item{dat:}{input of data.}

@@ -26,6 +26,7 @@ seqRun <- function(i, dat, nco, par, flag=1)
 #' @param dat: input of data.
 #' @param flag: indicate which numerical method for the appell function (default: flag = 1)
 #' @param se: whether standard errors of parameters are reported (default: se = F)
+#' @param trace, printlevel: integers for optim() and nlm(), respectively. (default: 0,0)
 #' @keywords fitting
 #' @export
 #' @examples
@@ -34,7 +35,7 @@ seqRun <- function(i, dat, nco, par, flag=1)
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
 #' par <- c(0.3, 0.3)
 #' fit <- fitCopulaOne(par, dat)
-fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=6, factr=1e9, printlevel=2)
+fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0)
 {
   dat <- as.matrix(dat)
   
@@ -82,7 +83,7 @@ fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.
     }
     if(se==T){hes <- T}else{hes <- F}
     fit <- optim(par=par, obj, method="L-BFGS-B", control=list(trace=trace, factr=factr), hessian=hes, lower=lower, upper=upper)
-    stopCluster(cl)
+    parallel::stopCluster(cl)
     if(se==T)
     {
       va <- diag(solve(fit$hessian))

@@ -1,10 +1,4 @@
-# CopulaOne - An R package for a very flexible bivariate parametric copula
-
----
-title: "An introduction to an R package: CopulaOne"
-author: "Lei Hua"
-date: "November 2, 2016"
----
+# CopulaOne - an R package for a very flexible bivariate parametric copula
 
 The R package *CopulaOne* implements functions for a bivariate copula that is very flexible and parsimonious. 
 
@@ -37,4 +31,13 @@ cat("The copula density and cdf are:", den, cdf, "\n")
 layout(matrix(c(1,2),1,2))
 plotCopulaOne(1.2, 0.5, marg = "normal")
 plotCopulaOne(1.2, 0.5, marg = "uniform")
+```
+
+## Model fitting
+- An example of fitting dependence between exachange rates returns
+```{r}
+data("euro0306")
+dat <- uscore(euro0306[,c(2,3)])[1:50,]
+par <- c(0.3, 0.3)
+fit <- fitCopulaOne(par, dat)
 ```
