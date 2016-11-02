@@ -7,6 +7,14 @@ output: html_document
 
 The R package *CopulaOne* implements basic functions, such as, cdf and pdf for a bivariate copula that is very flexible and parsimonious. Compared to those of the other bivariate parametric copula families, the main merits of the bivariate copula is that, it can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either symmetric or asymmetric.
 
+## Installation
+The R package CopulaOne can be easily installed from github by the following two lines.
+```{r}
+library(devtools)
+install_github("larryleihua/CopulaOne")
+```
+
+
 ```{r}
 library(CopulaOne)
 ```
