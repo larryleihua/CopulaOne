@@ -12,6 +12,8 @@ install_github("larryleihua/CopulaOne")
 ```
 
 ## Basic functions
+- Naming rules: The name *GGEE_COP* is used for a specific two-parameter copula that are of full-range tail dependence in both upper and lower tails. Refer to [Hua 2016](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the copula. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible.
+
 - Simulation based on the copula can be done follows:
 ```{r}
 library(CopulaOne)
@@ -32,6 +34,8 @@ layout(matrix(c(1,2),1,2))
 plotCopulaOne(1.2, 0.5, marg = "normal")
 plotCopulaOne(1.2, 0.5, marg = "uniform")
 ```
+
+- 
 
 ## Model fitting
 - An example of fitting dependence between exchange rates returns
