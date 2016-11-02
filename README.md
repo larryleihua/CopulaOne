@@ -2,7 +2,7 @@
 
 The R package *CopulaOne* implements functions for a bivariate copula that is very flexible and parsimonious. 
 
-Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numurous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package CopulaOne aims at implementing a very flexible bivariate copula that is parsimonious but very flexible and has the capicity of capturing most bivariate dependence patterns. Compared to those exisitng bivariate parametric copula families, the main merits of the bivariate copula is that, it can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either symmetric or asymmetric. 
+Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package CopulaOne aims at implementing a very flexible bivariate copula that is parsimonious but very flexible and has the capacity of capturing most bivariate dependence patterns. Compared to those existing bivariate parametric copula families, the main merits of the bivariate copula is that, it can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either symmetric or asymmetric. 
 
 ## Installation
 - The R package CopulaOne can be easily installed from github by the following two lines.
@@ -34,7 +34,7 @@ plotCopulaOne(1.2, 0.5, marg = "uniform")
 ```
 
 ## Model fitting
-- An example of fitting dependence between exachange rates returns
+- An example of fitting dependence between exchange rates returns
 ```{r}
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:50,]
