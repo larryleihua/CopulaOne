@@ -17,3 +17,20 @@ Simulation based on the copula can be done follows:
 library(CopulaOne)
 UU = rGGEE_COP(10, a=0.5, b=0.8)
 ```
+
+Joint density, cdf functions can be derived as
+```{r}
+den <- dGGEE_COP(0.2, 0.3, 1.2, 0.5)
+cdf <- pGGEE_COP(0.2, 0.3, 1.2, 0.5)
+cat("The copula density and cdf are:", den, cdf, "\n")
+```
+
+Contour plots can be plotted directly for a given copula as follows.
+```{r fig.width=11, fig.height=6, echo=FALSE}
+layout(matrix(c(1,2),1,2))
+plotCopulaOne(1.2, 0.5, marg = "normal")
+plotCopulaOne(1.2, 0.5, marg = "uniform")
+```
+
+
+
