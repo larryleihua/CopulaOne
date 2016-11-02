@@ -12,7 +12,7 @@ install_github("larryleihua/CopulaOne")
 ```
 
 ## Basic functions
-- Naming rules: The name *GGEE_COP* is used for a specific two-parameter copula that are of full-range tail dependence in both upper and lower tails. Refer to [Hua 2016](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the copula. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible.
+- Naming rules: The name *GGEE_COP* is used for a specific two-parameter copula that are of full-range tail dependence in both upper and lower tails. Refer to [Hua (2016)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the copula. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible.
 
 - Simulation based on the copula can be done follows:
 ```{r}
@@ -35,7 +35,17 @@ plotCopulaOne(1.2, 0.5, marg = "normal")
 plotCopulaOne(1.2, 0.5, marg = "uniform")
 ```
 
-- 
+- Kendall's tau and Spearman's rho of the GGEE copula can be evaluated by
+```{r}
+tauGGEE_COP(a=0.7, b=0.4)
+sprGGEE_COP(a=0.7, b=0.4)
+```
+
+- Upper extreme value copula of the GGEE copula can also be evaluated with the following joint cdf and pdf functions. Lower extreme value copula should be the same if one exchanges a and b.
+```{r}
+pUEV_GGEE_COP(0.3, 0.4, b=1.2)
+dUEV_GGEE_COP(0.3, 0.4, b=1.2)
+```
 
 ## Model fitting
 - An example of fitting dependence between exchange rates returns
