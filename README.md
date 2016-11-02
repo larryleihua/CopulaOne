@@ -8,7 +8,7 @@ The following shows how flexible the GGEE copula based on which the R package *C
 
 ![Animation of the GGEE copula](http://niu.edu/leihua/_images/copula.gif)
 
-<img src="http://niu.edu/leihua/_images/copula.gif" width="200" height="200" />
+<img src="http://niu.edu/leihua/_images/copula.gif" width="400" height="400" />
 
 ## Installation
 - The R package CopulaOne can be easily installed from github by the following two lines.
