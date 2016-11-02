@@ -6,8 +6,6 @@ Bivariate copulas have been widely used either in modeling bivariate dependence 
 
 The following shows how flexible the GGEE copula based on which the R package *CopulaOne* was built on. Refer to [Hua (2016)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the GGEE copula.
 
-![Animation of the GGEE copula](http://niu.edu/leihua/_images/copula.gif)
-
 <img src="http://niu.edu/leihua/_images/copula.gif" width="400" height="400" />
 
 ## Installation
