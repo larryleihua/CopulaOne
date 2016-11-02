@@ -15,7 +15,5 @@ Simulation based on the copula can be done follows:
 
 ```{r, echo=FALSE}
 library(CopulaOne)
-UU = rCopulaOne()
+UU = rGGEE_COP(10, a=0.5, b=0.8)
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
