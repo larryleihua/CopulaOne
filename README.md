@@ -4,6 +4,8 @@ The R package *CopulaOne* implements functions for a bivariate copula that is ve
 
 Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package CopulaOne aims at implementing a very flexible bivariate copula that is parsimonious but very flexible and has the capacity of capturing most bivariate dependence patterns. Compared to those existing bivariate parametric copula families, the main merits of the bivariate copula is that, it can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either symmetric or asymmetric. 
 
+![Animation of the GGEE copula](http://niu.edu/leihua/_images/copula.gif)
+
 ## Installation
 - The R package CopulaOne can be easily installed from github by the following two lines.
 ```{r, eval=FALSE}
@@ -14,11 +16,10 @@ install_github("larryleihua/CopulaOne")
 ## Basic functions
 - Naming rules: The name *GGEE_COP* is used for a specific two-parameter copula that are of full-range tail dependence in both upper and lower tails. Refer to [Hua (2016)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the copula. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible.
 
-- Simulation based on the copula can be done follows:
+- Simulation based on the copula can be done as follows:
 ```{r}
 library(CopulaOne)
 UU = rGGEE_COP(10, a=0.5, b=0.8)
-print(t(round(UU,4)))
 ```
 
 - Joint density, cdf functions can be derived as
