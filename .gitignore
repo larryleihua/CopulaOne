@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 
-tmp
+tmp/dev.R
 
