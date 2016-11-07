@@ -15,9 +15,8 @@ library(CopulaOne)
 # library(rticles) # rmarkdown template
 
 ### add forex data ###
-Work.Dir = "~/Dropbox/justdoit/TD049-TailMomentum/R"
-setwd(Work.Dir)
-
-USDCAD = read.csv("~/Dropbox/justdoit/TD049-TailMomentum/R/USDCAD_2015_H1_NEWYORK.csv", sep=",")
-AUDUSD = read.csv("~/Dropbox/justdoit/TD049-TailMomentum/R/AUDUSD_2015_H1_NEWYORK.csv", sep=",")
+USDCAD2015_H1 = read.csv("~/Dropbox/justdoit/TD049-TailMomentum/R/USDCAD_2015_H1_NEWYORK.csv", sep=",")
+AUDUSD2015_H1 = read.csv("~/Dropbox/justdoit/TD049-TailMomentum/R/AUDUSD_2015_H1_NEWYORK.csv", sep=",")
+use_data(USDCAD2015_H1)
+use_data(AUDUSD2015_H1)
 
