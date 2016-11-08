@@ -71,20 +71,20 @@ autoARMAGARCH <- function(dat, distvec = c("norm", "snorm", "std", "sstd", "ged"
     # Fit the ARIMA model
     for(dist in distvec)
     {
-      spec <- ugarchspec(
+      spec <- rugarch::ugarchspec(
         variance.model=list(garchOrder=pqGARCH),
         mean.model=list(armaOrder=c(final.order[1], final.order[3]), include.mean=T),
         distribution.model=dist
       )
       
       fit = tryCatch(
-        ugarchfit(
+        rugarch::ugarchfit(
           spec, dataOffset, solver = 'hybrid'
         ), error=function(err) FALSE, warning=function(err) FALSE
       )
       
       if( !is.logical( fit ) ) {
-        current.aic <- infocriteria(fit)[1]
+        current.aic <- rugarch::infocriteria(fit)[1]
         if (current.aic < final.aic) {
           final.aic <- current.aic
           final.dist <- dist
