@@ -18,4 +18,4 @@ Ndayroll <- 10 #how many days for one rolling window
 windowLength <- (60/Nmin)*24*Ndayroll
 foreLength <- dim(logr)[1] - windowLength
 
-rst <- autoARMAGARCH(logr[,1], windowLength=windowLength)
+# rst <- autoARMAGARCH(logr[,1], windowLength=windowLength)
