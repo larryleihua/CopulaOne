@@ -18,5 +18,4 @@ Imports:
     appell,
     parallel,
     R2Cuba,
-    cubature,
-    rugarch
+    cubature

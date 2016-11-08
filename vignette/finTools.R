@@ -21,6 +21,7 @@
 autoARMAGARCH <- function(dat, distvec = c("norm", "snorm", "std", "sstd", "ged", "sged", "nig", "ghyp", "jsu"), 
                           maxAR = 4, maxMA = 4, pqGARCH = c(1,1), windowLength = 100, sinkflag = T)
 {
+  library(rugarch)
   if(sinkflag == T){sink(paste("autoARMA_GARCH_output_", format(as.numeric(Sys.time())), ".txt", sep=""), append=T, split = T)}
   
   dat <- ts(dat)
