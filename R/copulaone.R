@@ -96,7 +96,8 @@ fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.
   if(ken < 0)
   {
     cat("The second variable was transformed to 1 - v", "\n")
-    fit$warning = "The second variable was transformed to 1 - v"
+    fit$warning <- "The second variable was transformed to 1 - v"
+    fit$neg <- 1
   }
   fit
 }
