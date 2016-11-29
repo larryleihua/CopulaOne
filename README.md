@@ -13,6 +13,11 @@ A very flexible two-parameter bivariate copula can be induced by a scale mixture
 library(devtools)
 install_github("larryleihua/CopulaOne")
 ```
+- You may need to install the following first.
+```{r, eval=FALSE}
+install.packages("hypergeo", dependencies = T)
+```
+
 
 ## Basic functions
 - Naming rules: The name *GGEE_COP* is used for a specific two-parameter copula that are of full-range tail dependence in both upper and lower tails. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible.
