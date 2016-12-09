@@ -1,7 +1,7 @@
 # copulaone.R
 
 # used for parallel computing
-seqRun <- function(i, dat, nco, par, flag=1)
+seqRun <- function(i, dat, nco, par, flag=1, integration=F)
 {
   # dataset is divided in nco parts, and the ith part is working
   dat <- as.matrix(dat)
@@ -14,7 +14,7 @@ seqRun <- function(i, dat, nco, par, flag=1)
   {
     dat_i <- dat[ ((nco-1)*Ni+1) : N , ]
   }
-  den <- dGGEE_COP(u=dat_i[,1], v=dat_i[,2], a=par[1], b=par[2], flag=flag)
+  den <- dGGEE_COP(u=dat_i[,1], v=dat_i[,2], a=par[1], b=par[2], flag=flag, integration=integration)
   return(-log(den))
 }
 
@@ -35,7 +35,7 @@ seqRun <- function(i, dat, nco, par, flag=1)
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
 #' par <- c(0.3, 0.3)
 #' fit <- fitCopulaOne(par, dat)
-fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0)
+fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0)
 {
   dat <- as.matrix(dat)
   
@@ -52,7 +52,7 @@ fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.
     obj <- function(par)
     {
       par <- exp(par)+0.01 # parameters are both > 0
-      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag), silent = T) 
+      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration), silent = T) 
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
         out <- sum(nllk_each_i[is.finite(nllk_each_i)])
@@ -74,7 +74,7 @@ fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.
   {
     obj <- function(par)
     {
-      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag), silent = T) 
+      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration), silent = T) 
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
         out <- sum(nllk_each_i[is.finite(nllk_each_i)])
@@ -115,7 +115,7 @@ fitCopulaOne <- function(par, dat, flag=1, opt="L-BFGS-B", se=F, lower=c(0.1, 0.
 #' @examples 
 #' plotCopulaOne(a=0.5, b=1.8)
 #' plotCopulaOne(a=0.5, b=1.8, marg="uniform", resolution=20)
-plotCopulaOne <- function(a, b, marg="normal", flag=1, resolution=30)
+plotCopulaOne <- function(a, b, marg="normal", flag=1, integration=F, resolution=30)
 {
   zvec <- seq(-2.5, 2.5, length=resolution)
   f <- dnorm(zvec)
@@ -128,7 +128,7 @@ plotCopulaOne <- function(a, b, marg="normal", flag=1, resolution=30)
   
   Fmat <- cbind(rep(Fvec, each = nn), rep(Fvec, times = nn))
   
-  denvec <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=Fmat, nco=nco, par=c(a,b), flag=flag), silent = T)
+  denvec <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=Fmat, nco=nco, par=c(a,b), flag=flag, integration=integration), silent = T)
   parallel::stopCluster(cl)
   
   if(is(denvec,"try-error")){cat("density calculated error!", "\n"); return(NA)}else{
