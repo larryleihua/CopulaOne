@@ -25,6 +25,7 @@ seqRun <- function(i, dat, nco, par, flag=1, integration=F)
 #' @param par: initial parameters for (a, b)
 #' @param dat: input of data.
 #' @param flag: indicate which numerical method for the appell function (default: flag = 1)
+#' @param integration: (Experimental!) using integration instead of appellf1()
 #' @param se: whether standard errors of parameters are reported (default: se = F)
 #' @param trace, printlevel: integers for optim() and nlm(), respectively. (default: 0,0)
 #' @keywords fitting
