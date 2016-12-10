@@ -9,7 +9,7 @@ Description: This package is for one bivariate copula that is parsimonious and
     parametric copulas.
 Depends:
     R (>= 3.2.3)
-SystemRequirements: Gnu Scientific Library version >= 1.12
+SystemRequirements: GNU GSL
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -19,4 +19,5 @@ Imports:
     appell,
     parallel,
     R2Cuba,
-    cubature
+    cubature,
+    MCMCpack
