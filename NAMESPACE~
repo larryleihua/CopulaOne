@@ -21,6 +21,5 @@ export(logden_Gumbel)
 export(igltinv)
 export(logden_ACIG)
 export(iglt)
-export()
 export(rACIG)
 
