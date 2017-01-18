@@ -243,7 +243,6 @@ qGGEE <- function(u, a, b)
   }
   return(out)
 }
-qGGEE <- Vectorize("qGGEE", "u")
 
 intg_Dx2 <- function(r, x1, x2, a, b)
 {
@@ -301,8 +300,8 @@ rGGEE_COP <- function(n, a, b, seed = 1)
   X11 <- R * H1 / H11
   X22 <- R * H2 / H22
   
-  u <- pGGEE(X11,a,b)
-  v <- pGGEE(X22,a,b)
+  u <- sapply(X11, pGGEE, a=a, b=b)
+  v <- sapply(X22, pGGEE, a=a, b=b)
   cbind(u,v)
 }
 
