@@ -50,6 +50,14 @@ gausslegendre <- function (nq)
   list(nodes = out$xq[-1], weights = out$wq[-1])
 }
 
+# integrand for pGGEE
+intg_pGGEE <- function(y,x,a,b)
+{
+  tem1 <- ((1-y)^a)*(y^(b-1))
+  tem2 <- 1-y*(1-x)
+  tem1/tem2
+}
+
 
 #' CDF of univariate margins of the GGEE model
 #'
@@ -61,11 +69,16 @@ gausslegendre <- function (nq)
 #' @export
 #' @examples
 #' pGGEE(2, 1, 2)
-pGGEE <- function(x, a, b, method="GQ")
+pGGEE <- function(x, a, b, method="GQ", nq=21)
 {
   if(method=="GQ")
   {
-    
+    gl <- gausslegendre(nq)
+    wl <- gl$weights
+    xl <- gl$nodes
+    xl_intg <- sapply(xl, intg_pGGEE, x=x, a=a, b=b)
+    out <- sum(xl_intg*wl)
+    return(out)
   }else
   {
     out <- tryCatch(1 - a/(a + b) * Re(hypergeo::hypergeo(1, b, a + b + 1, 1 - x, 
