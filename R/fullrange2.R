@@ -401,7 +401,7 @@ jpGGEE <- function(x1,x2,a,b,flag=1,  method="GQ", nq=21)
 {
   tem1 <- pGGEE(x1,a,b, method=method, nq=nq)
   tem2 <- pGGEE(x2,a,b, method=method, nq=nq)
-  if(method="GQ")
+  if(method=="GQ")
   {
     gl <- gausslegendre(nq)
     wl <- gl$weights
