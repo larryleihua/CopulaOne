@@ -39,6 +39,19 @@ uscore <- function(data, aunif = -0.5)
   out
 }
 
+# gaussian quadrature copied from R package CopulaModel
+gausslegendre <- function (nq)
+{
+  if (nq <= 0 || nq > 70) 
+    stop("nq between 1 and 70")
+  nq1 <- nq + 1
+  out <- .C("gauleg", x1 = as.double(0), x2 = as.double(1), 
+           as.integer(nq), xq = as.double(rep(0, nq1)), wq = as.double(rep(0, nq1)))
+  list(nodes = out$xq[-1], weights = out$wq[-1])
+}
+
+
+
 #' CDF of univariate margins of the GGEE model
 #'
 #' CDF of univariate margins of the GGEE model
