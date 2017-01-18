@@ -58,6 +58,13 @@ intg_pGGEE <- function(y,x,a,b)
   tem1/tem2
 }
 
+# integrand for dGGEE
+intg_dGGEE <- function(y,x,a,b)
+{
+  tem1 <- ((1-y)^a)*(y^b)
+  tem2 <- (1-y*(1-x))^2
+  tem1/tem2
+}
 
 #' CDF of univariate margins of the GGEE model
 #'
@@ -103,20 +110,31 @@ pGGEE <- function(x, a, b, method="GQ", nq=21)
 #' @export
 #' @examples
 #' dGGEE(3, 1, 2)
-dGGEE <- function(x, a, b)
+dGGEE <- function(x, a, b, method="GQ", nq=21)
 {
-  out <- tryCatch((a * b)/(a + b)/(a + b + 1) * Re(hypergeo::hypergeo(2, b + 1, 
-    a + b + 2, 1 - x, tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, 
-    warning = function(err) FALSE)
-  if (!is.logical(out) && is.finite(out)) 
-    return(out) else
-    {
-    cat("Warning! NA returned!", "\n")
-    return(NA)
+  if(method=="GQ")
+  {
+    gl <- gausslegendre(nq)
+    wl <- gl$weights
+    xl <- gl$nodes
+    xl_intg <- sapply(xl, intg_dGGEE, x=x, a=a, b=b)
+    out <- sum(xl_intg*wl) / beta(a,b)
+    return(out)
+  }else
+  {
+    out <- tryCatch((a * b)/(a + b)/(a + b + 1) * Re(hypergeo::hypergeo(2, b + 1, 
+                                                                        a + b + 2, 1 - x, tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, 
+                    warning = function(err) FALSE)
+    if (!is.logical(out) && is.finite(out)) 
+      return(out) else
+      {
+        cat("Warning! NA returned!", "\n")
+        return(NA)
+      }
   }
 }
 
-
+# integrand for jdGGEE
 intg_jdGGEE <- function(y, x1, x2, a, b)
 {
   tem1 <- (x1*y+1-y)^(-2)
@@ -124,8 +142,6 @@ intg_jdGGEE <- function(y, x1, x2, a, b)
   tem3 <- ((1-y)^(a+1))*(y^(b+1))
   tem1*tem2*tem3
 }
-intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
-# plot(intg_jdGGEE(seq(0.0, 1, length=100), x1=2, x2=4, a=1.4, b=1.9))
 
 #' Joint density of the GGEE model
 #'
@@ -133,26 +149,25 @@ intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
 #' @param x1,x2:   data input.
 #' @param a,b:   parameters.
 #' @param flag: flag used in appell::appellf1()
-#' @param integration   if T: use numerical integration instead of appellf1, default is F
+#' @param method   "GQ": Gaussian quadrature; "integrate": use numerical integration function "integrate()"; else: appellf1()
 #' @keywords Joint density
 #' @export
 #' @examples
 #' jdGGEE(10,2, 1, 1)
-#' jdGGEE(10,2, 1, 1, integration = T)
-jdGGEE <- function(x1, x2, a, b, flag = 1, integration = F)
+#' jdGGEE(10,2, 1, 1, method=NULL)
+jdGGEE <- function(x1, x2, a, b, flag = 1, method="GQ")
 {
-  if(integration==F)
+  if(method="GQ")
   {
-    tem1 <- a * b * (a + 1) * (b + 1)/(a + b)/(a + b + 1)/(a + b + 2)/(a + b + 3)
-    tem2 <- tryCatch(Re(appell::appellf1(b + 2, 2, 2, a + b + 4, 1 - x1, 1 - x2, 
-        userflag = flag)$val), error = function(err) FALSE, warning = function(err) FALSE)
-    if (!is.logical(tem2) && is.finite(tem2)) 
-    return(tem1 * tem2) else
-    {
-      cat("Warning! NA returned!", "\n")
-      return(NA)
-    }  
-  }else{
+    gl <- gausslegendre(nq)
+    wl <- gl$weights
+    xl <- gl$nodes
+    xl_intg <- sapply(xl, intg_jdGGEE, x1=x1, x2=x2, a=a, b=b)
+    out <- sum(xl_intg*wl) / beta(a,b)
+    return(out)
+  }else if(method="integrate")
+  {
+    intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
     tmp <- tryCatch(integrate(intg_jdGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
       a = a, b = b, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
@@ -164,6 +179,17 @@ jdGGEE <- function(x1, x2, a, b, flag = 1, integration = F)
       cat("Warning! NA returned! (jdGGEE)", "\n")
       return(NA)
     }
+  }else
+  {
+    tem1 <- a * b * (a + 1) * (b + 1)/(a + b)/(a + b + 1)/(a + b + 2)/(a + b + 3)
+    tem2 <- tryCatch(Re(appell::appellf1(b + 2, 2, 2, a + b + 4, 1 - x1, 1 - x2, 
+                                         userflag = flag)$val), error = function(err) FALSE, warning = function(err) FALSE)
+    if (!is.logical(tem2) && is.finite(tem2)) 
+      return(tem1 * tem2) else
+      {
+        cat("Warning! NA returned!", "\n")
+        return(NA)
+      }  
   }
 }
 
