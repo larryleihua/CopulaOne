@@ -154,8 +154,8 @@ intg_jdGGEE <- function(y, x1, x2, a, b)
 #' @export
 #' @examples
 #' jdGGEE(10,2, 1, 1)
-#' jdGGEE(10,2, 1, 1, method=NULL)
-jdGGEE <- function(x1, x2, a, b, flag = 1, method="GQ")
+#' jdGGEE(10,2, 1, 1, method="O")
+jdGGEE <- function(x1, x2, a, b, flag = 1, method="GQ", nq=21)
 {
   if(method=="GQ")
   {
