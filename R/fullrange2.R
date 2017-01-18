@@ -100,6 +100,7 @@ pGGEE <- function(x, a, b, method="GQ", nq=21)
     }
   }
 }
+pGGEE <- Vectorize("pGGEE", "x")
 
 #' Density of univariate margins of the GGEE model
 #'
@@ -133,6 +134,7 @@ dGGEE <- function(x, a, b, method="GQ", nq=21)
       }
   }
 }
+dGGEE <- Vectorize("dGGEE", "x")
 
 # integrand for jdGGEE
 intg_jdGGEE <- function(y, x1, x2, a, b)
@@ -243,6 +245,7 @@ qGGEE <- function(u, a, b)
   }
   return(out)
 }
+qGGEE <- Vectorize("qGGEE", "u")
 
 intg_Dx2 <- function(r, x1, x2, a, b)
 {
