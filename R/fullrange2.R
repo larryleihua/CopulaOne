@@ -44,21 +44,28 @@ uscore <- function(data, aunif = -0.5)
 #' CDF of univariate margins of the GGEE model
 #' @param x:   data input.
 #' @param a,b:   parameters.
+#' @param method:   method for numerical integration: "GQ" for Gaussian Quadrature.
 #' @keywords CDF
 #' @export
 #' @examples
 #' pGGEE(2, 1, 2)
-pGGEE <- function(x, a, b)
+pGGEE <- function(x, a, b, method="GQ")
 {
-  out <- tryCatch(1 - a/(a + b) * Re(hypergeo::hypergeo(1, b, a + b + 1, 1 - x, 
-    tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, warning = function(err) FALSE)
-  if (!is.logical(out) && is.finite(out))
+  if(method=="GQ")
   {
-    return(out)
-  } else
+    
+  }else
   {
-    cat("Warning! NA returned!", "\n")
-    return(NA)
+    out <- tryCatch(1 - a/(a + b) * Re(hypergeo::hypergeo(1, b, a + b + 1, 1 - x, 
+                                                          tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, warning = function(err) FALSE)
+    if (!is.logical(out) && is.finite(out))
+    {
+      return(out)
+    } else
+    {
+      cat("Warning! NA returned!", "\n")
+      return(NA)
+    }
   }
 }
 
