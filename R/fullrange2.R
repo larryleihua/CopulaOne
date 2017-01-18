@@ -202,7 +202,7 @@ jdGGEE <- function(x1, x2, a, b, flag = 1, method="GQ", nq=21)
 #' @export
 #' @examples
 #' qGGEE(0.9, 1, 1)
-qGGEE <- function(u, a, b)
+qGGEE <- function(u, a, b, method="GQ", nq=21)
 {
   if (u == 0)
   {
@@ -229,8 +229,8 @@ qGGEE <- function(u, a, b)
       {
         t <- 0.5 * (lower + upper)
       }
-      DEN <- dGGEE(exp(t), a, b) * exp(t)
-      CDF <- pGGEE(exp(t), a, b)
+      DEN <- dGGEE(exp(t), a, b, method=method, nq=nq) * exp(t)
+      CDF <- pGGEE(exp(t), a, b, method=method, nq=nq)
       if (CDF < u)
       {
         lower <- t
@@ -287,7 +287,7 @@ Dx2 <- function(x1, x2, a, b)
 #' @export
 #' @examples
 #' rGGEE_COP(20, 1.2, 0.2, seed = 100)
-rGGEE_COP <- function(n, a, b, seed = 1)
+rGGEE_COP <- function(n, a, b, seed = 1, method="GQ", nq=21)
 {
   set.seed(seed)
   R1 <- rgamma(n, shape=a, 1)
@@ -300,15 +300,15 @@ rGGEE_COP <- function(n, a, b, seed = 1)
   X11 <- R * H1 / H11
   X22 <- R * H2 / H22
   
-  u <- sapply(X11, pGGEE, a=a, b=b)
-  v <- sapply(X22, pGGEE, a=a, b=b)
+  u <- sapply(X11, pGGEE, a=a, b=b, method=method, nq=nq)
+  v <- sapply(X22, pGGEE, a=a, b=b, method=method, nq=nq)
   cbind(u,v)
 }
 
-C2GGEE_COP <- function(u, v, a, b)
+C2GGEE_COP <- function(u, v, a, b, method="GQ", nq=21)
 {
-  x1 <- tryCatch(qGGEE(u, a, b), error = function(err) FALSE, warning = function(err) FALSE)
-  x2 <- tryCatch(qGGEE(v, a, b), error = function(err) FALSE, warning = function(err) FALSE)
+  x1 <- tryCatch(qGGEE(u, a, b, method=method, nq=nq), error = function(err) FALSE, warning = function(err) FALSE)
+  x2 <- tryCatch(qGGEE(v, a, b, method=method, nq=nq), error = function(err) FALSE, warning = function(err) FALSE)
   if (is.logical(x1) || is.logical(x1))
   {
     return(NA)
@@ -318,7 +318,7 @@ C2GGEE_COP <- function(u, v, a, b)
     if (is.finite(x1) && is.finite(x1))
     {
       tem1 <- Dx2(x1, x2, a, b)
-      tem2 <- dGGEE(x2, a, b)
+      tem2 <- dGGEE(x2, a, b, method=method, nq=nq)
       if (is.finite(tem1) && is.finite(tem1))
       {
         return(tem1/tem2)
@@ -335,10 +335,10 @@ C2GGEE_COP <- function(u, v, a, b)
   }
 }
 
-dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
+dGGEE_COP_0 <- function(u, v, a, b, flag = 1, method="GQ", nq=21)
 {
-  q1 <- tryCatch(qGGEE(u, a, b), error = function(err) FALSE, warning = function(err) FALSE)
-  q2 <- tryCatch(qGGEE(v, a, b), error = function(err) FALSE, warning = function(err) FALSE)
+  q1 <- tryCatch(qGGEE(u, a, b, method=method, nq=nq), error = function(err) FALSE, warning = function(err) FALSE)
+  q2 <- tryCatch(qGGEE(v, a, b, method=method, nq=nq), error = function(err) FALSE, warning = function(err) FALSE)
   if (is.logical(q1) || is.logical(q1))
   {
     return(NA)
@@ -347,9 +347,9 @@ dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
   {
     if (is.finite(q1) && is.finite(q2))
     {
-      tem1 <- jdGGEE(q1, q2, a, b, flag, integration)
-      tem2 <- dGGEE(q1, a, b)
-      tem3 <- dGGEE(q2, a, b)
+      tem1 <- jdGGEE(q1, q2, a, b, flag=flag, method=method, nq=nq)
+      tem2 <- dGGEE(q1, a, b, method=method, nq=nq)
+      tem3 <- dGGEE(q2, a, b, method=method, nq=nq)
       if (is.finite(tem1) && is.finite(tem2) && is.finite(tem3))
       {
         return(tem1/tem2/tem3)
@@ -366,14 +366,13 @@ dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
   }
 }
 
-
 #' Copula Density Function
 #'
 #' Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
 #' @param u,v    values in (0,1).
 #' @param a,b    the two shape parameters.
 #' @param flag   used in the Appell's F1 function appellf1() of the R package 'appell'.
-#' @param integration   if T: use numerical integration instead of appellf1, default is F
+#' @param method  "GQ": Gaussian Quadrature; "integrate": integrate(); else: appellf1()
 #' @keywords copula density
 #' @export
 #' @examples
@@ -387,8 +386,6 @@ intg_jpGGEE <- function(y, x1, x2, a, b)
   tem3 <- ((1-y)^(a+1))*(y^(b-1))
   tem1*tem2*tem3
 }
-intg_jpGGEE <- Vectorize(intg_jpGGEE, "y")
-# plot(intg_jpGGEE(seq(0.0, 1, length=100), x1=2, x2=4, a=1.4, b=1.9))
 
 #' Joint CDF of the GGEE model
 #'
@@ -399,18 +396,22 @@ intg_jpGGEE <- Vectorize(intg_jpGGEE, "y")
 #' @export
 #' @examples
 #' jpGGEE(0.2, 0.4, 1, 1)
-#' jpGGEE(0.2, 0.4, 1, 1, integration = T)
-jpGGEE <- function(x1,x2,a,b,flag=1, integration = F)
+#' jpGGEE(0.2, 0.4, 1, 1, method = "Other")
+jpGGEE <- function(x1,x2,a,b,flag=1,  method="GQ", nq=21)
 {
-  tem1 <- pGGEE(x1,a,b)
-  tem2 <- pGGEE(x2,a,b)
-  if(integration==F)
+  tem1 <- pGGEE(x1,a,b, method=method, nq=nq)
+  tem2 <- pGGEE(x2,a,b, method=method, nq=nq)
+  if(method="GQ")
   {
-    tem3 <- a*(a+1)/(a+b)/(a+b+1)
-    tem4 <- Re(appell::appellf1(b,1,1,a+b+2,1-x1,1-x2, userflag = flag)$val)
-    out <- tem1 + tem2 - 1 + tem3 * tem4
+    gl <- gausslegendre(nq)
+    wl <- gl$weights
+    xl <- gl$nodes
+    xl_intg <- sapply(xl, intg_jpGGEE, x1=x1, x2=x2, a=a, b=b)
+    out <- tem1+tem2-1+sum(xl_intg*wl) / beta(a,b)
     return(out)
-  }else{
+  }else if (method=="integrate")
+  {
+    intg_jpGGEE <- Vectorize(intg_jpGGEE, "y")
     tmp <- tryCatch(integrate(intg_jpGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
       a = a, b = b, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
@@ -422,10 +423,14 @@ jpGGEE <- function(x1,x2,a,b,flag=1, integration = F)
       cat("Warning! NA returned! (jpGGEE)", "\n")
       return(NA)
     }    
+  }else
+  {
+    tem3 <- a*(a+1)/(a+b)/(a+b+1)
+    tem4 <- Re(appell::appellf1(b,1,1,a+b+2,1-x1,1-x2, userflag = flag)$val)
+    out <- tem1 + tem2 - 1 + tem3 * tem4
+    return(out)
   }
 }
-
-
 
 #' Joint CDF of the GGEE copula model
 #'
@@ -437,12 +442,12 @@ jpGGEE <- function(x1,x2,a,b,flag=1, integration = F)
 #' @export
 #' @examples
 #' pGGEE_COP(0.9, 0.3, 1, 1)
-#' pGGEE_COP(0.9, 0.3, 1, 1, integration=T)
-pGGEE_COP <- function(u,v,a,b,flag=1, integration=F)
+#' pGGEE_COP(0.9, 0.3, 1, 1, method="Other")
+pGGEE_COP <- function(u,v,a,b,flag=1, method="GQ", nq=21)
 {
-  q1 <- qGGEE(u,a,b)
-  q2 <- qGGEE(v,a,b)
-  jpGGEE(q1,q2,a,b,flag = flag, integration=integration)
+  q1 <- qGGEE(u,a,b, method=method, nq=nq)
+  q2 <- qGGEE(v,a,b, method=method, nq=nq)
+  jpGGEE(q1,q2,a,b,flag = flag, method=method, nq=nq)
 }
 
 intg_tau_E <- function(xy,a,b)
@@ -499,11 +504,11 @@ tauGGEE_COP <- function(a,b,method=1)
   out
 }
 
-intg_spr_C = function(u1u2,a,b,flag=1, integration=F)
+intg_spr_C = function(u1u2,a,b,flag=1, method="GQ", nq=21)
 {
   u1 <- u1u2[1]
   u2 <- u1u2[2]
-  out <- 1 - u1 - u2 + pGGEE_COP(u1,u2,a,b,flag,integration)
+  out <- 1 - u1 - u2 + pGGEE_COP(u1,u2,a,b,flag, method=method, nq=nq)
   if(is.finite(out)) out else 0
 }
 #intg_spr_C <- Vectorize(intg_spr_C_0, "u1u2")
@@ -513,25 +518,29 @@ intg_spr_C = function(u1u2,a,b,flag=1, integration=F)
 #' Spearman's rho of the GGEE copula
 #' @param a,b:    the two shape parameters.
 #' @param flag: flag used in the appell::appellf1() function (default is -1L for auto choices)
-#' @param method: different methods for the numerical integration. 1: R2Cuba::cuhre(); 2: cubature::adaptIntegrate(). 
+#' @param method_2: different methods for the numerical integration. "GQ": Gaussian Quadrature; "cuhre": R2Cuba::cuhre(); "adaptIntegrate": cubature::adaptIntegrate().
+#' @param method: method for calculating the core functions for copulas, and the method can be different than method_2 which is used to calculate the Spearman's rho only
 #' @keywords Spearman's rho
 #' @export
 #' @examples
 #' sprGGEE_COP(1.2, 0.6)
-#' sprGGEE_COP(1.2, 0.6, method=2)
-sprGGEE_COP <- function(a,b,flag=1, method=1, integration=F)
+#' sprGGEE_COP(1.2, 0.6, method_2="cuhre", method="Other")
+sprGGEE_COP <- function(a,b,flag=1, method_2="cuhre", method="GQ", nq=21)
 {
-  if(method==1)
+  if(method_2 == "GQ")
   {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_C,a=a,b=b,flag=flag,integration=integration,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    cat("The Gaussian Quadrature method for Spearman's rho is to be implemented!", "\n")
+  }else if(method_2=="cuhre")
+  {
+    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_C,a=a,b=b,flag=flag,method=method, nq=nq, lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
     if(is(tmp,"try-error"))
     {
-      tmp2 <- try(cubature::adaptIntegrate(intg_spr_C, a=a, b=b, flag=flag, integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+      tmp2 <- try(cubature::adaptIntegrate(intg_spr_C, a=a, b=b, flag=flag, method=method, nq=nq, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
       if(is(tmp2,"try-error")){cat("sprGGEE_COP error at: ", a, b, "\n"); return(NA)}else{intg <- tmp2$integral}
     }else{intg <- tmp$value}
-  }else if(method==2)
+  }else if(method_2=="adaptIntegrate")
   {
-    tmp <- cubature::adaptIntegrate(intg_spr_C, a=a, b=b, flag=flag,integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1))
+    tmp <- cubature::adaptIntegrate(intg_spr_C, a=a, b=b, flag=flag,method=method, nq=nq,lowerLimit = c(0,0), upperLimit = c(1,1))
     intg <- tmp$integral
   }
   out <- 12 * intg - 3
