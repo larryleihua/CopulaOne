@@ -53,10 +53,14 @@ gausslegendre <- function (nq)
 # integrand for pGGEE
 intg_pGGEE <- function(y,x,a,b)
 {
-  log1 <- a*log(1-y)+(b-1)*log(y)
-  tem1 <- exp(log1)
-  tem2 <- 1-y*(1-x)
-  tem1/tem2
+  if(y==0 | y==1) return(0)
+  else
+  {
+    log1 <- a*log(1-y)+(b-1)*log(y)
+    tem1 <- exp(log1)
+    tem2 <- 1-y*(1-x)
+    return(tem1/tem2)
+  }
 }
 
 # integrand for dGGEE
