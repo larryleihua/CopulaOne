@@ -157,7 +157,7 @@ intg_jdGGEE <- function(y, x1, x2, a, b)
 #' jdGGEE(10,2, 1, 1, method=NULL)
 jdGGEE <- function(x1, x2, a, b, flag = 1, method="GQ")
 {
-  if(method="GQ")
+  if(method=="GQ")
   {
     gl <- gausslegendre(nq)
     wl <- gl$weights
@@ -165,7 +165,7 @@ jdGGEE <- function(x1, x2, a, b, flag = 1, method="GQ")
     xl_intg <- sapply(xl, intg_jdGGEE, x1=x1, x2=x2, a=a, b=b)
     out <- sum(xl_intg*wl) / beta(a,b)
     return(out)
-  }else if(method="integrate")
+  }else if(method=="integrate")
   {
     intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
     tmp <- tryCatch(integrate(intg_jdGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
