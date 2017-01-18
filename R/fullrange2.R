@@ -51,7 +51,6 @@ gausslegendre <- function (nq)
 }
 
 
-
 #' CDF of univariate margins of the GGEE model
 #'
 #' CDF of univariate margins of the GGEE model
