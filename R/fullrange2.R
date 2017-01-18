@@ -39,7 +39,9 @@ uscore <- function(data, aunif = -0.5)
   out
 }
 
-# gaussian quadrature copied from R package CopulaModel
+#' Gaussian quadrature copied from R package CopulaModel.
+#' @param nq: number of points
+#' @export
 gausslegendre <- function (nq)
 {
   if (nq <= 0 || nq > 70) 
