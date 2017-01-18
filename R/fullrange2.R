@@ -77,7 +77,7 @@ pGGEE <- function(x, a, b, method="GQ", nq=21)
     wl <- gl$weights
     xl <- gl$nodes
     xl_intg <- sapply(xl, intg_pGGEE, x=x, a=a, b=b)
-    out <- sum(xl_intg*wl) / beta(a,b)
+    out <- 1 - sum(xl_intg*wl) / beta(a,b)
     return(out)
   }else
   {
