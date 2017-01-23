@@ -63,8 +63,6 @@ pGGEE <- function(x, a, b)
 }
 
 #' Density of univariate margins of the GGEE model
-#'
-#' Density of univariate margins of the GGEE model
 #' @param x:   data input.
 #' @param a,b:   parameters.
 #' @keywords Density
@@ -84,7 +82,6 @@ dGGEE <- function(x, a, b)
   }
 }
 
-
 intg_jdGGEE <- function(y, x1, x2, a, b)
 {
   tem1 <- (x1*y+1-y)^(-2)
@@ -95,8 +92,6 @@ intg_jdGGEE <- function(y, x1, x2, a, b)
 intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
 # plot(intg_jdGGEE(seq(0.0, 1, length=100), x1=2, x2=4, a=1.4, b=1.9))
 
-#' Joint density of the GGEE model
-#'
 #' Joint density of the GGEE model
 #' @param x1,x2:   data input.
 #' @param a,b:   parameters.
@@ -478,4 +473,133 @@ sprGGEE_COP <- function(a,b,flag=1, method=1, integration=F)
   }
   out <- 12 * intg - 3
   out
+}
+
+## full-range tail dependence copula with Paretian mixtures
+HX_PPPP <- function(mu, th1, th2, ga1, ga2)
+{
+  tem1 <- ga1*ga2
+  tem2 <- ga1+ga2
+  tem3 <- mu+ga1
+  tem4 <- mu-ga2
+  
+  if(mu!=-ga1 & mu!=ga2)
+  {
+    if( 1 >= th2 )
+    {
+      out <- tem1/tem2/tem3*(th2^tem3 - th1^tem3)
+    }else if( 1 < th2 & 1>= th1)
+    {
+      out <- tem1/tem2*((th2^tem4)/tem4 - (th1^tem3)/tem3) - tem1/tem3/tem4
+    }else # 1 < th1
+    {
+      out <- tem1/tem2/tem4*(th2^tem4 - th1^tem4)
+    }
+  }else if(mu == -ga1)
+  {
+    if( 1 >= th2 )
+    {
+      out <- tem1/tem2*(ln(th2) - ln(th1))
+    }else if( 1 < th2 & 1>= th1)
+    {
+      out <- tem1/tem2*((th2^tem4-1)/tem4 - ln(th1))
+    }else # 1 < th1
+    {
+      out <- tem1/tem2/tem4*(th2^tem4 - th1^tem4)
+    }
+  }else # mu == ga2
+  {
+    if( 1 >= th2 )
+    {
+      out <- tem1/tem2/tem3*(th2^tem3 - th1^tem3)
+    }else if( 1 < th2 & 1>= th1)
+    {
+      out <- tem1/tem2*(ln(th2) - (th1^tem3-1)/tem3)
+    }else # 1 < th1
+    {
+      out <- tem1/tem2*(ln(th2) - ln(th1))
+    }
+  }
+  return(out)
+}
+# HX_PPPP(2, 0.6, 1.7, 1.2, 0.7)
+
+#' CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
+#' @param x:   data input.
+#' @param al,be:   parameters.
+#' @keywords CDF
+#' @export
+#' @examples
+#' pPP(2, 1, 2)
+pPP <- function(x, ga1, ga2)
+{
+  if(x>=0 & x<1)
+  {
+    out <- ga2/(ga1+ga2)*(x^ga1)
+  }else
+  {
+    out <- 1 - ga1/(ga1+ga2)*(x^(-ga2))
+  }
+  return(out)
+}
+# plot(sapply(seq(0,10, length=50), function(x){pPP(x, 1,2)}))
+
+#' density of univariate margins of the PP model (i.e., Pareto I / Pareto I)
+#' @param x:   data input.
+#' @param al,be:   parameters.
+#' @keywords CDF
+#' @export
+#' @examples
+#' pPP(2, 1, 2)
+pPP <- function(x, ga1, ga2)
+{
+  if(x>=0 & x<1)
+  {
+    out <- ga2/(ga1+ga2)*(x^ga1)
+  }else
+  {
+    out <- 1 - ga1/(ga1+ga2)*(x^(-ga2))
+  }
+  return(out)
+}
+
+
+#' CDF of univariate margins of the PPPP model
+#' @param x:   data input.
+#' @param al,be,a,b:   parameters.
+#' @keywords CDF
+#' @export
+#' @examples
+#' pPPPP(2, 1, 2,1,1)
+pPPPP <- function(x, al, be, a, b)
+{
+  
+}
+
+
+#' Density of univariate margins of the PPPP model
+#' @param x:   data input.
+#' @param al,be,a,b:   parameters.
+#' @keywords Density
+#' @export
+#' @examples
+#' dPPPP(3,1,1,1,2)
+dPPPP <- function(x, al,be,a,b)
+{
+  
+}
+
+#' Joint density of the PPPP model
+#' @param x1,x2:   data input.
+#' @param al,be,a,b:   parameters.
+#' @keywords Joint density
+#' @export
+#' @examples
+#' jdPPPP(10,2, 1, 1)
+jdPPPP <- function(x1, x2, al,be,a,b)
+{
+  w <- (a*b/(a+b))^2
+  xm <- min(x1,x2)
+  xp <- max(x1,x2)
+  
 }
