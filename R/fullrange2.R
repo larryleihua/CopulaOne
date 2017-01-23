@@ -594,11 +594,12 @@ g_PPPP <- function(a1,a2,a3,a4)
 #' CDF of univariate margins of the PPPP model
 #' @param x:   data input.
 #' @param al,be,a,b:   parameters.
+#' @param log: return log or not
 #' @keywords CDF
 #' @export
 #' @examples
-#' plot(sapply(seq(0,20, length=50), function(x){pPPPP(x, 1,1,2,2)}), type="l",ylab="")
-pPPPP <- function(x, al, be, a, b)
+#' plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=F)}), type="l",ylab="")
+pPPPP <- function(x, al, be, a, b, log=F)
 {
   if(x==0)
   {
@@ -609,7 +610,13 @@ pPPPP <- function(x, al, be, a, b)
     I1 <- HX_PPPP(b,0,x,al,be)
     I2 <- HX_PPPP(-a,x,Inf,al,be)
     out <- FR-a/(a+b)*(x^(-b))*I1+b/(a+b)*(x^(a))*I2
-    return(out)
+    if(log==F)
+    {
+      return(out)  
+    }else
+    {
+      return(log(out))
+    }
   }
 }
 
@@ -631,13 +638,20 @@ pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 #' quantile of univariate margins of the PPPP model
 #' @param u:   data input.
 #' @param al,be,a,b:   parameters.
+#' @param log: if use log in it but the result is still the original scale
 #' @keywords quantile
 #' @export
 #' @examples
-#' plot(sapply(seq(0.8,0.999, length=100), function(x){qPPPP(x, 1,1,2,2)}), type="l",ylab="")
-qPPPP <- function(u, al, be, a, b)
+#' plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1,log=F)}), type="l",ylab="")
+qPPPP <- function(u, al, be, a, b, log=T)
 {
-  out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root
+  if(log==F)
+  {
+    out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root  
+  }else
+  {
+    out <- uniroot(function(x){pPPPP(x,al,be,a,b,log=log)-log(u)}, c(1e-20,9e99))$root
+  }
   return(out)
 }
 
