@@ -643,17 +643,62 @@ pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 #' @export
 #' @examples
 #' plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1,log=F)}), type="l",ylab="")
-qPPPP <- function(u, al, be, a, b, log=T)
+
+# try Newton
+qPPPP <- function(u, al, be, a, b)
 {
-  if(log==F)
+  if (u == 0)
   {
-    out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root  
-  }else
+    out <- 0
+  } else
   {
-    out <- uniroot(function(x){pPPPP(x,al,be,a,b,log=log)-log(u)}, c(1e-20,9e99))$root
+    tol <- 1e-06
+    CDF <- -0.01
+    DEN <- 1
+    maxiter <- 1000
+    kount <- 0
+    t <- 0
+    
+    # -------------------------------- Now use modified Newton-Raphson
+    # --------------------------------
+    lower <- -1e+20
+    upper <- 1e+20
+    
+    while ((kount < maxiter) && (abs(u - CDF) > tol))
+    {
+      kount <- kount + 1
+      t <- t - (CDF - u)/DEN
+      if (t < lower || t > upper)
+      {
+        t <- 0.5 * (lower + upper)
+      }
+      DEN <- dPPPP(exp(t), al, be, a, b) * exp(t)
+      CDF <- pPPPP(exp(t), al, be, a, b)
+      if (CDF < u)
+      {
+        lower <- t
+      } else
+      {
+        upper <- t
+      }
+    }
+    out <- exp(t)
   }
   return(out)
 }
+
+# this is not reliable 
+# qPPPP_not_reliable <- function(u, al, be, a, b, log=T)
+# {
+#   if(log==F)
+#   {
+#     out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root  
+#   }else
+#   {
+#     out <- uniroot(function(x){pPPPP(x,al,be,a,b,log=log)-log(u)}, c(1e-20,9e99))$root
+#   }
+#   return(out)
+# }
 
 #' Density of univariate margins of the PPPP model (a!=al, b!=be)
 #' 
