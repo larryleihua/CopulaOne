@@ -125,10 +125,10 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
 #' @examples 
 #' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
-#' plotCopulaOne(c(1.5, 1.8,2,2), marg="uniform", copula_family="PPPP")
+#' plotCopulaOne(c(0.5, 1.8,1,1), resolution=80, copula_family="PPPP")
 plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution=30, copula_family="PPPP")
 {
-  zvec <- seq(-2.5, 2.5, length=resolution)
+  zvec <- seq(-3.5, 3.5, length=resolution)
   f <- dnorm(zvec)
   Fvec <- pnorm(zvec)
   nn <- length(zvec)
