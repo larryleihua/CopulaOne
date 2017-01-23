@@ -613,7 +613,7 @@ pPPPP <- function(x, al, be, a, b)
   }
 }
 
-#' plot(sapply(seq(0,20, length=50), function(x){pPPPP_this_is_the_case_a_not_al_b_not_be(x, 1,1,2,2)}), type="l",ylab="")
+# plot(sapply(seq(0,20, length=50), function(x){pPPPP_this_is_the_case_a_not_al_b_not_be(x, 1,1,2,2)}), type="l",ylab="")
 pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 {
   if(x>=0 & x<1)
@@ -650,14 +650,24 @@ qPPPP <- function(u, al, be, a, b)
 #' @export
 #' @examples
 #' plot(sapply(seq(0,20, length=100), function(x){dPPPP(x, 1,1,2,2)}), type="l",ylab="")
-dPPPP <- function(x, al,be,a,b)
+dPPPP <- function(x, al, be, a, b)
+{
+  w <- a*b/(a+b)
+  HR1 <- HX_PPPP(b,0,x,al,be)
+  HR2 <- HX_PPPP(-a,x,Inf,al,be)
+  out <- w*((x^(-b-1))*HR1+(x^(a-1))*HR2)
+  return(out)
+}
+
+# plot(sapply(seq(0,20, length=100), function(x){dPPPP_this_is_the_case_a_not_al_b_not_be(x, 1,1,2,2)}), type="l",ylab="")
+dPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al,be,a,b)
 {
   if(x>=0 & x<1)
   {
     out <- al*g_PPPP(al,be,a,b)*(x^(al-1)) + a*g_PPPP(a,b,al,be)*(x^(a-1))
   }else
   {
-    out <- be*g_PPPP(be,al,b,a)*(x^(-be-1)) - b*g_PPPP(b,a,be,al)*(x^(-b-1))
+    out <- be*g_PPPP(be,al,b,a)*(x^(-be-1)) + b*g_PPPP(b,a,be,al)*(x^(-b-1))
   }
   return(out)
 }
@@ -673,7 +683,7 @@ dPPPP <- function(x, al,be,a,b)
 #' jdPPPP(10,2, 1, 1,2,2)
 jdPPPP <- function(x1, x2, al,be,a,b)
 {
-  w <- (a*b/(a+b))^2
+  w <- a*b/(a+b)
   xm <- min(x1,x2)
   xp <- max(x1,x2)
   tem1 <- (xm*xp)^(-b-1)
@@ -682,7 +692,7 @@ jdPPPP <- function(x1, x2, al,be,a,b)
   HR1 <- HX_PPPP(2*b,0,xm,al,be)
   HR2 <- HX_PPPP(b-a,xm,xp,al,be)
   HR3 <- HX_PPPP(-2*a,xp,Inf,al,be)
-  out <- w*(tem1*HR1+tem2*HR2+tem3*HR3)
+  out <- (w^2)*(tem1*HR1+tem2*HR2+tem3*HR3)
   return(out)
 }
 
