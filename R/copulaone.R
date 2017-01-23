@@ -140,6 +140,7 @@ plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution
   Fmat <- cbind(rep(Fvec, each = nn), rep(Fvec, times = nn))
   
   if(copula_family=="GGEE" | copula_family=="PPPP")
+  {
     denvec <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=Fmat, nco=nco, para=para, flag=flag, integration=integration, copula_family=copula_family), silent = T)
   }else
   {
