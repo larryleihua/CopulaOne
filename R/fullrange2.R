@@ -530,7 +530,7 @@ HX_PPPP <- function(mu, th1, th2, ga1, ga2)
 #' @keywords CDF
 #' @export
 #' @examples
-#' pPP(2, 1, 2)
+#' plot(sapply(seq(0,10, length=50), function(x){pPP(x, 2,2)}), type="l")
 pPP <- function(x, ga1, ga2)
 {
   if(x>=0 & x<1)
@@ -542,27 +542,44 @@ pPP <- function(x, ga1, ga2)
   }
   return(out)
 }
-# plot(sapply(seq(0,10, length=50), function(x){pPP(x, 1,2)}))
 
 #' density of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
-#' @keywords CDF
+#' @keywords pdf
 #' @export
 #' @examples
-#' pPP(2, 1, 2)
-pPP <- function(x, ga1, ga2)
+#' plot(sapply(seq(0,10, length=50), function(x){dPP(x, 2,2)}), type="l")
+dPP <- function(x, ga1, ga2)
 {
   if(x>=0 & x<1)
   {
-    out <- ga2/(ga1+ga2)*(x^ga1)
+    out <- ga1*ga2/(ga1+ga2)*(x^(ga1-1))
   }else
   {
-    out <- 1 - ga1/(ga1+ga2)*(x^(-ga2))
+    out <- ga1*ga2/(ga1+ga2)*(x^(-ga2-1))
   }
   return(out)
 }
 
+#' quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
+#' @param x:   data input.
+#' @param al,be:   parameters.
+#' @keywords quantile
+#' @export
+#' @examples
+#' plot(sapply(seq(0.99,1-0.001, length=1000), function(x){qPP(x, 0.2,0.3)}), type="l")
+qPP <- function(u, ga1, ga2)
+{
+  out <- uniroot(function(x){pPP(x,ga1,ga2)-u}, c(0,9e99))$root
+  return(out)
+}
+
+# internal function the g function for pPPPP()
+g_PPPP <- function(a1,a2,a3,a4)
+{
+  1/((1+a1/a2)*(1+a1/a4)*(1-a1/a3))
+}
 
 #' CDF of univariate margins of the PPPP model
 #' @param x:   data input.
@@ -570,23 +587,65 @@ pPP <- function(x, ga1, ga2)
 #' @keywords CDF
 #' @export
 #' @examples
-#' pPPPP(2, 1, 2,1,1)
+#' plot(sapply(seq(0,20, length=50), function(x){pPPPP(x, 1,1,2,2)}), type="l",ylab="")
 pPPPP <- function(x, al, be, a, b)
 {
-  
+  if(x==0)
+  {
+    return(0)
+  }else
+  {
+    FR <- pPP(x,al,be)
+    I1 <- HX_PPPP(b,0,x,al,be)
+    I2 <- HX_PPPP(-a,x,Inf,al,be)
+    out <- FR-a/(a+b)*(x^(-b))*I1+b/(a+b)*(x^(a))*I2
+    return(out)
+  }
 }
 
+#' plot(sapply(seq(0,20, length=50), function(x){pPPPP_this_is_the_case_a_not_al_b_not_be(x, 1,1,2,2)}), type="l",ylab="")
+pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
+{
+  if(x>=0 & x<1)
+  {
+    out <- g_PPPP(al,be,a,b)*(x^al) + g_PPPP(a,b,al,be)*(x^a)
+  }else
+  {
+    out <- 1 - g_PPPP(be,al,b,a)*(x^(-be)) - g_PPPP(b,a,be,al)*(x^(-b))
+  }
+  return(out)
+}
 
-#' Density of univariate margins of the PPPP model
+#' quantile of univariate margins of the PPPP model
+#' @param u:   data input.
+#' @param al,be,a,b:   parameters.
+#' @keywords quantile
+#' @export
+#' @examples
+#' plot(sapply(seq(0.8,0.999, length=100), function(x){qPPPP(x, 1,1,2,2)}), type="l",ylab="")
+qPPPP <- function(u, al, be, a, b)
+{
+  out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root
+  return(out)
+}
+
+#' Density of univariate margins of the PPPP model (a!=al, b!=be)
 #' @param x:   data input.
 #' @param al,be,a,b:   parameters.
 #' @keywords Density
 #' @export
 #' @examples
-#' dPPPP(3,1,1,1,2)
+#' plot(sapply(seq(0,20, length=100), function(x){dPPPP(x, 1,1,2,2)}), type="l",ylab="")
 dPPPP <- function(x, al,be,a,b)
 {
-  
+  if(x>=0 & x<1)
+  {
+    out <- al*g_PPPP(al,be,a,b)*(x^(al-1)) + a*g_PPPP(a,b,al,be)*(x^(a-1))
+  }else
+  {
+    out <- be*g_PPPP(be,al,b,a)*(x^(-be-1)) - b*g_PPPP(b,a,be,al)*(x^(-b-1))
+  }
+  return(out)
 }
 
 #' Joint density of the PPPP model
@@ -595,11 +654,26 @@ dPPPP <- function(x, al,be,a,b)
 #' @keywords Joint density
 #' @export
 #' @examples
-#' jdPPPP(10,2, 1, 1)
+#' jdPPPP(10,2, 1, 1,2,2)
 jdPPPP <- function(x1, x2, al,be,a,b)
 {
   w <- (a*b/(a+b))^2
   xm <- min(x1,x2)
   xp <- max(x1,x2)
-  
+  tem1 <- (xm*xp)^(-b-1)
+  tem2 <- (xm^(a-1))*(xp^(-b-1))
+  tem3 <- (xm*xp)^(a-1)
+  HR1 <- HX_PPPP(2*b,0,xm,al,be)
+  HR2 <- HX_PPPP(b-a,xm,xp,al,be)
+  HR3 <- HX_PPPP(-2*a,xp,Inf,al,be)
+  out <- w*(tem1*HR1+tem2*HR2+tem3*HR3)
+  return(out)
 }
+
+
+
+
+
+
+
+
