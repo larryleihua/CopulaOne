@@ -45,7 +45,7 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
 #' par <- c(0.3, 0.3)
 #' fit <- fitCopulaOne(par, dat)
-fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0)
+fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
   dat <- as.matrix(dat)
   
@@ -62,7 +62,7 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
     obj <- function(par)
     {
       par <- exp(par)+0.01 # parameters are both > 0
-      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration), silent = T) 
+      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration, copula_family=copula_family), silent = T)
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
         out <- sum(nllk_each_i[is.finite(nllk_each_i)])
@@ -84,7 +84,7 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
   {
     obj <- function(par)
     {
-      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration), silent = T) 
+      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration, copula_family=copula_family), silent = T) 
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
         out <- sum(nllk_each_i[is.finite(nllk_each_i)])
@@ -112,7 +112,6 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
   fit
 }
 
-
 #' Contour plots of CopulaOne
 #'
 #' Contour plots based on either normal scores or uniform scores
@@ -125,7 +124,7 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
 #' @examples 
 #' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
-#' plotCopulaOne(c(0.5, 1.5,2,2), resolution=100, copula_family="PPPP")
+#' plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
 plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution=30, copula_family="PPPP")
 {
   zvec <- seq(-2.5, 2.5, length=resolution)
