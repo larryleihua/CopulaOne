@@ -44,7 +44,12 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' data("euro0306")
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
 #' par <- c(0.3, 0.3)
-#' fit <- fitCopulaOne(par, dat)
+#' fit <- fitCopulaOne(par, dat, copula_family="GGEE")
+#' par <- c(0.3, 0.3, 1, 1)
+#' lower <- rep(0.1, 4)
+#' upper <- rep(5, 4)
+#' fit <- fitCopulaOne(par, dat, lower=lower, upper=upper, copula_family="PPPP")
+
 fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
   dat <- as.matrix(dat)
