@@ -1,7 +1,7 @@
 # copulaone.R
 
 # used for parallel computing
-seqRun <- function(i, dat, nco, par, flag=1, integration=F)
+seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP")
 {
   # dataset is divided in nco parts, and the ith part is working
   dat <- as.matrix(dat)
@@ -14,10 +14,19 @@ seqRun <- function(i, dat, nco, par, flag=1, integration=F)
   {
     dat_i <- dat[ ((nco-1)*Ni+1) : N , ]
   }
-  den <- dGGEE_COP(u=dat_i[,1], v=dat_i[,2], a=par[1], b=par[2], flag=flag, integration=integration)
+  if(copula_family=="PPPP")
+  {
+    den <- dPPPP_COP(u=dat_i[,1], v=dat_i[,2], al=para[1], be=para[2], a=para[3], b=para[4])
+  }else if(copula_family=="GGEE")
+  {
+    den <- dGGEE_COP(u=dat_i[,1], v=dat_i[,2], a=para[1], b=para[2], flag=flag, integration=integration)
+  }else
+  {
+    cat("Please specify copula families from (GGEE, PPPP)", "\n")
+    return(1)
+  }
   return(-log(den))
 }
-
 
 #' Model fitting with CopulaOne
 #'
@@ -107,16 +116,17 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
 #' Contour plots of CopulaOne
 #'
 #' Contour plots based on either normal scores or uniform scores
-#' @param a, b: parameters
+#' @param para: vector of parameters (GGEE: a, b; PPPP: al, be, a, b)
 #' @param marg: indicate normal scores or uniform scores (default: marg = "normal")
 #' @param resolution: number of evaluations for each dimension (default is 30)
 #' @param flag: used in the appell function (default is 1)
 #' @keywords contour plot
 #' @export
 #' @examples 
-#' plotCopulaOne(a=0.5, b=1.8)
-#' plotCopulaOne(a=0.5, b=1.8, marg="uniform", resolution=20)
-plotCopulaOne <- function(a, b, marg="normal", flag=1, integration=F, resolution=30)
+#' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
+#' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
+#' plotCopulaOne(c(0.5, 1.8,1,1), copula_family="PPPP")
+plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution=30, copula_family="PPPP")
 {
   zvec <- seq(-2.5, 2.5, length=resolution)
   f <- dnorm(zvec)
@@ -129,7 +139,13 @@ plotCopulaOne <- function(a, b, marg="normal", flag=1, integration=F, resolution
   
   Fmat <- cbind(rep(Fvec, each = nn), rep(Fvec, times = nn))
   
-  denvec <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=Fmat, nco=nco, par=c(a,b), flag=flag, integration=integration), silent = T)
+  if(copula_family=="GGEE" | copula_family=="PPPP")
+    denvec <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=Fmat, nco=nco, para=para, flag=flag, integration=integration, copula_family=copula_family), silent = T)
+  }else
+  {
+    cat("Please specify copula families from (GGEE, PPPP)", "\n")
+    return(1)
+  }
   parallel::stopCluster(cl)
   
   if(is(denvec,"try-error")){cat("density calculated error!", "\n"); return(NA)}else{
@@ -142,12 +158,12 @@ plotCopulaOne <- function(a, b, marg="normal", flag=1, integration=F, resolution
     denvec <- denvec * rep(f, each = nn) * rep(f, times = nn)
     denmat <- matrix(denvec, nn, nn)
     rangeforplot <- denvec[denvec>max(denmat[1,], denmat[,1], denmat[nn,], denmat[,nn])]
-    contour(zvec,zvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=paste("Contour plot of normal scores", " (a=", format(a), ", b=", format(b), ")", sep=""), xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
+    contour(zvec,zvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=paste("Contour plot of normal scores", " (para=", format(para), ")", sep=""), xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
   } else if(marg == "uniform")
   {
     denmat <- matrix(denvec, nn, nn)
     rangeforplot <- denvec
-    contour(Fvec, Fvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), main=paste("Contour plot of uniform scores", " (a=", format(a), ", b=", format(b), ")", sep=""), xlim = c(0,1), ylim = c(0,1))
+    contour(Fvec, Fvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), main=paste("Contour plot of uniform scores", " (para=", format(para), ")", sep=""), xlim = c(0,1), ylim = c(0,1))
   }
   invisible(denvec)
 }

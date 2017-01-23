@@ -63,6 +63,8 @@ pGGEE <- function(x, a, b)
 }
 
 #' Density of univariate margins of the GGEE model
+#' 
+#' Density of univariate margins of the GGEE model
 #' @param x:   data input.
 #' @param a,b:   parameters.
 #' @keywords Density
@@ -90,8 +92,10 @@ intg_jdGGEE <- function(y, x1, x2, a, b)
   tem1*tem2*tem3
 }
 intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
-# plot(intg_jdGGEE(seq(0.0, 1, length=100), x1=2, x2=4, a=1.4, b=1.9))
 
+
+#' Joint density of the GGEE model
+#' 
 #' Joint density of the GGEE model
 #' @param x1,x2:   data input.
 #' @param a,b:   parameters.
@@ -304,7 +308,7 @@ dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
 }
 
 
-#' Copula Density Function
+#' Copula Density Function - GGEE_COP
 #'
 #' Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
 #' @param u,v    values in (0,1).
@@ -361,8 +365,6 @@ jpGGEE <- function(x1,x2,a,b,flag=1, integration = F)
     }    
   }
 }
-
-
 
 #' Joint CDF of the GGEE copula model
 #'
@@ -525,6 +527,8 @@ HX_PPPP <- function(mu, th1, th2, ga1, ga2)
 # HX_PPPP(2, 0.6, 1.7, 1.2, 0.7)
 
 #' CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
+#' 
+#' CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
 #' @keywords CDF
@@ -543,6 +547,8 @@ pPP <- function(x, ga1, ga2)
   return(out)
 }
 
+#' density of univariate margins of the PP model (i.e., Pareto I / Pareto I)
+#' 
 #' density of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
@@ -563,6 +569,8 @@ dPP <- function(x, ga1, ga2)
 }
 
 #' quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
+#' 
+#' quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
 #' @keywords quantile
@@ -581,6 +589,8 @@ g_PPPP <- function(a1,a2,a3,a4)
   1/((1+a1/a2)*(1+a1/a4)*(1-a1/a3))
 }
 
+#' CDF of univariate margins of the PPPP model
+#' 
 #' CDF of univariate margins of the PPPP model
 #' @param x:   data input.
 #' @param al,be,a,b:   parameters.
@@ -617,6 +627,8 @@ pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 }
 
 #' quantile of univariate margins of the PPPP model
+#' 
+#' quantile of univariate margins of the PPPP model
 #' @param u:   data input.
 #' @param al,be,a,b:   parameters.
 #' @keywords quantile
@@ -629,6 +641,8 @@ qPPPP <- function(u, al, be, a, b)
   return(out)
 }
 
+#' Density of univariate margins of the PPPP model (a!=al, b!=be)
+#' 
 #' Density of univariate margins of the PPPP model (a!=al, b!=be)
 #' @param x:   data input.
 #' @param al,be,a,b:   parameters.
@@ -648,6 +662,8 @@ dPPPP <- function(x, al,be,a,b)
   return(out)
 }
 
+#' Joint density of the PPPP model
+#' 
 #' Joint density of the PPPP model
 #' @param x1,x2:   data input.
 #' @param al,be,a,b:   parameters.
@@ -670,10 +686,44 @@ jdPPPP <- function(x1, x2, al,be,a,b)
   return(out)
 }
 
+dPPPP_COP_0 <- function(u,v,al,be,a,b)
+{
+  q1 <- tryCatch(qPPPP(u,al,be,a,b), error = function(err) FALSE, warning = function(err) FALSE)
+  q2 <- tryCatch(qPPPP(v,al,be,a,b), error = function(err) FALSE, warning = function(err) FALSE)
+  if (is.logical(q1) || is.logical(q1))
+  {
+    return(NA)
+    cat("Warning! NA returned! (dPPPP_COP: qPPPP error!)", "\n")
+  } else
+  {
+    if (is.finite(q1) && is.finite(q2))
+    {
+      tem1 <- jdPPPP(q1,q2,al,be,a,b)
+      tem2 <- dPPPP(q1,al,be,a,b)
+      tem3 <- dPPPP(q2,al,be,a,b)
+      if (is.finite(tem1) && is.finite(tem2) && is.finite(tem3))
+      {
+        return(tem1/tem2/tem3)
+      } else
+      {
+        cat("Warning! NA returned! (dPPPP_COP)", "\n")
+        return(NA)
+      }
+    } else
+    {
+      cat("Warning! NA returned! (dPPPP_COP)", "\n")
+      return(NA)
+    }
+  }
+}
 
-
-
-
-
-
-
+#' Copula Density Function - PPPP_COP
+#'
+#' PPPP_COP - Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
+#' @param u,v    values in (0,1).
+#' @param al,be,a,b    the four shape parameters.
+#' @keywords copula density
+#' @export
+#' @examples
+#' dPPPP_COP(0.2, 0.4, 1,1,2,2)
+dPPPP_COP <- Vectorize(dPPPP_COP_0, c("u", "v"))
