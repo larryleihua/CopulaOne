@@ -501,10 +501,10 @@ HX_PPPP <- function(mu, th1, th2, ga1, ga2)
   {
     if( 1 >= th2 )
     {
-      out <- tem1/tem2*(ln(th2) - ln(th1))
+      out <- tem1/tem2*(log(th2) - log(th1))
     }else if( 1 < th2 & 1>= th1)
     {
-      out <- tem1/tem2*((th2^tem4-1)/tem4 - ln(th1))
+      out <- tem1/tem2*((th2^tem4-1)/tem4 - log(th1))
     }else # 1 < th1
     {
       out <- tem1/tem2/tem4*(th2^tem4 - th1^tem4)
@@ -516,10 +516,10 @@ HX_PPPP <- function(mu, th1, th2, ga1, ga2)
       out <- tem1/tem2/tem3*(th2^tem3 - th1^tem3)
     }else if( 1 < th2 & 1>= th1)
     {
-      out <- tem1/tem2*(ln(th2) - (th1^tem3-1)/tem3)
+      out <- tem1/tem2*(log(th2) - (th1^tem3-1)/tem3)
     }else # 1 < th1
     {
-      out <- tem1/tem2*(ln(th2) - ln(th1))
+      out <- tem1/tem2*(log(th2) - log(th1))
     }
   }
   return(out)
