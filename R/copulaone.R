@@ -45,21 +45,16 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' data("euro0306")
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
 #' par0 <- c(0.3, 0.3)
-#' fit <- fitCopulaOne(par0, dat, copula_family="GGEE")
+#' fit <- fitCopulaOne(par0, dat=dat, copula_family="GGEE")
 #' par0 <- c(0.3, 0.3, 1, 1)
-#' lower <- rep(0.1, 4)
-#' upper <- rep(5, 4)
-#' fit <- fitCopulaOne(par0, dat, lower=lower, upper=upper, copula_family="PPPP")
+#' whichpar <- c(1,2)
+#' lower <- rep(0.1, 2)
+#' upper <- rep(5, 2)
+#' fit <- fitCopulaOne(par0, whichpar=whichpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 
 fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
-  #if(whichpar == NULL)
-  #{
-  #  whichpar <- seq(1,length(par0))
-  #}
-  
   dat <- as.matrix(dat)
-  
   # check positive / negative dependence by 
   ken <- cor(x=dat[,1], y=dat[,2], method = "kendall")
   if(ken < 0){dat[,2] <- 1 - dat[,2]}
