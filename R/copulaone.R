@@ -32,6 +32,7 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #'
 #' Fit bivariate data with the full-range tail dependence copula based on maximum likelihood
 #' @param par: initial parameters for (a, b)
+#' @param whichpar: a vector of par's positions where the parameter is to be estimated
 #' @param dat: input of data.
 #' @param flag: indicate which numerical method for the appell function (default: flag = 1)
 #' @param integration: (Experimental!) using integration instead of appellf1()
@@ -43,15 +44,20 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' # DO NOT run, and it takes time!
 #' data("euro0306")
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
-#' par <- c(0.3, 0.3)
-#' fit <- fitCopulaOne(par, dat, copula_family="GGEE")
-#' par <- c(0.3, 0.3, 1, 1)
+#' par0 <- c(0.3, 0.3)
+#' fit <- fitCopulaOne(par0, dat, copula_family="GGEE")
+#' par0 <- c(0.3, 0.3, 1, 1)
 #' lower <- rep(0.1, 4)
 #' upper <- rep(5, 4)
-#' fit <- fitCopulaOne(par, dat, lower=lower, upper=upper, copula_family="PPPP")
+#' fit <- fitCopulaOne(par0, dat, lower=lower, upper=upper, copula_family="PPPP")
 
-fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
+fitCopulaOne <- function(par0, whichpar=NULL, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
+  if(whichpar == NULL)
+  {
+    whichpar <- seq(1,length(par0))
+  }
+  
   dat <- as.matrix(dat)
   
   # check positive / negative dependence by 
@@ -66,8 +72,8 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
   {
     obj <- function(par)
     {
-      par <- exp(par)+0.01 # parameters are both > 0
-      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration, copula_family=copula_family), silent = T)
+      par0[whichpar] <- exp(par)+0.01 # parameters are both > 0
+      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, para=par0, flag=flag, integration=integration, copula_family=copula_family), silent = T)
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
         out <- sum(nllk_each_i[is.finite(nllk_each_i)])
@@ -75,7 +81,7 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
       }
     }
     if(se==T){hes <- T}else{hes <- F}
-    fit <- nlm(obj, p=log(par-0.01), print.level=printlevel, hessian = hes)
+    fit <- nlm(obj, p=log(par0[whichpar]-0.01), print.level=printlevel, hessian = hes)
     parallel::stopCluster(cl)
     fit$estimate <- exp(fit$estimate)+0.01
     if(se==T)
@@ -89,7 +95,8 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
   {
     obj <- function(par)
     {
-      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, par=par, flag=flag, integration=integration, copula_family=copula_family), silent = T) 
+      par0[whichpar] <- par
+      nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, para=par0, flag=flag, integration=integration, copula_family=copula_family), silent = T) 
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
         out <- sum(nllk_each_i[is.finite(nllk_each_i)])
@@ -97,7 +104,7 @@ fitCopulaOne <- function(par, dat, flag=1, integration=F, opt="L-BFGS-B", se=F, 
       }
     }
     if(se==T){hes <- T}else{hes <- F}
-    fit <- optim(par=par, obj, method="L-BFGS-B", control=list(trace=trace, factr=factr), hessian=hes, lower=lower, upper=upper)
+    fit <- optim(par=par0[whichpar], obj, method="L-BFGS-B", control=list(trace=trace, factr=factr), hessian=hes, lower=lower, upper=upper)
     parallel::stopCluster(cl)
     if(se==T)
     {
