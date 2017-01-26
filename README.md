@@ -56,7 +56,7 @@ dUEV_GGEE_COP(0.3, 0.4, b=1.2)
 ```
 
 ## Model fitting
-- An example of fitting dependence between exchange rates returns [Warning: this step an be slow on your computer!]
+- An example of fitting dependence between exchange rates returns [Warning: this step can be slow on your computer!]
 ```{r}
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:50,]
