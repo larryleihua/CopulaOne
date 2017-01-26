@@ -5,7 +5,7 @@ The R package *CopulaOne* implements functions for bivariate copulas that must s
 * It can account for both reflection symmetry and asymmetry between upper and lower tails.
 
 Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either symmetric or asymmetric.
-The package is under active development, and the following copula have been implemented: GGEE. The following figure shows how flexible the GGEE copula is. Please refer to [Hua (2017)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the GGEE copula.
+The package is under active development, and the following copula has been implemented: GGEE. The following figure shows how flexible the GGEE copula is. Please refer to [Hua (2017)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the GGEE copula.
 
 <img src="http://niu.edu/leihua/_images/copula.gif" width="400" height="400" />
 
