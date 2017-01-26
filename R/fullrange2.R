@@ -185,7 +185,7 @@ qGGEE <- function(u, a, b)
   return(out)
 }
 
-intg_Dx2 <- function(r, x1, x2, a, b)
+intg_Dx2_GGEE <- function(r, x1, x2, a, b)
 {
   tem11 <- (x1 + r)^(-1)
   tem12 <- (x2 + r)^(-2)
@@ -194,13 +194,13 @@ intg_Dx2 <- function(r, x1, x2, a, b)
   return(tem11 * tem12 * tem2/tem3)
 }
 
-Dx2 <- function(x1, x2, a, b)
+Dx2_GGEE <- function(x1, x2, a, b)
 {
   tem1 <- dGGEE(x2, a, b)
   if (!is.na(tem1))
   {
-    intg_Dx2 <- Vectorize(intg_Dx2, "r")
-    tmp <- tryCatch(integrate(intg_Dx2, lower = 0, upper = Inf, x1 = x1, x2 = x2, 
+    intg_Dx2_GGEE <- Vectorize(intg_Dx2_GGEE, "r")
+    tmp <- tryCatch(integrate(intg_Dx2_GGEE, lower = 0, upper = Inf, x1 = x1, x2 = x2, 
       a = a, b = b, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
@@ -208,12 +208,12 @@ Dx2 <- function(x1, x2, a, b)
       return(tem1 - intg/beta(a, b))
     } else
     {
-      cat("Warning! NA returned! (Dx2)", "\n")
+      cat("Warning! NA returned! (Dx2_GGEE)", "\n")
       return(NA)
     }
   } else
   {
-    cat("Warning! NA returned! (Dx2)", "\n")
+    cat("Warning! NA returned! (Dx2_GGEE)", "\n")
     return(NA)
   }
 }
@@ -250,17 +250,17 @@ C2GGEE_COP <- function(u, v, a, b)
 {
   x1 <- tryCatch(qGGEE(u, a, b), error = function(err) FALSE, warning = function(err) FALSE)
   x2 <- tryCatch(qGGEE(v, a, b), error = function(err) FALSE, warning = function(err) FALSE)
-  if (is.logical(x1) || is.logical(x1))
+  if (is.logical(x1) || is.logical(x2))
   {
     return(NA)
     cat("Warning! NA returned! (C2GGEE_COP: qGGEE error!)", "\n")
   } else
   {
-    if (is.finite(x1) && is.finite(x1))
+    if (is.finite(x1) && is.finite(x2))
     {
-      tem1 <- Dx2(x1, x2, a, b)
+      tem1 <- Dx2_GGEE(x1, x2, a, b)
       tem2 <- dGGEE(x2, a, b)
-      if (is.finite(tem1) && is.finite(tem1))
+      if (is.finite(tem1) && is.finite(tem2))
       {
         return(tem1/tem2)
       } else
@@ -477,7 +477,10 @@ sprGGEE_COP <- function(a,b,flag=1, method=1, integration=F)
   out
 }
 
-## full-range tail dependence copula with Paretian mixtures
+############################################################
+## full-range tail dependence copula with Pareto mixtures ##
+############################################################
+
 HX_PPPP <- function(mu, th1, th2, ga1, ga2)
 {
   tem1 <- ga1*ga2
@@ -796,3 +799,70 @@ dPPPP_COP_0 <- function(u,v,al,be,a,b)
 #' @examples
 #' dPPPP_COP(0.2, 0.4, 1,1,2,2)
 dPPPP_COP <- Vectorize(dPPPP_COP_0, c("u", "v"))
+
+# X1onX2_PPPP: P[X1<=x1|X2=x2], note that this is different than Dx2_PPPP, Dx2_PPPP = X1onX2_PPPP*dPPPP(X2)
+X1onX2_PPPP <- function(x1, x2, al, be, a, b)
+{
+  if(x1 == 0){return(0)}else
+  {
+    if(x2 <= x1)
+    {
+      tem1 <- a*b*(x2^(-b-1))/(a+b)
+      tem2 <- (a^2)*b*(x1^(-b))*(x2^(-b-1))/((a+b)^2)
+      tem3 <- a*b*(x2^(a-1))/(a+b)
+      tem4 <- (a^2)*b*(x1^(-b))*(x2^(a-1))/((a+b)^2)
+      tem5 <- a*(b^2)*(x1^a)*(x2^(a-1))/((a+b)^2)
+      HR1 <- HX_PPPP(b, 0, x2, al, be)
+      HR2 <- HX_PPPP(2*b, 0, x2, al, be)
+      HR3 <- HX_PPPP(-a, x2, x1, al, be)
+      HR4 <- HX_PPPP(b-a, x2, x1, al, be)
+      HR5 <- HX_PPPP(-2*a, x1, Inf, al, be)
+      out <- (tem1*HR1 - tem2*HR2 + tem3*HR3 - tem4*HR4 + tem5*HR5) / dPPPP(x2, al, be, a, b)
+    }else
+    {
+      tem1 <- a*b*(x2^(-b-1))/(a+b)
+      tem2 <- (a^2)*b*(x1^(-b))*(x2^(-b-1))/((a+b)^2)
+      tem3 <- a*(b^2)*(x1^a)*(x2^(-b-1))/((a+b)^2)
+      tem4 <- a*(b^2)*(x1^a)*(x2^(a-1))/((a+b)^2)
+      HR1 <- HX_PPPP(b, 0, x1, al, be)
+      HR2 <- HX_PPPP(2*b, 0, x1, al, be)
+      HR3 <- HX_PPPP(b-a, x1, x2, al, be)
+      HR4 <- HX_PPPP(-2*a, x2, Inf, al, be)
+      out <- (tem1*HR1 - tem2*HR2 + tem3*HR3 + tem4*HR4) / dPPPP(x2, al, be, a, b)
+    }
+    return(out)
+  }
+}
+# plot(sapply(seq(0,20, length=50), function(x1){X1onX2_PPPP(x1, 2, 1,1,2,2)}), type="l")
+
+C2PPPP_COP <- function(u, v, al, be, a, b)
+{
+  x1 <- tryCatch(qPPPP(u, al, be, a, b), error = function(err) FALSE, warning = function(err) FALSE)
+  x2 <- tryCatch(qPPPP(v, al, be, a, b), error = function(err) FALSE, warning = function(err) FALSE)
+  if (is.logical(x1) || is.logical(x2))
+  {
+    return(NA)
+    cat("Warning! NA returned! (C2PPPP_COP: qPPPP error!)", "\n")
+  } else
+  {
+    if (is.finite(x1) && is.finite(x2))
+    {
+      tem1 <- X1onX2_PPPP(x1, x2, al, be, a, b)
+      if (is.finite(tem1) && is.finite(tem2))
+      {
+        return(tem1)
+      } else
+      {
+        cat("Warning! NA returned! (C2PPPP_COP)", "\n")
+        return(NA)
+      }
+    } else
+    {
+      cat("Warning! NA returned! (C2PPPP_COP)", "\n")
+      return(NA)
+    }
+  }
+}
+
+# plot(sapply(seq(0,1, length=50), function(u){C2PPPP_COP(u, 0.1, 0.5,1.5,1,1)}), type="l")
+
