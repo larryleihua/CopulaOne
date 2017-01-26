@@ -39,8 +39,8 @@ cat("The copula density and cdf are:", den, cdf, "\n")
 - Contour plots can be plotted directly for a given copula as follows.
 ```{r fig.width=11, fig.height=6}
 layout(matrix(c(1,2),1,2))
-plotCopulaOne(1.2, 0.5, marg = "normal")
-plotCopulaOne(1.2, 0.5, marg = "uniform")
+plotCopulaOne(c(1.2, 0.5), marg = "normal", copula_family = "GGEE")
+plotCopulaOne(c(1.2, 0.5), marg = "uniform", copula_family = "GGEE")
 ```
 
 - Kendall's tau and Spearman's rho of the GGEE copula can be evaluated by
@@ -61,5 +61,5 @@ dUEV_GGEE_COP(0.3, 0.4, b=1.2)
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:50,]
 par <- c(0.3, 0.3)
-fit <- fitCopulaOne(par, dat)
+fit <- fitCopulaOne(par, dat=dat, copula_family = "GGEE")
 ```
