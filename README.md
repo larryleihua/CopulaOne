@@ -1,4 +1,4 @@
-# CopulaOne - an R package for a collection of very flexible bivariate parametric copulas
+# CopulaOne - an R package for full-range tail dependence copulas
 
 The R package *CopulaOne* implements functions for bivariate copulas that must satisfy the following two properties:
 * It can account for full-range tail dependence for both upper and lower tails.
