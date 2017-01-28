@@ -880,7 +880,7 @@ qParetoI <- function(u, a)
 #' @keywords simulation
 #' @export
 #' @examples
-#' rPPPP_COP(20, 1.2, 0.2, 1, 1, seed = 100)
+#' plot(rPPPP_COP(100, 1.2, 0.2, 1, 1, seed = 100))
 rPPPP_COP <- function(n, al, be, a, b, seed = 1)
 {
   set.seed(seed)
@@ -891,15 +891,15 @@ rPPPP_COP <- function(n, al, be, a, b, seed = 1)
   u5 <- runif(n)
   u6 <- runif(n)
 
-  R1 <- sapply(u1, function(u){qParetoI(u, al)})
-  R2 <- sapply(u2, function(u){qParetoI(u, be)})
+  R1 <- sapply(u1, function(u){qParetoI(u, be)})
+  R2 <- sapply(u2, function(u){qParetoI(u, al)})
   R <- R1 / R2
   
-  H1 <- sapply(u3, function(u){qParetoI(u, a)})
-  H11 <- sapply(u4, function(u){qParetoI(u, b)})
+  H1 <- sapply(u3, function(u){qParetoI(u, b)})
+  H11 <- sapply(u4, function(u){qParetoI(u, a)})
   
-  H2 <- sapply(u5, function(u){qParetoI(u, a)})
-  H22 <- sapply(u6, function(u){qParetoI(u, b)})
+  H2 <- sapply(u5, function(u){qParetoI(u, b)})
+  H22 <- sapply(u6, function(u){qParetoI(u, a)})
 
   X11 <- R * H1 / H11
   X22 <- R * H2 / H22
