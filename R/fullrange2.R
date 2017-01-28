@@ -43,15 +43,15 @@ uscore <- function(data, aunif = -0.5)
 #'
 #' CDF of univariate margins of the GGEE model
 #' @param x:   data input.
-#' @param a,b:   parameters.
+#' @param al,be:   parameters.
 #' @keywords CDF
 #' @export
 #' @examples
 #' pGGEE(2, 1, 2)
-pGGEE <- function(x, a, b)
+pGGEE <- function(x, al, be)
 {
-  out <- tryCatch(1 - a/(a + b) * Re(hypergeo::hypergeo(1, b, a + b + 1, 1 - x, 
-    tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, warning = function(err) FALSE)
+  out <- tryCatch(1 - al/(al + be) * Re(hypergeo::hypergeo(1, be, al + be + 1, 1 - x, 
+                                                           tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, warning = function(err) FALSE)
   if (!is.logical(out) && is.finite(out))
   {
     return(out)
@@ -66,29 +66,29 @@ pGGEE <- function(x, a, b)
 #' 
 #' Density of univariate margins of the GGEE model
 #' @param x:   data input.
-#' @param a,b:   parameters.
+#' @param al,be:   parameters.
 #' @keywords Density
 #' @export
 #' @examples
 #' dGGEE(3, 1, 2)
-dGGEE <- function(x, a, b)
+dGGEE <- function(x, al, be)
 {
-  out <- tryCatch((a * b)/(a + b)/(a + b + 1) * Re(hypergeo::hypergeo(2, b + 1, 
-    a + b + 2, 1 - x, tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, 
-    warning = function(err) FALSE)
+  out <- tryCatch((al * be)/(al + be)/(al + be + 1) * Re(hypergeo::hypergeo(2, be + 1, 
+                                                                            al + be + 2, 1 - x, tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, 
+                  warning = function(err) FALSE)
   if (!is.logical(out) && is.finite(out)) 
     return(out) else
     {
-    cat("Warning! NA returned!", "\n")
-    return(NA)
-  }
+      cat("Warning! NA returned!", "\n")
+      return(NA)
+    }
 }
 
-intg_jdGGEE <- function(y, x1, x2, a, b)
+intg_jdGGEE <- function(y, x1, x2, al, be)
 {
   tem1 <- (x1*y+1-y)^(-2)
   tem2 <- (x2*y+1-y)^(-2)
-  tem3 <- ((1-y)^(a+1))*(y^(b+1))
+  tem3 <- ((1-y)^(al+1))*(y^(be+1))
   tem1*tem2*tem3
 }
 intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
@@ -98,7 +98,7 @@ intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
 #' 
 #' Joint density of the GGEE model
 #' @param x1,x2:   data input.
-#' @param a,b:   parameters.
+#' @param al,be:   parameters.
 #' @param flag: flag used in appell::appellf1()
 #' @param integration   if T: use numerical integration instead of appellf1, default is F
 #' @keywords Joint density
@@ -106,26 +106,26 @@ intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
 #' @examples
 #' jdGGEE(10,2, 1, 1)
 #' jdGGEE(10,2, 1, 1, integration = T)
-jdGGEE <- function(x1, x2, a, b, flag = 1, integration = F)
+jdGGEE <- function(x1, x2, al, be, flag = 1, integration = F)
 {
   if(integration==F)
   {
-    tem1 <- a * b * (a + 1) * (b + 1)/(a + b)/(a + b + 1)/(a + b + 2)/(a + b + 3)
-    tem2 <- tryCatch(Re(appell::appellf1(b + 2, 2, 2, a + b + 4, 1 - x1, 1 - x2, 
-        userflag = flag)$val), error = function(err) FALSE, warning = function(err) FALSE)
+    tem1 <- al * be * (al + 1) * (be + 1)/(al + be)/(al + be + 1)/(al + be + 2)/(al + be + 3)
+    tem2 <- tryCatch(Re(appell::appellf1(be + 2, 2, 2, al + be + 4, 1 - x1, 1 - x2, 
+                                         userflag = flag)$val), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tem2) && is.finite(tem2)) 
-    return(tem1 * tem2) else
-    {
-      cat("Warning! NA returned!", "\n")
-      return(NA)
-    }  
+      return(tem1 * tem2) else
+      {
+        cat("Warning! NA returned!", "\n")
+        return(NA)
+      }  
   }else{
     tmp <- tryCatch(integrate(intg_jdGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
-      a = a, b = b, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
+                              al = al, be = be, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
       intg <- tmp$value
-      return(intg/beta(a, b))
+      return(intg/beta(al, be))
     } else
     {
       cat("Warning! NA returned! (jdGGEE)", "\n")
@@ -138,12 +138,12 @@ jdGGEE <- function(x1, x2, a, b, flag = 1, integration = F)
 #'
 #' Quantiel of univariate margins of the GGEE model
 #' @param u:   quantile between 0 and 1.
-#' @param a,b:   parameters.
+#' @param al,be:   parameters.
 #' @keywords Quantile
 #' @export
 #' @examples
 #' qGGEE(0.9, 1, 1)
-qGGEE <- function(u, a, b)
+qGGEE <- function(u, al, be)
 {
   if (u == 0)
   {
@@ -170,8 +170,8 @@ qGGEE <- function(u, a, b)
       {
         t <- 0.5 * (lower + upper)
       }
-      DEN <- dGGEE(exp(t), a, b) * exp(t)
-      CDF <- pGGEE(exp(t), a, b)
+      DEN <- dGGEE(exp(t), al, be) * exp(t)
+      CDF <- pGGEE(exp(t), al, be)
       if (CDF < u)
       {
         lower <- t
@@ -185,27 +185,27 @@ qGGEE <- function(u, a, b)
   return(out)
 }
 
-intg_Dx2_GGEE <- function(r, x1, x2, a, b)
+intg_Dx2_GGEE <- function(r, x1, x2, al, be)
 {
   tem11 <- (x1 + r)^(-1)
   tem12 <- (x2 + r)^(-2)
-  tem2 <- r^(a + 1)
-  tem3 <- (1 + r)^(a + b)
+  tem2 <- r^(al + 1)
+  tem3 <- (1 + r)^(al + be)
   return(tem11 * tem12 * tem2/tem3)
 }
 
-Dx2_GGEE <- function(x1, x2, a, b)
+Dx2_GGEE <- function(x1, x2, al, be)
 {
-  tem1 <- dGGEE(x2, a, b)
+  tem1 <- dGGEE(x2, al, be)
   if (!is.na(tem1))
   {
     intg_Dx2_GGEE <- Vectorize(intg_Dx2_GGEE, "r")
     tmp <- tryCatch(integrate(intg_Dx2_GGEE, lower = 0, upper = Inf, x1 = x1, x2 = x2, 
-      a = a, b = b, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
+                              al = al, be = be, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
       intg <- tmp$value
-      return(tem1 - intg/beta(a, b))
+      return(tem1 - intg/beta(al, be))
     } else
     {
       cat("Warning! NA returned! (Dx2_GGEE)", "\n")
@@ -222,17 +222,17 @@ Dx2_GGEE <- function(x1, x2, a, b)
 #'
 #' Generating random samples based on the bivariate copula that has full-range tail dependence in both upper and lower tails
 #' @param n: sample size to be generated.
-#' @param a,b: the two shape parameters.
+#' @param al,be: the two shape parameters.
 #' @param seed: seed for randomness, and default is 1
 #' @keywords simulation
 #' @export
 #' @examples
 #' rGGEE_COP(20, 1.2, 0.2, seed = 100)
-rGGEE_COP <- function(n, a, b, seed = 1)
+rGGEE_COP <- function(n, al, be, seed = 1)
 {
   set.seed(seed)
-  R1 <- rgamma(n, shape=a, 1)
-  R2 <- rgamma(n, shape=b, 1)
+  R1 <- rgamma(n, shape=al, 1)
+  R2 <- rgamma(n, shape=be, 1)
   R <- R1 / R2
   H1 <- rexp(n)
   H2 <- rexp(n)
@@ -241,15 +241,15 @@ rGGEE_COP <- function(n, a, b, seed = 1)
   X11 <- R * H1 / H11
   X22 <- R * H2 / H22
   
-  u <- pGGEE(X11,a,b)
-  v <- pGGEE(X22,a,b)
+  u <- pGGEE(X11,al,be)
+  v <- pGGEE(X22,al,be)
   cbind(u,v)
 }
 
-C2GGEE_COP <- function(u, v, a, b)
+C2GGEE_COP <- function(u, v, al, be)
 {
-  x1 <- tryCatch(qGGEE(u, a, b), error = function(err) FALSE, warning = function(err) FALSE)
-  x2 <- tryCatch(qGGEE(v, a, b), error = function(err) FALSE, warning = function(err) FALSE)
+  x1 <- tryCatch(qGGEE(u, al, be), error = function(err) FALSE, warning = function(err) FALSE)
+  x2 <- tryCatch(qGGEE(v, al, be), error = function(err) FALSE, warning = function(err) FALSE)
   if (is.logical(x1) || is.logical(x2))
   {
     return(NA)
@@ -258,8 +258,8 @@ C2GGEE_COP <- function(u, v, a, b)
   {
     if (is.finite(x1) && is.finite(x2))
     {
-      tem1 <- Dx2_GGEE(x1, x2, a, b)
-      tem2 <- dGGEE(x2, a, b)
+      tem1 <- Dx2_GGEE(x1, x2, al, be)
+      tem2 <- dGGEE(x2, al, be)
       if (is.finite(tem1) && is.finite(tem2))
       {
         return(tem1/tem2)
@@ -276,10 +276,10 @@ C2GGEE_COP <- function(u, v, a, b)
   }
 }
 
-dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
+dGGEE_COP_0 <- function(u, v, al, be, flag = 1, integration = F)
 {
-  q1 <- tryCatch(qGGEE(u, a, b), error = function(err) FALSE, warning = function(err) FALSE)
-  q2 <- tryCatch(qGGEE(v, a, b), error = function(err) FALSE, warning = function(err) FALSE)
+  q1 <- tryCatch(qGGEE(u, al, be), error = function(err) FALSE, warning = function(err) FALSE)
+  q2 <- tryCatch(qGGEE(v, al, be), error = function(err) FALSE, warning = function(err) FALSE)
   if (is.logical(q1) || is.logical(q1))
   {
     return(NA)
@@ -288,9 +288,9 @@ dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
   {
     if (is.finite(q1) && is.finite(q2))
     {
-      tem1 <- jdGGEE(q1, q2, a, b, flag, integration)
-      tem2 <- dGGEE(q1, a, b)
-      tem3 <- dGGEE(q2, a, b)
+      tem1 <- jdGGEE(q1, q2, al, be, flag, integration)
+      tem2 <- dGGEE(q1, al, be)
+      tem3 <- dGGEE(q2, al, be)
       if (is.finite(tem1) && is.finite(tem2) && is.finite(tem3))
       {
         return(tem1/tem2/tem3)
@@ -312,7 +312,7 @@ dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
 #'
 #' Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
 #' @param u,v    values in (0,1).
-#' @param a,b    the two shape parameters.
+#' @param al,be    the two shape parameters.
 #' @param flag   used in the Appell's F1 function appellf1() of the R package 'appell'.
 #' @param integration   if T: use numerical integration instead of appellf1, default is F
 #' @keywords copula density
@@ -321,43 +321,43 @@ dGGEE_COP_0 <- function(u, v, a, b, flag = 1, integration = F)
 #' dGGEE_COP(0.2, 0.4, 1.2, 0.2)
 dGGEE_COP <- Vectorize(dGGEE_COP_0, c("u", "v"))
 
-intg_jpGGEE <- function(y, x1, x2, a, b)
+intg_jpGGEE <- function(y, x1, x2, al, be)
 {
   tem1 <- (x1*y+1-y)^(-1)
   tem2 <- (x2*y+1-y)^(-1)
-  tem3 <- ((1-y)^(a+1))*(y^(b-1))
+  tem3 <- ((1-y)^(al+1))*(y^(be-1))
   tem1*tem2*tem3
 }
 intg_jpGGEE <- Vectorize(intg_jpGGEE, "y")
-# plot(intg_jpGGEE(seq(0.0, 1, length=100), x1=2, x2=4, a=1.4, b=1.9))
+# plot(intg_jpGGEE(seq(0.0, 1, length=100), x1=2, x2=4, al=1.4, be=1.9))
 
 #' Joint CDF of the GGEE model
 #'
 #' Joint CDF of the GGEE model
 #' @param x1,x2:   data input.
-#' @param a,b:   parameters.
+#' @param al,be:   parameters.
 #' @keywords Joint CDF
 #' @export
 #' @examples
 #' jpGGEE(0.2, 0.4, 1, 1)
 #' jpGGEE(0.2, 0.4, 1, 1, integration = T)
-jpGGEE <- function(x1,x2,a,b,flag=1, integration = F)
+jpGGEE <- function(x1,x2,al,be,flag=1, integration = F)
 {
-  tem1 <- pGGEE(x1,a,b)
-  tem2 <- pGGEE(x2,a,b)
+  tem1 <- pGGEE(x1,al,be)
+  tem2 <- pGGEE(x2,al,be)
   if(integration==F)
   {
-    tem3 <- a*(a+1)/(a+b)/(a+b+1)
-    tem4 <- Re(appell::appellf1(b,1,1,a+b+2,1-x1,1-x2, userflag = flag)$val)
+    tem3 <- al*(al+1)/(al+be)/(al+be+1)
+    tem4 <- Re(appell::appellf1(be,1,1,al+be+2,1-x1,1-x2, userflag = flag)$val)
     out <- tem1 + tem2 - 1 + tem3 * tem4
     return(out)
   }else{
     tmp <- tryCatch(integrate(intg_jpGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
-      a = a, b = b, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
+                              al = al, be = be, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
       intg <- tmp$value
-      return(tem1+tem2-1+intg/beta(a, b))
+      return(tem1+tem2-1+intg/beta(al, be))
     }else
     {
       cat("Warning! NA returned! (jpGGEE)", "\n")
@@ -370,38 +370,38 @@ jpGGEE <- function(x1,x2,a,b,flag=1, integration = F)
 #'
 #' Joint CDF of the GGEE copula model
 #' @param u,v:   data input.
-#' @param a,b:   parameters.
+#' @param al,be:   parameters.
 #' @param flag: flag used in the appell::appellf1() function.
 #' @keywords Joint CDF
 #' @export
 #' @examples
 #' pGGEE_COP(0.9, 0.3, 1, 1)
 #' pGGEE_COP(0.9, 0.3, 1, 1, integration=T)
-pGGEE_COP <- function(u,v,a,b,flag=1, integration=F)
+pGGEE_COP <- function(u,v,al,be,flag=1, integration=F)
 {
-  q1 <- qGGEE(u,a,b)
-  q2 <- qGGEE(v,a,b)
-  jpGGEE(q1,q2,a,b,flag = flag, integration=integration)
+  q1 <- qGGEE(u,al,be)
+  q2 <- qGGEE(v,al,be)
+  jpGGEE(q1,q2,al,be,flag = flag, integration=integration)
 }
 
-intg_tau_E <- function(xy,a,b)
+intg_tau_E <- function(xy,al,be)
 {
   x <- xy[1]
   y <- xy[2]
   
   if(x==1 | y==1 | x==0 | y==0)
   {
-   return(0) 
+    return(0) 
   }else
   {
     tem1 <- (-y*log((-1+x)*y/((-1+y)*x))+y*log((-1+x)*y/((-1+y)*x))*x-x+y)^2 
-    tem2 <- x*(1-x)^(a-1)*(1-y)^(1+a)*(x*y)^b
+    tem2 <- x*(1-x)^(al-1)*(1-y)^(1+al)*(x*y)^be
     tem3 <- (y*(y^2-2*x*y+x^2)^2)
   }
   
   if(x == y)
   {
-    out <- (1/4)*(((1-x)*(1-y))^(a-1))*((x*y)^(b-1))   
+    out <- (1/4)*(((1-x)*(1-y))^(al-1))*((x*y)^(be-1))   
   }else
   {
     out <- tem1 * tem2 / tem3  
@@ -412,37 +412,37 @@ intg_tau_E <- function(xy,a,b)
 #' Kendall's tau of the GGEE copula
 #'
 #' Kendall's tau of the bivariate copula that has full-range tail dependence in both upper and lower tails
-#' @param a,b    the two shape parameters.
+#' @param al,be    the two shape parameters.
 #' @keywords Kendall's tau
 #' @export
 #' @examples
 #' tauGGEE_COP(0.5, 1)
-tauGGEE_COP <- function(a,b,method=1)
+tauGGEE_COP <- function(al,be,method=1)
 {
-  tmp <- R2Cuba::cuhre(2,1,intg_tau_E,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
+  tmp <- R2Cuba::cuhre(2,1,intg_tau_E,al=al,be=be,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
   
   if(method==1)
   {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_tau_E,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    tmp <- try(R2Cuba::cuhre(2,1,intg_tau_E,al=al,be=be,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
     if(is(tmp,"try-error"))
     {
-      tmp2 <- try(cubature::adaptIntegrate(intg_tau_E, a=a, b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("tauGGEE_COP error at: ", a, b, "\n"); return(NA)}else{intg <- tmp2$integral}
+      tmp2 <- try(cubature::adaptIntegrate(intg_tau_E, al=al, be=be, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+      if(is(tmp2,"try-error")){cat("tauGGEE_COP error at: ", al, be, "\n"); return(NA)}else{intg <- tmp2$integral}
     }else{intg <- tmp$value}
   }else if(method==2)
   {
-    tmp <- cubature::adaptIntegrate(intg_tau_E, a=a, b=b, lowerLimit = c(0,0), upperLimit = c(1,1))
+    tmp <- cubature::adaptIntegrate(intg_tau_E, al=al, be=be, lowerLimit = c(0,0), upperLimit = c(1,1))
     intg <- tmp$integral
   }
-  out <- 4 * intg/ (beta(a,b)^2) - 1
+  out <- 4 * intg/ (beta(al,be)^2) - 1
   out
 }
 
-intg_spr_C = function(u1u2,a,b,flag=1, integration=F)
+intg_spr_C = function(u1u2,al,be,flag=1, integration=F)
 {
   u1 <- u1u2[1]
   u2 <- u1u2[2]
-  out <- 1 - u1 - u2 + pGGEE_COP(u1,u2,a,b,flag,integration)
+  out <- 1 - u1 - u2 + pGGEE_COP(u1,u2,al,be,flag,integration)
   if(is.finite(out)) out else 0
 }
 #intg_spr_C <- Vectorize(intg_spr_C_0, "u1u2")
@@ -450,7 +450,7 @@ intg_spr_C = function(u1u2,a,b,flag=1, integration=F)
 #' Spearman's rho of the GGEE copula
 #'
 #' Spearman's rho of the GGEE copula
-#' @param a,b:    the two shape parameters.
+#' @param al,be:    the two shape parameters.
 #' @param flag: flag used in the appell::appellf1() function (default is -1L for auto choices)
 #' @param method: different methods for the numerical integration. 1: R2Cuba::cuhre(); 2: cubature::adaptIntegrate(). 
 #' @keywords Spearman's rho
@@ -458,19 +458,19 @@ intg_spr_C = function(u1u2,a,b,flag=1, integration=F)
 #' @examples
 #' sprGGEE_COP(1.2, 0.6)
 #' sprGGEE_COP(1.2, 0.6, method=2)
-sprGGEE_COP <- function(a,b,flag=1, method=1, integration=F)
+sprGGEE_COP <- function(al,be,flag=1, method=1, integration=F)
 {
   if(method==1)
   {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_C,a=a,b=b,flag=flag,integration=integration,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_C,al=al,be=be,flag=flag,integration=integration,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
     if(is(tmp,"try-error"))
     {
-      tmp2 <- try(cubature::adaptIntegrate(intg_spr_C, a=a, b=b, flag=flag, integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("sprGGEE_COP error at: ", a, b, "\n"); return(NA)}else{intg <- tmp2$integral}
+      tmp2 <- try(cubature::adaptIntegrate(intg_spr_C, al=al, be=be, flag=flag, integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+      if(is(tmp2,"try-error")){cat("sprGGEE_COP error at: ", al, be, "\n"); return(NA)}else{intg <- tmp2$integral}
     }else{intg <- tmp$value}
   }else if(method==2)
   {
-    tmp <- cubature::adaptIntegrate(intg_spr_C, a=a, b=b, flag=flag,integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1))
+    tmp <- cubature::adaptIntegrate(intg_spr_C, al=al, be=be, flag=flag,integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1))
     intg <- tmp$integral
   }
   out <- 12 * intg - 3
@@ -800,6 +800,25 @@ dPPPP_COP_0 <- function(u,v,al,be,a,b)
 #' dPPPP_COP(0.2, 0.4, 1,1,2,2)
 dPPPP_COP <- Vectorize(dPPPP_COP_0, c("u", "v"))
 
+#' Copula Density Function of PPPP_COP (when a=b=1)
+#'
+#' PPPP_COP - Copula density function of PPPP_COP (when a=b=1)
+#' @param u,v    values in (0,1).
+#' @param al,be    the four shape parameters.
+#' @keywords copula density
+#' @export
+#' @examples
+#' dPPPP_COP_1(0.2, 0.4, 1,1)
+#' dPPPP_COP_1(0.8, 0.3, 1,1)
+#' dPPPP_COP_1(c(0.2,0.8), c(0.4, 0.3), 1,1)
+dPPPP_COP_1 <- function(uvec, vvec, al, be)
+{
+  dPPPP_COP(uvec, vvec, al, be,1,1)
+}
+
+
+
+
 # X1onX2_PPPP: P[X1<=x1|X2=x2], note that this is different than Dx2_PPPP, Dx2_PPPP = X1onX2_PPPP*dPPPP(X2)
 X1onX2_PPPP <- function(x1, x2, al, be, a, b)
 {
@@ -908,3 +927,86 @@ rPPPP_COP <- function(n, al, be, a, b, seed = 1)
   v <- sapply(X22, function(x){pPPPP(x, al, be, a, b)})
   cbind(u,v)
 }
+
+
+#' Joint CDF of the PPPP model
+#'
+#' Joint CDF of the PPPP model
+#' @param x1,x2:   data input.
+#' @param al,be,a,b:   parameters.
+#' @keywords Joint CDF
+#' @export
+#' @examples
+#' jpPPPP(2,2, 1.2, 0.8, 1, 1)
+jpPPPP <- function(x1,x2,al,be,a,b)
+{
+  if(x1 <= 0 | x2 <= 0)
+  {
+    out <- 0
+  }else
+  {
+    xm <- min(x1,x2)
+    xp <- max(x1,x2)
+    FR <- pPP(xm,al,be)
+    tem1 <- a*(xm^(-b)+xp^(-b))/(a+b)
+    tem2 <- (a^2)*((xm*xp)^(-b))/((a+b)^2)
+    tem3 <- b*(xm^a)/(a+b)
+    tem4 <- a*b*(xm^a)*(xp^(-b))/((a+b)^2)
+    tem5 <- (b^2)*((xm*xp)^a)/((a+b)^2)
+    H1 <- HX_PPPP(b, 0, xm, al, be)
+    H2 <- HX_PPPP(2*b, 0, xm, al, be)
+    H3 <- HX_PPPP(-a, xm, xp, al, be)
+    H4 <- HX_PPPP(b-a, xm, xp, al, be)
+    H5 <- HX_PPPP(-2*a, xp, Inf, al, be)
+    out <- FR - tem1*H1 + tem2*H2 + tem3*H3 - tem4*H4 + tem5*H5
+  }
+  return(out)
+}
+
+#' Joint CDF of the PPPP copula model
+#'
+#' Joint CDF of the PPPP copula model
+#' @param u,v:   data input.
+#' @param al, be, a,b:   parameters.
+#' @keywords Joint CDF
+#' @export
+#' @examples
+#' pPPPP_COP(0.9, 0.3, 1.2, 0.8, 1, 1)
+pPPPP_COP <- function(u,v,al,be,a,b)
+{
+  if(u==0 | v==0)
+  {
+    out <- 0
+  }else if(u==1)
+  {
+    out <- v
+  }else if(v==1)
+  {
+    out <- u 
+  }else
+  {
+    q1 <- qPPPP(u,al,be,a,b)
+    q2 <- qPPPP(v,al,be,a,b)
+    out <- jpPPPP(q1,q2,al,be,a,b)
+  }
+  return(out)
+}
+
+#' Joint CDF of the PPPP copula model (when a=b=1)
+#'
+#' Joint CDF of the PPPP copula model (when a=b=1)
+#' @param u,v:   data input.
+#' @param al, be:   parameters.
+#' @keywords Joint CDF
+#' @export
+#' @examples
+#' pPPPP_COP_1(0.9, 0.3, 1.2, 0.8)
+pPPPP_COP_1 <- function(u,v,al,be)
+{
+  pPPPP_COP(u,v,al,be,1,1)
+}
+
+
+
+
+

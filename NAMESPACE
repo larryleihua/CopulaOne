@@ -16,7 +16,12 @@ export(tauGGEE_COP)
 export(uscore)
 export(dPPPP_COP)
 export(jdPPPP)
+export(jpPPPP)
 export(pPPPP)
+export(qPPPP)
 export(rPPPP_COP)
+export(pPPPP_COP)
+export(pPPPP_COP_1)
+
 
 
