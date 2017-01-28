@@ -126,14 +126,14 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integr
 #' @param marg: indicate normal scores or uniform scores (default: marg = "normal")
 #' @param resolution: number of evaluations for each dimension (default is 30)
 #' @param flag: used in the appell function (default is 1)
-#' @param main: title of the plot, default: copula_family; "all": details of the plot
+#' @param main: title of the plot, default: details of the plot
 #' @keywords contour plot
 #' @export
 #' @examples 
 #' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
-plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution=30, copula_family="PPPP", main=NULL)
+plotCopulaOne <- function(para, marg="normal", drawlabels=F, flag=1, integration=F, resolution=30, copula_family="PPPP", main=NULL)
 {
   zvec <- seq(-2.5, 2.5, length=resolution)
   f <- dnorm(zvec)
@@ -170,7 +170,7 @@ plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(zvec,zvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=main, xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
+    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=main, xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
   } else if(marg == "uniform")
   {
     denmat <- matrix(denvec, nn, nn)
@@ -179,7 +179,7 @@ plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(Fvec, Fvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), main=main, xlim = c(0,1), ylim = c(0,1))
+    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), main=main, xlim = c(0,1), ylim = c(0,1))
   }
   invisible(denvec)
 }
