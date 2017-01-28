@@ -22,6 +22,7 @@ export(qPPPP)
 export(rPPPP_COP)
 export(pPPPP_COP)
 export(pPPPP_COP_1)
+export(dPPPP_COP_1)
 
 
 
