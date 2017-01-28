@@ -170,7 +170,7 @@ plotCopulaOne <- function(para, marg="normal", drawlabels=T, flag=1, integration
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = pretty(rangeforplot, 10), labcex = 0.6, main=main, xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
+    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = pretty(rangeforplot, 10), labcex = 0.6, main=main, xlim = c(-2.6,2.6), ylim = c(-2.6,2.6))
   } else if(marg == "uniform")
   {
     denmat <- matrix(denvec, nn, nn)
