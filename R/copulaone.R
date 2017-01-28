@@ -133,7 +133,7 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integr
 #' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
-plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution=30, copula_family="PPPP", main=copula_family)
+plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution=30, copula_family="PPPP", main=NULL)
 {
   zvec <- seq(-2.5, 2.5, length=resolution)
   f <- dnorm(zvec)
@@ -166,18 +166,18 @@ plotCopulaOne <- function(para, marg="normal", flag=1, integration=F, resolution
     denvec <- denvec * rep(f, each = nn) * rep(f, times = nn)
     denmat <- matrix(denvec, nn, nn)
     rangeforplot <- denvec[denvec>max(denmat[1,], denmat[,1], denmat[nn,], denmat[,nn])]
-    if(main=="all")
+    if(length(main)==0)
     {
-      main <- paste("Contour plot of normal scores: ", copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
+      main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
     contour(zvec,zvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=main, xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
   } else if(marg == "uniform")
   {
     denmat <- matrix(denvec, nn, nn)
     rangeforplot <- denvec
-    if(main=="all")
+    if(length(main)==0)
     {
-      main <- paste("Contour plot of uniform scores: ", copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
+      main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
     contour(Fvec, Fvec, denmat, drawlabels=F, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), main=main, xlim = c(0,1), ylim = c(0,1))
   }
