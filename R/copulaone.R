@@ -133,7 +133,7 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integr
 #' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
-plotCopulaOne <- function(para, marg="normal", drawlabels=F, flag=1, integration=F, resolution=30, copula_family="PPPP", main=NULL)
+plotCopulaOne <- function(para, marg="normal", drawlabels=T, flag=1, integration=F, resolution=30, copula_family="PPPP", main=NULL)
 {
   zvec <- seq(-2.5, 2.5, length=resolution)
   f <- dnorm(zvec)
@@ -170,7 +170,7 @@ plotCopulaOne <- function(para, marg="normal", drawlabels=F, flag=1, integration
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = pretty(rangeforplot, 10), labcex = 0.6, main=main, xlim = c(-3,3), ylim = c(-3,3))
+    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = pretty(rangeforplot, 10), labcex = 0.6, main=main, xlim = c(-2.5,2.5), ylim = c(-2.5,2.5))
   } else if(marg == "uniform")
   {
     denmat <- matrix(denvec, nn, nn)
@@ -179,7 +179,7 @@ plotCopulaOne <- function(para, marg="normal", drawlabels=F, flag=1, integration
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 0.6, main=main, xlim = c(0,1), ylim = c(0,1))
+    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, levels = pretty(rangeforplot, 10), labcex = 0.6, main=main, xlim = c(0,1), ylim = c(0,1))
   }
   invisible(denvec)
 }
