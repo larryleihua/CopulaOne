@@ -863,6 +863,48 @@ C2PPPP_COP <- function(u, v, al, be, a, b)
     }
   }
 }
-
 # plot(sapply(seq(0,1, length=50), function(u){C2PPPP_COP(u, 0.1, 0.5,1.5,1,1)}), type="l")
 
+# quantile function of Pareto-I
+qParetoI <- function(u, a)
+{
+  (1-u)^(-1/a)
+}
+
+#' Sampling based on the PPPP copula
+#'
+#' Generating random samples based on the PPPP copula
+#' @param n: sample size to be generated.
+#' @param al, be, a,b: the two shape parameters.
+#' @param seed: seed for randomness, and default is 1
+#' @keywords simulation
+#' @export
+#' @examples
+#' rPPPP_COP(20, 1.2, 0.2, 1, 1, seed = 100)
+rPPPP_COP <- function(n, al, be, a, b, seed = 1)
+{
+  set.seed(seed)
+  u1 <- runif(n)
+  u2 <- runif(n)
+  u3 <- runif(n)
+  u4 <- runif(n)
+  u5 <- runif(n)
+  u6 <- runif(n)
+
+  R1 <- sapply(u1, function(u){qParetoI(u, al)})
+  R2 <- sapply(u2, function(u){qParetoI(u, be)})
+  R <- R1 / R2
+  
+  H1 <- sapply(u3, function(u){qParetoI(u, a)})
+  H11 <- sapply(u4, function(u){qParetoI(u, b)})
+  
+  H2 <- sapply(u5, function(u){qParetoI(u, a)})
+  H22 <- sapply(u6, function(u){qParetoI(u, b)})
+
+  X11 <- R * H1 / H11
+  X22 <- R * H2 / H22
+  
+  u <- sapply(X11, function(x){pPPPP(x, al, be, a, b)})
+  v <- sapply(X22, function(x){pPPPP(x, al, be, a, b)})
+  cbind(u,v)
+}
