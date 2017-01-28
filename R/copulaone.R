@@ -170,7 +170,7 @@ plotCopulaOne <- function(para, marg="normal", drawlabels=F, flag=1, integration
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = round(quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T),2), labcex = 1, main=main, xlim = c(-3,3), ylim = c(-3,3))
+    contour(zvec,zvec, denmat, drawlabels=drawlabels, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=main, xlim = c(-3,3), ylim = c(-3,3))
   } else if(marg == "uniform")
   {
     denmat <- matrix(denvec, nn, nn)
@@ -179,7 +179,7 @@ plotCopulaOne <- function(para, marg="normal", drawlabels=F, flag=1, integration
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, levels = round(quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T),2), labcex = 1, main=main, xlim = c(0,1), ylim = c(0,1))
+    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, levels = quantile(rangeforplot,seq(0.05, 0.95, length=10), na.rm=T), labcex = 1, main=main, xlim = c(0,1), ylim = c(0,1))
   }
   invisible(denvec)
 }
