@@ -1005,7 +1005,41 @@ pPPPP_COP_1 <- function(u,v,al,be)
   pPPPP_COP(u,v,al,be,1,1)
 }
 
+intg_spr_PPPP_COP = function(u1u2,al,be,a,b)
+{
+  u1 <- u1u2[1]
+  u2 <- u1u2[2]
+  out <- 1 - u1 - u2 + pPPPP_COP(u1,u2,al,be,a,b)
+  if(is.finite(out)) out else 0
+}
 
+#' Spearman's rho of the PPPP copula
+#'
+#' Spearman's rho of the PPPP copula
+#' @param al,be,a,b:    the two shape parameters.
+#' @param method: different methods for the numerical integration. 1: R2Cuba::cuhre(); 2: cubature::adaptIntegrate(). 
+#' @keywords Spearman's rho
+#' @export
+#' @examples
+#' sprPPPP_COP(1.2, 0.6,1,1)
+sprPPPP_COP <- function(al,be,a,b)
+{
+  if(method==1)
+  {
+    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    if(is(tmp,"try-error"))
+    {
+      tmp2 <- try(cubature::adaptIntegrate(intg_spr_PPPP_COP, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+      if(is(tmp2,"try-error")){cat("sprPPPP_COP error at: ", al, be, a, b, "\n"); return(NA)}else{intg <- tmp2$integral}
+    }else{intg <- tmp$value}
+  }else if(method==2)
+  {
+    tmp <- cubature::adaptIntegrate(intg_spr_PPPP_COP, al=al, be=be,a=a,b=b,lowerLimit = c(0,0), upperLimit = c(1,1))
+    intg <- tmp$integral
+  }
+  out <- 12 * intg - 3
+  out
+}
 
 
 
