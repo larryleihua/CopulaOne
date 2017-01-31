@@ -33,6 +33,7 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' Fit bivariate data with the full-range tail dependence copula based on maximum likelihood
 #' @param par: initial parameters for (a, b)
 #' @param whichpar: a vector of par's positions where the parameter is to be estimated
+#' @param patternpar: a vector for assigning parameters to be estimated to whichpar positions, so this allows some parameters to be estimated to be the same
 #' @param dat: input of data.
 #' @param flag: indicate which numerical method for the appell function (default: flag = 1)
 #' @param integration: (Experimental!) using integration instead of appellf1()
@@ -51,8 +52,16 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' lower <- rep(0.1, 2)
 #' upper <- rep(5, 2)
 #' fit <- fitCopulaOne(par0, whichpar=whichpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
+#' par0 <- c(0.3, 0.3, 1, 1)
+#' whichpar <- c(1,2,3,4)
+#' patternpar <- c(1,2,3,3) # the last two parameters are the same
+#' fit <- fitCopulaOne(par0, whichpar=whichpar, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 
-fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=c(0.1, 0.1), upper=c(5, 5), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
+
+
+
+
+fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), patternpar=seq(1,length(par0)), dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=rep(0.1, length(unique(patternpar))), upper=rep(5, length(unique(patternpar))), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
   dat <- as.matrix(dat)
   # check positive / negative dependence by 
@@ -90,7 +99,7 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integr
   {
     obj <- function(par)
     {
-      par0[whichpar] <- par
+      par0[whichpar] <- par[patternpar]
       nllk_each_i <- try(parallel::parLapply(cl, seq_len(nco), seqRun, dat=dat, nco=nco, para=par0, flag=flag, integration=integration, copula_family=copula_family), silent = T) 
       if(is(nllk_each_i,"try-error")){return(20)}else{
         nllk_each_i <- unlist(nllk_each_i)
@@ -99,7 +108,7 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), dat, flag=1, integr
       }
     }
     if(se==T){hes <- T}else{hes <- F}
-    fit <- optim(par=par0[whichpar], obj, method="L-BFGS-B", control=list(trace=trace, factr=factr), hessian=hes, lower=lower, upper=upper)
+    fit <- optim(par=par0[unique(patternpar)], obj, method="L-BFGS-B", control=list(trace=trace, factr=factr), hessian=hes, lower=lower, upper=upper)
     parallel::stopCluster(cl)
     if(se==T)
     {
