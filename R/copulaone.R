@@ -106,6 +106,7 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), patternpar=seq(1,le
     if(se==T){hes <- T}else{hes <- F}
     fit <- optim(par=par0[unique(patternpar)], obj, method="L-BFGS-B", control=list(trace=trace, factr=factr), hessian=hes, lower=lower, upper=upper)
     parallel::stopCluster(cl)
+    fit$par <- fit$par[patternpar]
     if(se==T)
     {
       va <- diag(solve(fit$hessian))
