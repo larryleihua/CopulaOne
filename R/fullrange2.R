@@ -1022,7 +1022,7 @@ intg_spr_PPPP_COP = function(u1u2,al,be,a,b)
 #' @export
 #' @examples
 #' sprPPPP_COP(1.2, 0.6,1,1)
-sprPPPP_COP <- function(al,be,a,b)
+sprPPPP_COP <- function(al,be,a,b,method=1)
 {
   if(method==1)
   {
