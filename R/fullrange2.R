@@ -805,7 +805,6 @@ dPPPP_COP <- Vectorize(dPPPP_COP_0, c("u", "v"))
 #' PPPP_COP - Copula density function of PPPP_COP (when a=b=1)
 #' @param u,v    values in (0,1).
 #' @param al,be    the four shape parameters.
-#' @keywords copula density
 #' @export
 #' @examples
 #' dPPPP_COP_1(0.2, 0.4, 1,1)
