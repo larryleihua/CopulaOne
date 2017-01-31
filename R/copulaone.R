@@ -57,10 +57,6 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' patternpar <- c(1,2,3,3) # the last two parameters are the same
 #' fit <- fitCopulaOne(par0, whichpar=whichpar, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 
-
-
-
-
 fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), patternpar=seq(1,length(par0)), dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=rep(0.1, length(unique(patternpar))), upper=rep(5, length(unique(patternpar))), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
   dat <- as.matrix(dat)
