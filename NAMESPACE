@@ -23,4 +23,5 @@ export(pPPPP_COP)
 export(pPPPP_COP_1)
 export(dPPPP_COP_1)
 export(sprPPPP_COP)
+export(tauPPPP_COP)
 
