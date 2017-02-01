@@ -1058,7 +1058,7 @@ intg_tau_PPPP_COP <- function(uv,al,be,a,b)
 #' @keywords Kendall's tau
 #' @export
 #' @examples
-#' tauPPPP_COP(0.5, 1, 2,3)
+#' tauPPPP_COP(3, 6, 5.9, 6.7)
 tauPPPP_COP <- function(al,be,a,b,method=1)
 {
   tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
