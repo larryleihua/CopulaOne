@@ -24,4 +24,6 @@ export(pPPPP_COP_1)
 export(dPPPP_COP_1)
 export(sprPPPP_COP)
 export(tauPPPP_COP)
-
+export(tauPPPP_COP_90)
+export(pPPPP_COP_1_90)
+export(dPPPP_COP_1_90)

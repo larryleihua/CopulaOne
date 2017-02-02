@@ -815,8 +815,20 @@ dPPPP_COP_1 <- function(uvec, vvec, al, be)
   dPPPP_COP(uvec, vvec, al, be,1,1)
 }
 
-
-
+#' Copula Density Function of PPPP_COP that is rotated for 90 degrees counter clock-wise (when a=b=1)
+#'
+#' Copula density function of PPPP_COP that is rotated for 90 degrees counter clock-wise (when a=b=1)
+#' @param u,v    values in (0,1).
+#' @param al,be    the four shape parameters.
+#' @export
+#' @examples
+#' dPPPP_COP_1_90(0.2, 0.4, 1,1)
+#' dPPPP_COP_1_90(0.8, 0.3, 1,1)
+#' dPPPP_COP_1_90(c(0.2,0.8), c(0.4, 0.3), 1,1)
+dPPPP_COP_1_90 <- function(uvec, vvec, al, be)
+{
+  dPPPP_COP(vvec, 1-uvec, al, be,1,1)
+}
 
 # X1onX2_PPPP: P[X1<=x1|X2=x2], note that this is different than Dx2_PPPP, Dx2_PPPP = X1onX2_PPPP*dPPPP(X2)
 X1onX2_PPPP <- function(x1, x2, al, be, a, b)
@@ -1005,6 +1017,20 @@ pPPPP_COP_1 <- function(u,v,al,be)
   pPPPP_COP(u,v,al,be,1,1)
 }
 
+#' Joint CDF of the PPPP copula that is rotated for 90 degrees counter clock-wise (when a=b=1)
+#'
+#' Joint CDF of the PPPP copula that is rotated for 90 degrees counter clock-wise (when a=b=1)
+#' @param u,v:   data input.
+#' @param al, be:   parameters.
+#' @keywords Joint CDF
+#' @export
+#' @examples
+#' pPPPP_COP_1_90(0.9, 0.3, 1.2, 0.8)
+pPPPP_COP_1_90 <- function(u,v,al,be)
+{
+  pPPPP_COP(v,1-u,al,be,1,1)
+}
+
 intg_spr_PPPP_COP = function(u1u2,al,be,a,b)
 {
   u1 <- u1u2[1]
@@ -1080,8 +1106,42 @@ tauPPPP_COP <- function(al,be,a,b,method=1)
   out
 }
 
+intg_tau_PPPP_COP_90 <- function(uv,al,be,a,b)
+{
+  u <- uv[1]
+  v <- uv[2]
+  tem1 <- pPPPP_COP(v,1-u,al,be,a,b)
+  tem2 <- dPPPP_COP(v,1-u,al,be,a,b)
+  out <- tem1*tem2
+  if(is.finite(out)) out else 0
+}
 
 
-
-
-
+#' Kendall's tau of the PPPP copula that is rotated 90 degrees counter clockwise
+#'
+#' Kendall's tau of the PPPP copula that is rotated 90 degrees counter clockwise
+#' @param al,be,a,b    the 4 parameters
+#' @keywords Kendall's tau
+#' @export
+#' @examples
+#' tauPPPP_COP_90(3, 6, 5.9, 6.7)
+tauPPPP_COP_90 <- function(al,be,a,b,method=1)
+{
+  tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP_90,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
+  
+  if(method==1)
+  {
+    tmp <- try(R2Cuba::cuhre(2,1,intg_tau_PPPP_COP_90,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    if(is(tmp,"try-error"))
+    {
+      tmp2 <- try(cubature::adaptIntegrate(intg_tau_PPPP_COP_90, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+      if(is(tmp2,"try-error")){cat("tauPPPP_COP error at: ", al, be,a,b, "\n"); return(NA)}else{intg <- tmp2$integral}
+    }else{intg <- tmp$value}
+  }else if(method==2)
+  {
+    tmp <- cubature::adaptIntegrate(intg_tau_PPPP_COP_90, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1))
+    intg <- tmp$integral
+  }
+  out <- 4 * intg - 1
+  out
+}
