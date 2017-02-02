@@ -419,7 +419,7 @@ intg_tau_E <- function(xy,al,be)
 #' tauGGEE_COP(0.5, 1)
 tauGGEE_COP <- function(al,be,method=1)
 {
-  tmp <- R2Cuba::cuhre(2,1,intg_tau_E,al=al,be=be,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
+  #tmp <- R2Cuba::cuhre(2,1,intg_tau_E,al=al,be=be,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
   
   if(method==1)
   {
@@ -1028,7 +1028,7 @@ pPPPP_COP_1 <- function(u,v,al,be)
 #' pPPPP_COP_1_90(0.9, 0.3, 1.2, 0.8)
 pPPPP_COP_1_90 <- function(u,v,al,be)
 {
-  pPPPP_COP(v,1-u,al,be,1,1)
+  v - pPPPP_COP(v,1-u,al,be,1,1)
 }
 
 intg_spr_PPPP_COP = function(u1u2,al,be,a,b)
@@ -1087,7 +1087,7 @@ intg_tau_PPPP_COP <- function(uv,al,be,a,b)
 #' tauPPPP_COP(3, 6, 5.9, 6.7)
 tauPPPP_COP <- function(al,be,a,b,method=1)
 {
-  tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
+  # tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
   
   if(method==1)
   {
@@ -1110,7 +1110,7 @@ intg_tau_PPPP_COP_90 <- function(uv,al,be,a,b)
 {
   u <- uv[1]
   v <- uv[2]
-  tem1 <- pPPPP_COP(v,1-u,al,be,a,b)
+  tem1 <- v - pPPPP_COP(v,1-u,al,be,a,b)
   tem2 <- dPPPP_COP(v,1-u,al,be,a,b)
   out <- tem1*tem2
   if(is.finite(out)) out else 0
@@ -1127,7 +1127,7 @@ intg_tau_PPPP_COP_90 <- function(uv,al,be,a,b)
 #' tauPPPP_COP_90(3, 6, 5.9, 6.7)
 tauPPPP_COP_90 <- function(al,be,a,b,method=1)
 {
-  tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP_90,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
+  #tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP_90,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
   
   if(method==1)
   {
