@@ -133,7 +133,7 @@ pUEV_PPPP_COP <- function(u, v, be, a, b)
   {
     w1 <- -log(u)
     w2 <- -log(v)
-    out <- exp(-A_UEV_PPPP_COP(w1,w2))
+    out <- exp(-A_UEV_PPPP_COP(w1,w2,be,a,b))
   }
   return(out)
 }
