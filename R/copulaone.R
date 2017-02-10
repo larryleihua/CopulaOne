@@ -185,7 +185,7 @@ plotCopulaOne <- function(para, marg="normal", drawlabels=T, flag=1, integration
     {
       main <- paste(copula_family, " (para=", paste(format(para), collapse=" "), ")", sep="")  
     }
-    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, levels = pretty(rangeforplot, 10), labcex = 0.6, main=main, xlim = c(0,1), ylim = c(0,1))
+    contour(Fvec, Fvec, denmat, drawlabels=drawlabels, labcex = 0.6, main=main, xlim = c(0,1), ylim = c(0,1))
   }
   invisible(denvec)
 }
