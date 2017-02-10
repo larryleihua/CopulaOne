@@ -4,8 +4,6 @@
 
 prj
 
-maple
-
 *.o
 *.so
 *~
