@@ -103,7 +103,7 @@ A2_UEV_PPPP_COP <- function(be,a,b)
   be*(a*b/((a+b)^2)/(a-b+be) - b/(a+b)/(a+be) + ((a/(a+b))^2)/(2*a+be))
 }
 
-A2_UEV_PPPP_COP <- function(be,a,b)
+A3_UEV_PPPP_COP <- function(be,a,b)
 {
   be*(1/be - b/(a+b)/(a+be) - a/(a+b)/(be-b))
 }
