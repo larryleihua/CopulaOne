@@ -1,13 +1,16 @@
 # CopulaOne - an R package for full-range tail dependence copulas
 
+Warning: This is the development version of the package, please use with causion!
+
 The R package *CopulaOne* implements functions for bivariate copulas that must satisfy the following two properties:
 * It can account for full-range tail dependence for both upper and lower tails.
 * It can account for both reflection symmetry and asymmetry between upper and lower tails.
 
-Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either symmetric or asymmetric.
-The package is under active development, and the following copula has been implemented: GGEE. The following figure shows how flexible the GGEE copula is. Please refer to [Hua (2017)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the GGEE copula.
+Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either reflection symmetric or asymmetric.
+The package is under active development, and the following copulas have been implemented: GGEE, PPPP. The following figures show how flexible the GGEE and PPPP copula are. Please refer to [Hua (2017)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the GGEE copula, and [Su and Hua (2017)] (TBA) for details about the PPPP copula.
 
-<img src="http://niu.edu/leihua/_images/copula.gif" width="400" height="400" />
+<img src="http://niu.edu/leihua/_images/ggee.gif" width="300" height="300" />
+<img src="http://niu.edu/leihua/_images/pppp1.gif" width="300" height="300" />
 
 ## Installation
 - The R package CopulaOne can be easily installed from github by the following two lines.
@@ -21,7 +24,7 @@ install.packages("hypergeo", dependencies = T)
 ```
 
 ## Basic functions
-- Naming rules: The name *GGEE_COP* is used for the two-parameter copula that are based on Gamma-Gamma-Exponential-Exponential mixtures. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible.
+- Naming rules: The name *GGEE_COP* is used for the two-parameter copula that are based on Gamma-Gamma-Exponential-Exponential mixtures. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible. For other copulas, replace GGEE by the corresponding names, such as PPPP.
 
 - Simulation based on the copula can be done as follows:
 ```{r}
@@ -56,10 +59,19 @@ dUEV_GGEE_COP(0.3, 0.4, b=1.2)
 ```
 
 ## Model fitting
-- An example of fitting dependence between exchange rates returns [Warning: this step can be slow on your computer!]
+- An example of fitting dependence between exchange rates returns by the GGEE copula [Warning: this step can be slow on your computer!]
 ```{r}
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:50,]
 par <- c(0.3, 0.3)
 fit <- fitCopulaOne(par, dat=dat, copula_family = "GGEE")
+```
+- An example of fitting dependence between exchange rates returns by the PPPP copula 
+```{r}
+data("euro0306")
+dat <- uscore(euro0306[,c(2,3)])[1:50,]
+par0 <- c(0.3,0.3,1,1)
+whichpar <- c(1,2)
+patternpar <- c(1,2)
+fit1 <- fitCopulaOne(par0, whichpar=whichpar, patternpar=patternpar, dat=dat, se=F, copula_family = "PPPP")
 ```
