@@ -1,6 +1,6 @@
 # CopulaOne - an R package for full-range tail dependence copulas
 
-Warning: This is the development version of the package, please use with causion!
+Warning: This is the development version of the package, please use with caution!
 
 The R package *CopulaOne* implements functions for bivariate copulas that must satisfy the following two properties:
 * It can account for full-range tail dependence for both upper and lower tails.
