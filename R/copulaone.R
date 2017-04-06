@@ -121,6 +121,9 @@ fitCopulaOne <- function(par0, whichpar=seq(1,length(par0)), patternpar=seq(1,le
     cat("The second variable was transformed to 1 - v", "\n")
     fit$warning <- "The second variable was transformed to 1 - v"
     fit$neg <- 1
+  }else
+  {
+    fit$neg <- 0
   }
   fit
 }
