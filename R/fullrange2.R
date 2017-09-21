@@ -896,7 +896,8 @@ C2PPPP_COP <- function(u, v, al, be, a, b)
     if (is.finite(x1) && is.finite(x2))
     {
       tem1 <- X1onX2_PPPP(x1, x2, al, be, a, b)
-      if (is.finite(tem1) && is.finite(tem2))
+
+      if (is.finite(tem1))
       {
         return(tem1)
       } else
