@@ -1,12 +1,9 @@
 Package: CopulaOne
-Title: One very flexible bivariate Copula
-Version: 0.0.0.9000
+Title: Collection of full-range tail dependence Copulas
+Version: 0.0.0.901
 Author: Lei Hua [aut, cre],
 Maintainer: Lei Hua <larry.lei.hua@gmail.com>
-Description: This package is for one bivariate copula that is parsimonious and
-    flexible. The ultimate goal of this package is to have one bivariate copula
-    that can be employed widely, avoiding copula selection from numerous bivariate
-    parametric copulas.
+Description: This package implements a collection of full-range tail dependence copulas. 
 Depends:
     R (>= 3.2.3)
 License: GPL (>= 2)

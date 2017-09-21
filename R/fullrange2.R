@@ -246,6 +246,15 @@ rGGEE_COP <- function(n, al, be, seed = 1)
   cbind(u,v)
 }
 
+#' Conditional GGEE copula
+#'
+#' Partial derivative wrt the second argument of the GGEE copula
+#' @param u,v:   data input.
+#' @param al,be:   parameters.
+#' @keywords conditional copula
+#' @export
+#' @examples
+#' C2GGEE_COP(0.2, 0.6, al = 1.2, be = 0.8)
 C2GGEE_COP <- function(u, v, al, be)
 {
   x1 <- tryCatch(qGGEE(u, al, be), error = function(err) FALSE, warning = function(err) FALSE)
@@ -865,6 +874,15 @@ X1onX2_PPPP <- function(x1, x2, al, be, a, b)
 }
 # plot(sapply(seq(0,20, length=50), function(x1){X1onX2_PPPP(x1, 2, 1,1,2,2)}), type="l")
 
+#' Conditional PPPP copula
+#'
+#' Partial derivative wrt the second argument of the PPPP copula
+#' @param u,v:   data input.
+#' @param al,be,a,b:   parameters.
+#' @keywords conditional copula
+#' @export
+#' @examples
+#' C2PPPP_COP(0.2, 0.6, al=1.2, be=0.8, a=1, b=1)
 C2PPPP_COP <- function(u, v, al, be, a, b)
 {
   x1 <- tryCatch(qPPPP(u, al, be, a, b), error = function(err) FALSE, warning = function(err) FALSE)
