@@ -1,6 +1,6 @@
 Package: CopulaOne
-Title: Collection of full-range tail dependence Copulas
-Version: 0.0.0.901
+Title: A Collection of full-range tail dependence Copulas
+Version: 0.0.0.902
 Author: Lei Hua [aut, cre],
 Maintainer: Lei Hua <larry.lei.hua@gmail.com>
 Description: This package implements a collection of full-range tail dependence copulas. 
@@ -9,10 +9,9 @@ Depends:
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 6.1.0
 Imports:
     hypergeo,
     appell,
     parallel,
-    R2Cuba,
     cubature

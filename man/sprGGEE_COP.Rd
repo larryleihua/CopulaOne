@@ -4,22 +4,18 @@
 \alias{sprGGEE_COP}
 \title{Spearman's rho of the GGEE copula}
 \usage{
-sprGGEE_COP(a, b, flag = 1, method = 1)
+sprGGEE_COP(al, be, flag = 1, integration = F)
 }
 \arguments{
-\item{a, b:}{the two shape parameters.}
+\item{al, be:}{the two shape parameters.}
 
 \item{flag:}{flag used in the appell::appellf1() function (default is -1L for auto choices)}
-
-\item{method:}{different methods for the numerical integration. 1: R2Cuba::cuhre(); 2: cubature::adaptIntegrate().}
 }
 \description{
 Spearman's rho of the GGEE copula
 }
 \examples{
 sprGGEE_COP(1.2, 0.6)
-sprGGEE_COP(1.2, 0.6, method=2)
 }
 \keyword{Spearman's}
 \keyword{rho}
-

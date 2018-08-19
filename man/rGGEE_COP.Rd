@@ -4,10 +4,10 @@
 \alias{rGGEE_COP}
 \title{Sampling based on the full-range tail dependence copula}
 \usage{
-rGGEE_COP(n, a, b, seed = 1)
+rGGEE_COP(n, al, be, seed = 1)
 }
 \arguments{
-\item{a, b:}{the two shape parameters.}
+\item{al, be:}{the two shape parameters.}
 
 \item{n:}{sample size to be generated.}
 
@@ -20,4 +20,3 @@ Generating random samples based on the bivariate copula that has full-range tail
 rGGEE_COP(20, 1.2, 0.2, seed = 100)
 }
 \keyword{simulation}
-

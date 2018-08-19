@@ -2,7 +2,7 @@
 % Please edit documentation in R/upperEV.R
 \name{dUEV_GGEE_COP}
 \alias{dUEV_GGEE_COP}
-\title{Density function of the upper extreme value copula}
+\title{Density function of the upper extreme value copula for the GGEE copula}
 \usage{
 dUEV_GGEE_COP(u, v, b)
 }
@@ -12,7 +12,7 @@ dUEV_GGEE_COP(u, v, b)
 \item{b:}{the parameter of the extreme value copula}
 }
 \description{
-Density of the upper extreme value copula of the full-range tail dependence copula
+Density function of the upper extreme value copula for the GGEE copula
 }
 \examples{
 dUEV_GGEE_COP(0.3, 0.4, 1.2)
@@ -21,4 +21,3 @@ dUEV_GGEE_COP(0.3, 0.4, 1.2)
 \keyword{extreme}
 \keyword{upper}
 \keyword{value}
-

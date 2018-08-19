@@ -4,12 +4,14 @@
 \alias{jdGGEE}
 \title{Joint density of the GGEE model}
 \usage{
-jdGGEE(x1, x2, a, b, flag = 1)
+jdGGEE(x1, x2, al, be, flag = 1, integration = F)
 }
 \arguments{
 \item{x1, x2:}{data input.}
 
-\item{a, b:}{parameters.}
+\item{al, be:}{parameters.}
+
+\item{integration}{if T: use numerical integration instead of appellf1, default is F}
 
 \item{flag:}{flag used in appell::appellf1()}
 }
@@ -18,7 +20,7 @@ Joint density of the GGEE model
 }
 \examples{
 jdGGEE(10,2, 1, 1)
+jdGGEE(10,2, 1, 1, integration = T)
 }
 \keyword{Joint}
 \keyword{density}
-

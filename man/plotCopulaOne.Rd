@@ -4,24 +4,28 @@
 \alias{plotCopulaOne}
 \title{Contour plots of CopulaOne}
 \usage{
-plotCopulaOne(a, b, marg = "normal", flag = 1, resolution = 30)
+plotCopulaOne(para, marg = "normal", drawlabels = T, flag = 1,
+  integration = F, resolution = 30, copula_family = "PPPP",
+  main = NULL)
 }
 \arguments{
-\item{a, }{b: parameters}
+\item{para:}{vector of parameters (GGEE: a, b; PPPP: al, be, a, b)}
 
 \item{marg:}{indicate normal scores or uniform scores (default: marg = "normal")}
 
 \item{resolution:}{number of evaluations for each dimension (default is 30)}
 
 \item{flag:}{used in the appell function (default is 1)}
+
+\item{main:}{title of the plot, default: details of the plot}
 }
 \description{
 Contour plots based on either normal scores or uniform scores
 }
 \examples{
-plotCopulaOne(a=0.5, b=1.8)
-plotCopulaOne(a=0.5, b=1.8, marg="uniform", resolution=20)
+plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
+plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
+plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
 }
 \keyword{contour}
 \keyword{plot}
-

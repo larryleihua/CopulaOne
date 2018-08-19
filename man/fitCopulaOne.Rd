@@ -4,18 +4,26 @@
 \alias{fitCopulaOne}
 \title{Model fitting with CopulaOne}
 \usage{
-fitCopulaOne(par, dat, flag = 1, opt = "L-BFGS-B", se = F,
-  lower = c(0.1, 0.1), upper = c(5, 5), trace = 0, factr = 1e+09,
-  printlevel = 0)
+fitCopulaOne(par0, whichpar = seq(1, length(par0)), patternpar = seq(1,
+  length(par0)), dat, flag = 1, integration = F, opt = "L-BFGS-B",
+  se = F, lower = rep(0.1, length(unique(patternpar))),
+  upper = rep(5, length(unique(patternpar))), trace = 0,
+  factr = 1e+09, printlevel = 0, copula_family = "PPPP")
 }
 \arguments{
 \item{trace, }{printlevel: integers for optim() and nlm(), respectively. (default: 0,0)}
 
 \item{par:}{initial parameters for (a, b)}
 
+\item{whichpar:}{a vector of par's positions where the parameter is to be estimated}
+
+\item{patternpar:}{a vector for assigning parameters to be estimated to whichpar positions, so this allows some parameters to be estimated to be the same}
+
 \item{dat:}{input of data.}
 
 \item{flag:}{indicate which numerical method for the appell function (default: flag = 1)}
+
+\item{integration:}{(Experimental!) using integration instead of appellf1()}
 
 \item{se:}{whether standard errors of parameters are reported (default: se = F)}
 }
@@ -26,8 +34,16 @@ Fit bivariate data with the full-range tail dependence copula based on maximum l
 # DO NOT run, and it takes time!
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:100,]
-par <- c(0.3, 0.3)
-fit <- fitCopulaOne(par, dat)
+par0 <- c(0.3, 0.3)
+fit <- fitCopulaOne(par0, dat=dat, copula_family="GGEE")
+par0 <- c(0.3, 0.3, 1, 1)
+whichpar <- c(1,2)
+lower <- rep(0.1, 2)
+upper <- rep(5, 2)
+fit <- fitCopulaOne(par0, whichpar=whichpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
+par0 <- c(0.3, 0.3, 1, 1)
+whichpar <- c(1,2,3,4)
+patternpar <- c(1,2,3,3) # the last two parameters are the same
+fit <- fitCopulaOne(par0, whichpar=whichpar, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 }
 \keyword{fitting}
-

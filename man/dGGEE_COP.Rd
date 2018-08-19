@@ -2,16 +2,18 @@
 % Please edit documentation in R/fullrange2.R
 \name{dGGEE_COP}
 \alias{dGGEE_COP}
-\title{Copula Density Function}
+\title{Copula Density Function - GGEE_COP}
 \usage{
-dGGEE_COP(u, v, a, b, flag = 1)
+dGGEE_COP(u, v, al, be, flag = 1, integration = F)
 }
 \arguments{
 \item{u, v}{values in (0,1).}
 
-\item{a, b}{the two shape parameters.}
+\item{al, be}{the two shape parameters.}
 
 \item{flag}{used in the Appell's F1 function appellf1() of the R package 'appell'.}
+
+\item{integration}{if T: use numerical integration instead of appellf1, default is F}
 }
 \description{
 Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
@@ -21,4 +23,3 @@ dGGEE_COP(0.2, 0.4, 1.2, 0.2)
 }
 \keyword{copula}
 \keyword{density}
-

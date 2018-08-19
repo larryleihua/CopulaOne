@@ -4,10 +4,10 @@
 \alias{qGGEE}
 \title{Quantile of univariate margins of the GGEE model}
 \usage{
-qGGEE(u, a, b)
+qGGEE(u, al, be)
 }
 \arguments{
-\item{a, b:}{parameters.}
+\item{al, be:}{parameters.}
 
 \item{u:}{quantile between 0 and 1.}
 }
@@ -18,4 +18,3 @@ Quantiel of univariate margins of the GGEE model
 qGGEE(0.9, 1, 1)
 }
 \keyword{Quantile}
-

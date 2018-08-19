@@ -4,10 +4,10 @@
 \alias{tauGGEE_COP}
 \title{Kendall's tau of the GGEE copula}
 \usage{
-tauGGEE_COP(a, b, method = 1)
+tauGGEE_COP(al, be)
 }
 \arguments{
-\item{a, b}{the two shape parameters.}
+\item{al, be}{the two shape parameters.}
 }
 \description{
 Kendall's tau of the bivariate copula that has full-range tail dependence in both upper and lower tails
@@ -17,4 +17,3 @@ tauGGEE_COP(0.5, 1)
 }
 \keyword{Kendall's}
 \keyword{tau}
-

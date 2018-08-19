@@ -18,4 +18,3 @@ uscore(data)
 }
 \keyword{score}
 \keyword{uniform}
-

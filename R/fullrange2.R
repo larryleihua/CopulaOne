@@ -426,23 +426,13 @@ intg_tau_E <- function(xy,al,be)
 #' @export
 #' @examples
 #' tauGGEE_COP(0.5, 1)
-tauGGEE_COP <- function(al,be,method=1)
+tauGGEE_COP <- function(al,be)
 {
-  #tmp <- R2Cuba::cuhre(2,1,intg_tau_E,al=al,be=be,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
-  
-  if(method==1)
-  {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_tau_E,al=al,be=be,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
-    if(is(tmp,"try-error"))
-    {
-      tmp2 <- try(cubature::adaptIntegrate(intg_tau_E, al=al, be=be, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("tauGGEE_COP error at: ", al, be, "\n"); return(NA)}else{intg <- tmp2$integral}
-    }else{intg <- tmp$value}
-  }else if(method==2)
-  {
-    tmp <- cubature::adaptIntegrate(intg_tau_E, al=al, be=be, lowerLimit = c(0,0), upperLimit = c(1,1))
-    intg <- tmp$integral
-  }
+   tmp <- try(cubature::adaptIntegrate(intg_tau_E, al=al, be=be, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+   if(is(tmp,"try-error"))
+   {
+     cat("tauGGEE_COP error at: ", al, be, "\n"); return(NA)
+   }else{intg <- tmp$integral}
   out <- 4 * intg/ (beta(al,be)^2) - 1
   out
 }
@@ -461,27 +451,17 @@ intg_spr_C = function(u1u2,al,be,flag=1, integration=F)
 #' Spearman's rho of the GGEE copula
 #' @param al,be:    the two shape parameters.
 #' @param flag: flag used in the appell::appellf1() function (default is -1L for auto choices)
-#' @param method: different methods for the numerical integration. 1: R2Cuba::cuhre(); 2: cubature::adaptIntegrate(). 
 #' @keywords Spearman's rho
 #' @export
 #' @examples
 #' sprGGEE_COP(1.2, 0.6)
-#' sprGGEE_COP(1.2, 0.6, method=2)
-sprGGEE_COP <- function(al,be,flag=1, method=1, integration=F)
+sprGGEE_COP <- function(al,be,flag=1, integration=F)
 {
-  if(method==1)
+  tmp <- try(cubature::adaptIntegrate(intg_spr_C, al=al, be=be, flag=flag,integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
+  if(is(tmp,"try-error"))
   {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_C,al=al,be=be,flag=flag,integration=integration,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
-    if(is(tmp,"try-error"))
-    {
-      tmp2 <- try(cubature::adaptIntegrate(intg_spr_C, al=al, be=be, flag=flag, integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("sprGGEE_COP error at: ", al, be, "\n"); return(NA)}else{intg <- tmp2$integral}
-    }else{intg <- tmp$value}
-  }else if(method==2)
-  {
-    tmp <- cubature::adaptIntegrate(intg_spr_C, al=al, be=be, flag=flag,integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1))
-    intg <- tmp$integral
-  }
+   cat("sprGGEE_COP error at: ", al, be, "\n"); return(NA)    
+  }else{intg <- tmp$integral}
   out <- 12 * intg - 3
   out
 }
@@ -1062,26 +1042,17 @@ intg_spr_PPPP_COP = function(u1u2,al,be,a,b)
 #'
 #' Spearman's rho of the PPPP copula
 #' @param al,be,a,b:    the two shape parameters.
-#' @param method: different methods for the numerical integration. 1: R2Cuba::cuhre(); 2: cubature::adaptIntegrate(). 
 #' @keywords Spearman's rho
 #' @export
 #' @examples
 #' sprPPPP_COP(3, 6,5.9,6.7)
-sprPPPP_COP <- function(al,be,a,b,method=1)
+sprPPPP_COP <- function(al,be,a,b)
 {
-  if(method==1)
-  {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_spr_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    tmp <- try(cubature::adaptIntegrate(intg_spr_PPPP_COP, al=al, be=be,a=a,b=b,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
     if(is(tmp,"try-error"))
     {
-      tmp2 <- try(cubature::adaptIntegrate(intg_spr_PPPP_COP, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("sprPPPP_COP error at: ", al, be, a, b, "\n"); return(NA)}else{intg <- tmp2$integral}
-    }else{intg <- tmp$value}
-  }else if(method==2)
-  {
-    tmp <- cubature::adaptIntegrate(intg_spr_PPPP_COP, al=al, be=be,a=a,b=b,lowerLimit = c(0,0), upperLimit = c(1,1))
-    intg <- tmp$integral
-  }
+	    cat("sprPPPP_COP error at: ", al, be, a, b, "\n"); return(NA)
+    }else{intg <- tmp$integral}
   out <- 12 * intg - 3
   out
 }
@@ -1104,23 +1075,13 @@ intg_tau_PPPP_COP <- function(uv,al,be,a,b)
 #' @export
 #' @examples
 #' tauPPPP_COP(3, 6, 5.9, 6.7)
-tauPPPP_COP <- function(al,be,a,b,method=1)
+tauPPPP_COP <- function(al,be,a,b)
 {
-  # tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
-  
-  if(method==1)
-  {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_tau_PPPP_COP,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    tmp <- try(cubature::adaptIntegrate(intg_tau_PPPP_COP, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
     if(is(tmp,"try-error"))
     {
-      tmp2 <- try(cubature::adaptIntegrate(intg_tau_PPPP_COP, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("tauPPPP_COP error at: ", al, be,a,b, "\n"); return(NA)}else{intg <- tmp2$integral}
-    }else{intg <- tmp$value}
-  }else if(method==2)
-  {
-    tmp <- cubature::adaptIntegrate(intg_tau_PPPP_COP, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1))
-    intg <- tmp$integral
-  }
+      cat("tauPPPP_COP error at: ", al, be,a,b, "\n"); return(NA)
+    }else{intg <- tmp$integral}
   out <- 4 * intg - 1
   out
 }
@@ -1146,21 +1107,11 @@ intg_tau_PPPP_COP_90 <- function(uv,al,be,a,b)
 #' tauPPPP_COP_90(3, 6, 5.9, 6.7)
 tauPPPP_COP_90 <- function(al,be,a,b,method=1)
 {
-  #tmp <- R2Cuba::cuhre(2,1,intg_tau_PPPP_COP_90,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0))
-  
-  if(method==1)
-  {
-    tmp <- try(R2Cuba::cuhre(2,1,intg_tau_PPPP_COP_90,al=al,be=be,a=a,b=b,lower = c(0,0), upper = c(1,1), flags=list(verbose=0)), silent = T)
+    tmp <- try(cubature::adaptIntegrate(intg_tau_PPPP_COP_90, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
     if(is(tmp,"try-error"))
     {
-      tmp2 <- try(cubature::adaptIntegrate(intg_tau_PPPP_COP_90, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
-      if(is(tmp2,"try-error")){cat("tauPPPP_COP error at: ", al, be,a,b, "\n"); return(NA)}else{intg <- tmp2$integral}
-    }else{intg <- tmp$value}
-  }else if(method==2)
-  {
-    tmp <- cubature::adaptIntegrate(intg_tau_PPPP_COP_90, al=al, be=be,a=a,b=b, lowerLimit = c(0,0), upperLimit = c(1,1))
-    intg <- tmp$integral
-  }
+      cat("tauPPPP_COP error at: ", al, be,a,b, "\n"); return(NA)
+    }else{intg <- tmp$integral}
   out <- 4 * intg - 1
   out
 }

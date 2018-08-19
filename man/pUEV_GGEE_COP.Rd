@@ -2,7 +2,7 @@
 % Please edit documentation in R/upperEV.R
 \name{pUEV_GGEE_COP}
 \alias{pUEV_GGEE_COP}
-\title{Joint cdf of the upper extreme value copula}
+\title{Joint cdf of the upper extreme value copula of the GGEE copula}
 \usage{
 pUEV_GGEE_COP(u, v, b)
 }
@@ -12,7 +12,7 @@ pUEV_GGEE_COP(u, v, b)
 \item{b:}{the parameter of the extreme value copula}
 }
 \description{
-Joint cdf of the upper extreme value copula of the full-range tail dependence copula
+Joint cdf of the upper extreme value copula of the GGEE copula
 }
 \examples{
 pUEV_GGEE_COP(0.3, 0.4, 1.2)
@@ -21,4 +21,3 @@ pUEV_GGEE_COP(0.3, 0.4, 1.2)
 \keyword{extreme}
 \keyword{upper}
 \keyword{value}
-

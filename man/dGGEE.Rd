@@ -4,10 +4,10 @@
 \alias{dGGEE}
 \title{Density of univariate margins of the GGEE model}
 \usage{
-dGGEE(x, a, b)
+dGGEE(x, al, be)
 }
 \arguments{
-\item{a, b:}{parameters.}
+\item{al, be:}{parameters.}
 
 \item{x:}{data input.}
 }
@@ -18,4 +18,3 @@ Density of univariate margins of the GGEE model
 dGGEE(3, 1, 2)
 }
 \keyword{Density}
-

@@ -4,10 +4,10 @@
 \alias{pGGEE}
 \title{CDF of univariate margins of the GGEE model}
 \usage{
-pGGEE(x, a, b)
+pGGEE(x, al, be)
 }
 \arguments{
-\item{a, b:}{parameters.}
+\item{al, be:}{parameters.}
 
 \item{x:}{data input.}
 }
@@ -18,4 +18,3 @@ CDF of univariate margins of the GGEE model
 pGGEE(2, 1, 2)
 }
 \keyword{CDF}
-

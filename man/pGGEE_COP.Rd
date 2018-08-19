@@ -4,12 +4,12 @@
 \alias{pGGEE_COP}
 \title{Joint CDF of the GGEE copula model}
 \usage{
-pGGEE_COP(u, v, a, b, flag = 1)
+pGGEE_COP(u, v, al, be, flag = 1, integration = F)
 }
 \arguments{
 \item{u, v:}{data input.}
 
-\item{a, b:}{parameters.}
+\item{al, be:}{parameters.}
 
 \item{flag:}{flag used in the appell::appellf1() function.}
 }
@@ -18,7 +18,7 @@ Joint CDF of the GGEE copula model
 }
 \examples{
 pGGEE_COP(0.9, 0.3, 1, 1)
+pGGEE_COP(0.9, 0.3, 1, 1, integration=T)
 }
 \keyword{CDF}
 \keyword{Joint}
-

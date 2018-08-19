@@ -4,19 +4,19 @@
 \alias{jpGGEE}
 \title{Joint CDF of the GGEE model}
 \usage{
-jpGGEE(x1, x2, a, b, flag = 1)
+jpGGEE(x1, x2, al, be, flag = 1, integration = F)
 }
 \arguments{
 \item{x1, x2:}{data input.}
 
-\item{a, b:}{parameters.}
+\item{al, be:}{parameters.}
 }
 \description{
 Joint CDF of the GGEE model
 }
 \examples{
 jpGGEE(0.2, 0.4, 1, 1)
+jpGGEE(0.2, 0.4, 1, 1, integration = T)
 }
 \keyword{CDF}
 \keyword{Joint}
-
