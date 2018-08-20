@@ -72,7 +72,6 @@ fit <- fitCopulaOne(par, dat=dat, copula_family = "GGEE")
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:50,]
 par0 <- c(0.3,0.3,1,1)
-whichpar <- c(1,2)
-patternpar <- c(1,2)
-fit1 <- fitCopulaOne(par0, whichpar=whichpar, patternpar=patternpar, dat=dat, se=F, copula_family = "PPPP")
+patternpar <- c(1,2,0,0)
+fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, se=F, copula_family = "PPPP")
 ```
