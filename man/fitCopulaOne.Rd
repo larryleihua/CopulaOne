@@ -4,20 +4,18 @@
 \alias{fitCopulaOne}
 \title{Model fitting with CopulaOne}
 \usage{
-fitCopulaOne(par0, whichpar = seq(1, length(par0)), patternpar = seq(1,
-  length(par0)), dat, flag = 1, integration = F, opt = "L-BFGS-B",
-  se = F, lower = rep(0.1, length(unique(patternpar))),
-  upper = rep(5, length(unique(patternpar))), trace = 0,
-  factr = 1e+09, printlevel = 0, copula_family = "PPPP")
+fitCopulaOne(par0, patternpar = seq(1, length(par0)), dat, flag = 1,
+  integration = F, opt = "L-BFGS-B", se = F, lower = rep(0.1,
+  length(unique(patternpar))), upper = rep(5,
+  length(unique(patternpar))), trace = 0, factr = 1e+09,
+  printlevel = 0, copula_family = "PPPP")
 }
 \arguments{
 \item{trace, }{printlevel: integers for optim() and nlm(), respectively. (default: 0,0)}
 
 \item{par:}{initial parameters for (a, b)}
 
-\item{whichpar:}{a vector of par's positions where the parameter is to be estimated}
-
-\item{patternpar:}{a vector for assigning parameters to be estimated to whichpar positions, so this allows some parameters to be estimated to be the same}
+\item{patternpar:}{a vector for assigning parameters to be estimated, and this allows same values of different parameters. For example, if patternpar=c(1,2,3,0,3), then there are 3 parameters to estimate, the 3rd and 5th ones are the same, and the 4th parameter is fixed as specified in the initial parameters (i.e., par)}
 
 \item{dat:}{input of data.}
 
@@ -37,13 +35,12 @@ dat <- uscore(euro0306[,c(2,3)])[1:100,]
 par0 <- c(0.3, 0.3)
 fit <- fitCopulaOne(par0, dat=dat, copula_family="GGEE")
 par0 <- c(0.3, 0.3, 1, 1)
-whichpar <- c(1,2)
 lower <- rep(0.1, 2)
 upper <- rep(5, 2)
-fit <- fitCopulaOne(par0, whichpar=whichpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 par0 <- c(0.3, 0.3, 1, 1)
-whichpar <- c(1,2,3,4)
-patternpar <- c(1,2,3,3) # the last two parameters are the same
-fit <- fitCopulaOne(par0, whichpar=whichpar, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
+patternpar <- c(1,2,0,0) # the last two parameters are not to be estimated and fixed to be 1 as indicated in par0
+fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
+patternpar <- c(1,2,3,3) # the last two parameters are the same and are to be estimated
+fit2 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 }
 \keyword{fitting}
