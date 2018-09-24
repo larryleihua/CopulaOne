@@ -11,7 +11,7 @@ The package is under active development, and the following copulas have been imp
 
 |                           |                           | 
 | ------------------------- | ------------------------- |
-| <img src="http://niu.edu/leihua/_images/ggee.gif" width="250" height="280" />  |  <img src="http://niu.edu/leihua/_images/pppp1.gif" width="250" height="280" /> |
+| <img src="https://www.larryhua.com/image/GGEE.gif" width="250" height="280" />  |  <img src="https://www.larryhua.com/image/PPPP.gif" width="250" height="280" /> |
 
 ## Installation
 - The R package CopulaOne can be easily installed from github by the following two lines.
