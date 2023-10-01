@@ -5,7 +5,7 @@ Author: Lei Hua [aut, cre],
 Maintainer: Lei Hua <larry.lei.hua@gmail.com>
 Description: This package implements a collection of full-range tail dependence copulas. 
 Depends:
-    R (>= 4.3.3)
+    R (>= 4.3)
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
