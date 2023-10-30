@@ -17,7 +17,7 @@ The package is under active development, and the following copulas have been imp
 - The R package CopulaOne can be easily installed from github by the following two lines.
 ```{r, eval=FALSE}
 library(devtools)
-install_github("larryleihua/CopulaOne")
+install_github("larryleihua/CopulaOne", force=T)
 ```
 - If there are some issues from the above codes, you may need to install the following R packages first: _appell_ and _hypergeo_.
 
