@@ -86,3 +86,6 @@ par0 <- c(0.3,0.3,1,1)
 patternpar <- c(1,2,0,0)
 fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, se=F, copula_family = "PPPP")
 ```
+
+## Known issues (i.e., to-do list)
+- rGGEE_COP has issues when al and/or be are too small, say, 0.01, and rgamma() will generate vary small values so hypergeo::hypergeo will generate lots of boundary values 2.0, making the copula not working.
