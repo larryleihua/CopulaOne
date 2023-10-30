@@ -228,9 +228,9 @@ Dx2_GGEE <- function(x1, x2, al, be)
 #' @export
 #' @examples
 #' rGGEE_COP(20, 1.2, 0.2, seed = 100)
-rGGEE_COP <- function(n, al, be, seed = 1)
+rGGEE_COP <- function(n, al, be, seed = NULL)
 {
-  set.seed(seed)
+  if(!is.null(seed)){ set.seed(seed) }
   R1 <- rgamma(n, shape=al, 1)
   R2 <- rgamma(n, shape=be, 1)
   R <- R1 / R2
@@ -910,9 +910,9 @@ qParetoI <- function(u, a)
 #' @export
 #' @examples
 #' plot(rPPPP_COP(100, 1.2, 0.2, 1, 1, seed = 100))
-rPPPP_COP <- function(n, al, be, a, b, seed = 1)
+rPPPP_COP <- function(n, al, be, a, b, seed = NULL)
 {
-  set.seed(seed)
+  if(!is.null(seed)){ set.seed(seed) }
   u1 <- runif(n)
   u2 <- runif(n)
   u3 <- runif(n)
