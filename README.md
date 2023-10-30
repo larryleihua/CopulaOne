@@ -7,11 +7,11 @@ The R package *CopulaOne* implements functions for bivariate copulas that must s
 * It can account for both reflection symmetry and asymmetry between upper and lower tails.
 
 Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either reflection symmetric or asymmetric.
-The package is under active development, and the following copulas have been implemented: GGEE, PPPP. The following figures show how flexible the GGEE and PPPP copulas are. Please refer to [Hua (2017)](http://niu.edu/leihua/papers/Manuscript-Full-Range-HUA.pdf) for more details about the GGEE copula, and [Su and Hua (2017)](http://niu.edu/leihua/papers/frt-upload.pdf) for the details about the PPPP copula.
+The package is under active development, and the following copulas have been implemented: GGEE, PPPP. The following figures show how flexible the GGEE and PPPP copulas are. Please refer to [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003) for more details about the GGEE copula, and [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009) for the details about the PPPP copula.
 
 |                           |                           | 
 | ------------------------- | ------------------------- |
-| <img src="https://www.larryhua.com/image/GGEE.gif" width="250" height="280" />  |  <img src="https://www.larryhua.com/image/PPPP.gif" width="250" height="280" /> |
+| <img src="https://larryhua.netlify.app/image/GGEE.gif" width="250" height="280" />  |  <img src="https://larryhua.netlify.app/image/PPPP.gif" width="250" height="280" /> |
 
 ## Installation
 - The R package CopulaOne can be easily installed from github by the following two lines.
@@ -19,7 +19,18 @@ The package is under active development, and the following copulas have been imp
 library(devtools)
 install_github("larryleihua/CopulaOne")
 ```
-- You may need to install the following first.
+- If there are some issues from the above codes, you may need to install the following R packages first: _appell_ and _hypergeo_.
+
+_appell_ can be installed by the following R codes:
+```{r, eval=FALSE}
+install.packages("appell_0.0-4.tar.gz", repos = NULL, type = "source")
+```
+where appell_0.0-4.tar.gz can be downloaded from the following website: (accessible Oct. 1, 2023)
+https://cran.r-project.org/src/contrib/Archive/appell/
+If you use Windows OS, then you will need to install Rtools in advance.
+
+
+_hypergeo_ can be installed easily:
 ```{r, eval=FALSE}
 install.packages("hypergeo", dependencies = T)
 ```

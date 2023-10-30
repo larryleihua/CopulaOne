@@ -52,7 +52,7 @@ pGGEE <- function(x, al, be)
 {
   out <- tryCatch(1 - al/(al + be) * Re(hypergeo::hypergeo(1, be, al + be + 1, 1 - x, 
                                                            tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, warning = function(err) FALSE)
-  if (!is.logical(out) && is.finite(out))
+  if (all(!is.logical(out) & is.finite(out)))
   {
     return(out)
   } else
@@ -76,7 +76,7 @@ dGGEE <- function(x, al, be)
   out <- tryCatch((al * be)/(al + be)/(al + be + 1) * Re(hypergeo::hypergeo(2, be + 1, 
                                                                             al + be + 2, 1 - x, tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, 
                   warning = function(err) FALSE)
-  if (!is.logical(out) && is.finite(out)) 
+  if (all(!is.logical(out) & is.finite(out)))
     return(out) else
     {
       cat("Warning! NA returned!", "\n")
@@ -113,7 +113,7 @@ jdGGEE <- function(x1, x2, al, be, flag = 1, integration = F)
     tem1 <- al * be * (al + 1) * (be + 1)/(al + be)/(al + be + 1)/(al + be + 2)/(al + be + 3)
     tem2 <- tryCatch(Re(appell::appellf1(be + 2, 2, 2, al + be + 4, 1 - x1, 1 - x2, 
                                          userflag = flag)$val), error = function(err) FALSE, warning = function(err) FALSE)
-    if (!is.logical(tem2) && is.finite(tem2)) 
+    if (all(!is.logical(tem2) & is.finite(tem2)))
       return(tem1 * tem2) else
       {
         cat("Warning! NA returned!", "\n")
@@ -265,11 +265,11 @@ C2GGEE_COP <- function(u, v, al, be)
     cat("Warning! NA returned! (C2GGEE_COP: qGGEE error!)", "\n")
   } else
   {
-    if (is.finite(x1) && is.finite(x2))
+    if (all(is.finite(x1) & is.finite(x2)))
     {
       tem1 <- Dx2_GGEE(x1, x2, al, be)
       tem2 <- dGGEE(x2, al, be)
-      if (is.finite(tem1) && is.finite(tem2))
+      if (all(is.finite(tem1) & is.finite(tem2)))
       {
         return(tem1/tem2)
       } else
@@ -295,12 +295,12 @@ dGGEE_COP_0 <- function(u, v, al, be, flag = 1, integration = F)
     cat("Warning! NA returned! (dGGEE_COP: qGGEE error!)", "\n")
   } else
   {
-    if (is.finite(q1) && is.finite(q2))
+    if (all(is.finite(q1) & is.finite(q2)))
     {
       tem1 <- jdGGEE(q1, q2, al, be, flag, integration)
       tem2 <- dGGEE(q1, al, be)
       tem3 <- dGGEE(q2, al, be)
-      if (is.finite(tem1) && is.finite(tem2) && is.finite(tem3))
+      if (all(is.finite(tem1) & is.finite(tem2) & is.finite(tem3)))
       {
         return(tem1/tem2/tem3)
       } else
@@ -757,12 +757,12 @@ dPPPP_COP_0 <- function(u,v,al,be,a,b)
     cat("Warning! NA returned! (dPPPP_COP: qPPPP error!)", "\n")
   } else
   {
-    if (is.finite(q1) && is.finite(q2))
+    if (all(is.finite(q1) & is.finite(q2)))
     {
       tem1 <- jdPPPP(q1,q2,al,be,a,b)
       tem2 <- dPPPP(q1,al,be,a,b)
       tem3 <- dPPPP(q2,al,be,a,b)
-      if (is.finite(tem1) && is.finite(tem2) && is.finite(tem3))
+      if (all(is.finite(tem1) & is.finite(tem2) & is.finite(tem3)))
       {
         return(tem1/tem2/tem3)
       } else
@@ -873,7 +873,7 @@ C2PPPP_COP <- function(u, v, al, be, a, b)
     cat("Warning! NA returned! (C2PPPP_COP: qPPPP error!)", "\n")
   } else
   {
-    if (is.finite(x1) && is.finite(x2))
+    if (all(is.finite(x1) & is.finite(x2)))
     {
       tem1 <- X1onX2_PPPP(x1, x2, al, be, a, b)
 
