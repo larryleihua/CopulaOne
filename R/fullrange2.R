@@ -50,8 +50,14 @@ uscore <- function(data, aunif = -0.5)
 #' pGGEE(2, 1, 2)
 pGGEE <- function(x, al, be)
 {
-  out <- tryCatch(1 - al/(al + be) * Re(hypergeo::hypergeo(1, be, al + be + 1, 1 - x, 
-                                                           tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, warning = function(err) FALSE)
+  idx1 <- (x >= 1.0e2)
+  idx2 <- (x <= 1.0e2)
+  hyp1 <- Re(hypergeo::hypergeo(1, be, al + be + 1, 1 - x[idx1], tol = 1e-06, maxiter = 10000))
+  hyp2 <- Re(hypergeo::hypergeo(1, al+1, al + be + 1, 1 - 1/x[idx2], tol = 1e-06, maxiter = 10000))/x[idx2] # Euler and Pfaff transformations
+  hyp <- rep(0, length(x))
+  hyp[idx1] <- hyp1
+  hyp[idx2] <- hyp2
+  out <- tryCatch(1 - al/(al + be) * hyp, error = function(err) FALSE, warning = function(err) FALSE)
   if (all(!is.logical(out) & is.finite(out)))
   {
     return(out)
@@ -231,7 +237,7 @@ Dx2_GGEE <- function(x1, x2, al, be)
 rGGEE_COP <- function(n, al, be, seed = NULL)
 {
   if(!is.null(seed)){ set.seed(seed) }
-  R1 <- rgamma(n, shape=al, 1)
+  R1 <- rgamma(n, shape=al, 1) # rgamma can generate 0
   R2 <- rgamma(n, shape=be, 1)
   R <- R1 / R2
   H1 <- rexp(n)
@@ -240,6 +246,10 @@ rGGEE_COP <- function(n, al, be, seed = NULL)
   H22 <- rexp(n)
   X11 <- R * H1 / H11
   X22 <- R * H2 / H22
+  X11[X11==0] <- .Machine$double.xmin
+  X22[X22==0] <- .Machine$double.xmin
+  X11[X11==Inf] <- .Machine$double.xmax
+  X22[X22==Inf] <- .Machine$double.xmax
   
   u <- pGGEE(X11,al,be)
   v <- pGGEE(X22,al,be)
