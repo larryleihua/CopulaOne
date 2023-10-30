@@ -239,6 +239,8 @@ rGGEE_COP <- function(n, al, be, seed = NULL)
   if(!is.null(seed)){ set.seed(seed) }
   R1 <- rgamma(n, shape=al, 1) # rgamma can generate 0
   R2 <- rgamma(n, shape=be, 1)
+  R1[R1==0] <- .Machine$double.xmin
+  R2[R2==0] <- .Machine$double.xmin
   R <- R1 / R2
   H1 <- rexp(n)
   H2 <- rexp(n)
