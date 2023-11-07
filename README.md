@@ -93,10 +93,11 @@ fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, se=F, copula_family =
 
 ## Citation, please use the following bibtex for citation
 
+```
 @misc{Hua2018,
   author = {Lei Hua},
   title  = {Copula{O}ne - an {R} package for full-range tail dependence copulas},
   year   = {2018},
   howpublished = "\url{https://github.com/larryleihua/CopulaOne}"
 }
-
+```
