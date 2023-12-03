@@ -48,12 +48,12 @@ uscore <- function(data, aunif = -0.5)
 #' @export
 #' @examples
 #' pGGEE(2, 1, 2)
-pGGEE <- function(x, al, be)
+pGGEE <- function(x, al, be, maxit=100000)
 {
   idx1 <- (x >= 1.0e2)
   idx2 <- (x <= 1.0e2)
-  hyp1 <- Re(hypergeo::hypergeo(1, be, al + be + 1, 1 - x[idx1], tol = 1e-06, maxiter = 10000))
-  hyp2 <- Re(hypergeo::hypergeo(1, al+1, al + be + 1, 1 - 1/x[idx2], tol = 1e-06, maxiter = 10000))/x[idx2] # Euler and Pfaff transformations
+  hyp1 <- Re(hypergeo::hypergeo(1, be, al + be + 1, 1 - x[idx1], tol = 1e-06, maxiter = maxit))
+  hyp2 <- Re(hypergeo::hypergeo(1, al+1, al + be + 1, 1 - 1/x[idx2], tol = 1e-06, maxiter = maxit))/x[idx2] # Euler and Pfaff transformations
   hyp <- rep(0, length(x))
   hyp[idx1] <- hyp1
   hyp[idx2] <- hyp2
@@ -77,10 +77,10 @@ pGGEE <- function(x, al, be)
 #' @export
 #' @examples
 #' dGGEE(3, 1, 2)
-dGGEE <- function(x, al, be)
+dGGEE <- function(x, al, be, maxit=100000)
 {
   out <- tryCatch((al * be)/(al + be)/(al + be + 1) * Re(hypergeo::hypergeo(2, be + 1, 
-                                                                            al + be + 2, 1 - x, tol = 1e-06, maxiter = 10000)), error = function(err) FALSE, 
+                                                                            al + be + 2, 1 - x, tol = 1e-06, maxiter = maxit)), error = function(err) FALSE, 
                   warning = function(err) FALSE)
   if (all(!is.logical(out) & is.finite(out)))
     return(out) else
@@ -149,7 +149,7 @@ jdGGEE <- function(x1, x2, al, be, flag = 1, integration = F)
 #' @export
 #' @examples
 #' qGGEE(0.9, 1, 1)
-qGGEE <- function(u, al, be)
+qGGEE <- function(u, al, be, maxit=100000)
 {
   if (u == 0)
   {
@@ -159,7 +159,6 @@ qGGEE <- function(u, al, be)
     tol <- 1e-06
     CDF <- -0.01
     DEN <- 1
-    maxiter <- 1000
     kount <- 0
     t <- 0
     
@@ -168,7 +167,7 @@ qGGEE <- function(u, al, be)
     lower <- -1e+20
     upper <- 1e+20
     
-    while ((kount < maxiter) && (abs(u - CDF) > tol))
+    while ((kount < maxit) && (abs(u - CDF) > tol))
     {
       kount <- kount + 1
       t <- t - (CDF - u)/DEN
@@ -176,8 +175,8 @@ qGGEE <- function(u, al, be)
       {
         t <- 0.5 * (lower + upper)
       }
-      DEN <- dGGEE(exp(t), al, be) * exp(t)
-      CDF <- pGGEE(exp(t), al, be)
+      DEN <- dGGEE(exp(t), al, be, maxit=maxit) * exp(t)
+      CDF <- pGGEE(exp(t), al, be, maxit=maxit)
       if (CDF < u)
       {
         lower <- t
@@ -234,7 +233,7 @@ Dx2_GGEE <- function(x1, x2, al, be)
 #' @export
 #' @examples
 #' rGGEE_COP(20, 1.2, 0.2, seed = 100)
-rGGEE_COP <- function(n, al, be, seed = NULL)
+rGGEE_COP <- function(n, al, be, seed = NULL, maxit=100000)
 {
   if(!is.null(seed)){ set.seed(seed) }
   R1 <- rgamma(n, shape=al, 1) # rgamma can generate 0
@@ -253,8 +252,8 @@ rGGEE_COP <- function(n, al, be, seed = NULL)
   X11[X11==Inf] <- .Machine$double.xmax
   X22[X22==Inf] <- .Machine$double.xmax
   
-  u <- pGGEE(X11,al,be)
-  v <- pGGEE(X22,al,be)
+  u <- pGGEE(X11,al,be, maxit=maxit)
+  v <- pGGEE(X22,al,be, maxit=maxit)
   cbind(u,v)
 }
 
@@ -267,10 +266,10 @@ rGGEE_COP <- function(n, al, be, seed = NULL)
 #' @export
 #' @examples
 #' C2GGEE_COP(0.2, 0.6, al = 1.2, be = 0.8)
-C2GGEE_COP <- function(u, v, al, be)
+C2GGEE_COP <- function(u, v, al, be, maxit=100000)
 {
-  x1 <- tryCatch(qGGEE(u, al, be), error = function(err) FALSE, warning = function(err) FALSE)
-  x2 <- tryCatch(qGGEE(v, al, be), error = function(err) FALSE, warning = function(err) FALSE)
+  x1 <- tryCatch(qGGEE(u, al, be, maxit=maxit), error = function(err) FALSE, warning = function(err) FALSE)
+  x2 <- tryCatch(qGGEE(v, al, be, maxit=maxit), error = function(err) FALSE, warning = function(err) FALSE)
   if (is.logical(x1) || is.logical(x2))
   {
     return(NA)
@@ -280,7 +279,7 @@ C2GGEE_COP <- function(u, v, al, be)
     if (all(is.finite(x1) & is.finite(x2)))
     {
       tem1 <- Dx2_GGEE(x1, x2, al, be)
-      tem2 <- dGGEE(x2, al, be)
+      tem2 <- dGGEE(x2, al, be, maxit=maxit)
       if (all(is.finite(tem1) & is.finite(tem2)))
       {
         return(tem1/tem2)
@@ -297,10 +296,10 @@ C2GGEE_COP <- function(u, v, al, be)
   }
 }
 
-dGGEE_COP_0 <- function(u, v, al, be, flag = 1, integration = F)
+dGGEE_COP_0 <- function(u, v, al, be, flag = 1, integration = F, maxit=100000)
 {
-  q1 <- tryCatch(qGGEE(u, al, be), error = function(err) FALSE, warning = function(err) FALSE)
-  q2 <- tryCatch(qGGEE(v, al, be), error = function(err) FALSE, warning = function(err) FALSE)
+  q1 <- tryCatch(qGGEE(u, al, be, maxit=maxit), error = function(err) FALSE, warning = function(err) FALSE)
+  q2 <- tryCatch(qGGEE(v, al, be, maxit=maxit), error = function(err) FALSE, warning = function(err) FALSE)
   if (is.logical(q1) || is.logical(q1))
   {
     return(NA)
@@ -310,8 +309,8 @@ dGGEE_COP_0 <- function(u, v, al, be, flag = 1, integration = F)
     if (all(is.finite(q1) & is.finite(q2)))
     {
       tem1 <- jdGGEE(q1, q2, al, be, flag, integration)
-      tem2 <- dGGEE(q1, al, be)
-      tem3 <- dGGEE(q2, al, be)
+      tem2 <- dGGEE(q1, al, be, maxit=maxit)
+      tem3 <- dGGEE(q2, al, be, maxit=maxit)
       if (all(is.finite(tem1) & is.finite(tem2) & is.finite(tem3)))
       {
         return(tem1/tem2/tem3)
@@ -362,10 +361,10 @@ intg_jpGGEE <- Vectorize(intg_jpGGEE, "y")
 #' @examples
 #' jpGGEE(0.2, 0.4, 1, 1)
 #' jpGGEE(0.2, 0.4, 1, 1, integration = T)
-jpGGEE <- function(x1,x2,al,be,flag=1, integration = F)
+jpGGEE <- function(x1,x2,al,be,flag=1, integration = F, maxit=100000)
 {
-  tem1 <- pGGEE(x1,al,be)
-  tem2 <- pGGEE(x2,al,be)
+  tem1 <- pGGEE(x1,al,be, maxit=maxit)
+  tem2 <- pGGEE(x2,al,be, maxit=maxit)
   if(integration==F)
   {
     tem3 <- al*(al+1)/(al+be)/(al+be+1)
@@ -398,11 +397,11 @@ jpGGEE <- function(x1,x2,al,be,flag=1, integration = F)
 #' @examples
 #' pGGEE_COP(0.9, 0.3, 1, 1)
 #' pGGEE_COP(0.9, 0.3, 1, 1, integration=T)
-pGGEE_COP <- function(u,v,al,be,flag=1, integration=F)
+pGGEE_COP <- function(u,v,al,be,flag=1, integration=F, maxit=100000)
 {
-  q1 <- qGGEE(u,al,be)
-  q2 <- qGGEE(v,al,be)
-  jpGGEE(q1,q2,al,be,flag = flag, integration=integration)
+  q1 <- qGGEE(u,al,be,maxit=maxit)
+  q2 <- qGGEE(v,al,be,maxit=maxit)
+  jpGGEE(q1,q2,al,be,flag = flag, integration=integration, maxit=maxit)
 }
 
 intg_tau_E <- function(xy,al,be)
@@ -449,11 +448,11 @@ tauGGEE_COP <- function(al,be)
   out
 }
 
-intg_spr_C = function(u1u2,al,be,flag=1, integration=F)
+intg_spr_C = function(u1u2,al,be,flag=1, integration=F, maxit=100000)
 {
   u1 <- u1u2[1]
   u2 <- u1u2[2]
-  out <- 1 - u1 - u2 + pGGEE_COP(u1,u2,al,be,flag,integration)
+  out <- 1 - u1 - u2 + pGGEE_COP(u1,u2,al,be,flag,integration, maxit=maxit)
   if(is.finite(out)) out else 0
 }
 #intg_spr_C <- Vectorize(intg_spr_C_0, "u1u2")
@@ -649,7 +648,7 @@ pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 #' plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1,log=F)}), type="l",ylab="")
 
 # try Newton
-qPPPP <- function(u, al, be, a, b)
+qPPPP <- function(u, al, be, a, b, maxit=100000)
 {
   if (u == 0)
   {
@@ -659,7 +658,7 @@ qPPPP <- function(u, al, be, a, b)
     tol <- 1e-06
     CDF <- -0.01
     DEN <- 1
-    maxiter <- 1000
+    maxiter <- maxit
     kount <- 0
     t <- 0
     
