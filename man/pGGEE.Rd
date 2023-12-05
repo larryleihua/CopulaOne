@@ -4,7 +4,7 @@
 \alias{pGGEE}
 \title{CDF of univariate margins of the GGEE model}
 \usage{
-pGGEE(x, al, be)
+pGGEE(x, al, be, maxit = 1e+05)
 }
 \arguments{
 \item{al, be:}{parameters.}

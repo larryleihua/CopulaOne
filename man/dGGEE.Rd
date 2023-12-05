@@ -4,7 +4,7 @@
 \alias{dGGEE}
 \title{Density of univariate margins of the GGEE model}
 \usage{
-dGGEE(x, al, be)
+dGGEE(x, al, be, maxit = 1e+05)
 }
 \arguments{
 \item{al, be:}{parameters.}

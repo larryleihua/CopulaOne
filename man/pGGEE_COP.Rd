@@ -4,7 +4,7 @@
 \alias{pGGEE_COP}
 \title{Joint CDF of the GGEE copula model}
 \usage{
-pGGEE_COP(u, v, al, be, flag = 1, integration = F)
+pGGEE_COP(u, v, al, be, flag = 1, integration = F, maxit = 1e+05)
 }
 \arguments{
 \item{u, v:}{data input.}

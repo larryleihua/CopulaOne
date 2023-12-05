@@ -4,7 +4,7 @@
 \alias{C2GGEE_COP}
 \title{Conditional GGEE copula}
 \usage{
-C2GGEE_COP(u, v, al, be)
+C2GGEE_COP(u, v, al, be, maxit = 1e+05)
 }
 \arguments{
 \item{u, v:}{data input.}

@@ -4,7 +4,7 @@
 \alias{jpGGEE}
 \title{Joint CDF of the GGEE model}
 \usage{
-jpGGEE(x1, x2, al, be, flag = 1, integration = F)
+jpGGEE(x1, x2, al, be, flag = 1, integration = F, maxit = 1e+05)
 }
 \arguments{
 \item{x1, x2:}{data input.}

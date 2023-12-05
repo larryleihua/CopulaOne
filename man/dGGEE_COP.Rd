@@ -4,7 +4,7 @@
 \alias{dGGEE_COP}
 \title{Copula Density Function - GGEE_COP}
 \usage{
-dGGEE_COP(u, v, al, be, flag = 1, integration = F)
+dGGEE_COP(u, v, al, be, flag = 1, integration = F, maxit = 1e+05)
 }
 \arguments{
 \item{u, v}{values in (0,1).}

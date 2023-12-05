@@ -4,7 +4,7 @@
 \alias{qPPPP}
 \title{quantile of univariate margins of the PPPP model}
 \usage{
-qPPPP(u, al, be, a, b)
+qPPPP(u, al, be, a, b, maxit = 1e+05)
 }
 \arguments{
 \item{al, be, a, b:}{parameters.}

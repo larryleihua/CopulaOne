@@ -4,7 +4,7 @@
 \alias{rGGEE_COP}
 \title{Sampling based on the full-range tail dependence copula}
 \usage{
-rGGEE_COP(n, al, be, seed = 1)
+rGGEE_COP(n, al, be, seed = NULL, maxit = 1e+05)
 }
 \arguments{
 \item{al, be:}{the two shape parameters.}

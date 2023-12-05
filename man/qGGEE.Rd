@@ -4,7 +4,7 @@
 \alias{qGGEE}
 \title{Quantile of univariate margins of the GGEE model}
 \usage{
-qGGEE(u, al, be)
+qGGEE(u, al, be, maxit = 1e+05)
 }
 \arguments{
 \item{al, be:}{parameters.}

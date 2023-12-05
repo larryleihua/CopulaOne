@@ -4,7 +4,7 @@
 \alias{rPPPP_COP}
 \title{Sampling based on the PPPP copula}
 \usage{
-rPPPP_COP(n, al, be, a, b, seed = 1)
+rPPPP_COP(n, al, be, a, b, seed = NULL)
 }
 \arguments{
 \item{al, }{be, a,b: the two shape parameters.}

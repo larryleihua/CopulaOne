@@ -4,11 +4,21 @@
 \alias{fitCopulaOne}
 \title{Model fitting with CopulaOne}
 \usage{
-fitCopulaOne(par0, patternpar = seq(1, length(par0)), dat, flag = 1,
-  integration = F, opt = "L-BFGS-B", se = F, lower = rep(0.1,
-  length(unique(patternpar))), upper = rep(5,
-  length(unique(patternpar))), trace = 0, factr = 1e+09,
-  printlevel = 0, copula_family = "PPPP")
+fitCopulaOne(
+  par0,
+  patternpar = seq(1, length(par0)),
+  dat,
+  flag = 1,
+  integration = F,
+  opt = "L-BFGS-B",
+  se = F,
+  lower = rep(0.1, length(unique(patternpar))),
+  upper = rep(5, length(unique(patternpar))),
+  trace = 0,
+  factr = 1e+09,
+  printlevel = 0,
+  copula_family = "PPPP"
+)
 }
 \arguments{
 \item{trace, }{printlevel: integers for optim() and nlm(), respectively. (default: 0,0)}

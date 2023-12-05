@@ -4,9 +4,16 @@
 \alias{plotCopulaOne}
 \title{Contour plots of CopulaOne}
 \usage{
-plotCopulaOne(para, marg = "normal", drawlabels = T, flag = 1,
-  integration = F, resolution = 30, copula_family = "PPPP",
-  main = NULL)
+plotCopulaOne(
+  para,
+  marg = "normal",
+  drawlabels = T,
+  flag = 1,
+  integration = F,
+  resolution = 30,
+  copula_family = "PPPP",
+  main = NULL
+)
 }
 \arguments{
 \item{para:}{vector of parameters (GGEE: a, b; PPPP: al, be, a, b)}
