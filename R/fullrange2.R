@@ -439,6 +439,7 @@ intg_tau_E <- function(xy,al,be)
 #' tauGGEE_COP(0.5, 1)
 tauGGEE_COP <- function(al,be)
 {
+   cat("WARNING: please use tauGGEE_COP_sim for smaller values (< 0.2) of al and be!!")
    tmp <- try(cubature::adaptIntegrate(intg_tau_E, al=al, be=be, lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
    if(is(tmp,"try-error"))
    {
