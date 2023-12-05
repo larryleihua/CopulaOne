@@ -448,6 +448,53 @@ tauGGEE_COP <- function(al,be)
   out
 }
 
+#' Kendall's tau of the GGEE copula (based on simulations)
+#'
+#' Kendall's tau of the bivariate copula that has full-range tail dependence in both upper and lower tails
+#' @param al,be    the two shape parameters.
+#' @keywords Kendall's tau
+#' @export
+#' @examples
+#' tauGGEE_COP_sim(0.5, 1)
+tauGGEE_COP_sim <- function(al, be, n=10000000)
+{
+  R1 <- rgamma(n, shape=al, 1)
+  R2 <- rgamma(n, shape=be, 1)
+  R1[R1==0] <- .Machine$double.xmin
+  R2[R2==0] <- .Machine$double.xmin
+  R <- R1 / R2
+  H1 <- rexp(n)
+  H2 <- rexp(n)
+  H11 <- rexp(n)
+  H22 <- rexp(n)
+  X11 <- R * H1 / H11
+  X22 <- R * H2 / H22
+  X11[X11==0] <- .Machine$double.xmin
+  X22[X22==0] <- .Machine$double.xmin
+  X11[X11==Inf] <- .Machine$double.xmax
+  X22[X22==Inf] <- .Machine$double.xmax
+  
+  R1_ <- rgamma(n, shape=al, 1)
+  R2_ <- rgamma(n, shape=be, 1)
+  R1_[R1_==0] <- .Machine$double.xmin
+  R2_[R2_==0] <- .Machine$double.xmin
+  R_ <- R1_ / R2_
+  H1_ <- rexp(n)
+  H2_ <- rexp(n)
+  H11_ <- rexp(n)
+  H22_ <- rexp(n)
+  X11_ <- R_ * H1_ / H11_
+  X22_ <- R_ * H2_ / H22_
+  X11_[X11_==0] <- .Machine$double.xmin
+  X22_[X22_==0] <- .Machine$double.xmin
+  X11_[X11_==Inf] <- .Machine$double.xmax
+  X22_[X22_==Inf] <- .Machine$double.xmax
+  
+  out <- 4*(sum((X11 <= X11_)&(X22 <= X22_)) / n) - 1
+  out
+}
+
+
 intg_spr_C = function(u1u2,al,be,flag=1, integration=F, maxit=100000)
 {
   u1 <- u1u2[1]
