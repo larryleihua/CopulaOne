@@ -228,7 +228,7 @@ Dx2_GGEE <- function(x1, x2, al, be)
 #' Generating random samples based on the bivariate copula that has full-range tail dependence in both upper and lower tails
 #' @param n: sample size to be generated.
 #' @param al,be: the two shape parameters.
-#' @param seed: seed for randomness, and default is 1
+#' @param seed: seed for randomness
 #' @keywords simulation
 #' @export
 #' @examples
@@ -964,7 +964,7 @@ qParetoI <- function(u, a)
 #' Generating random samples based on the PPPP copula
 #' @param n: sample size to be generated.
 #' @param al, be, a,b: the two shape parameters.
-#' @param seed: seed for randomness, and default is 1
+#' @param seed: seed for randomness
 #' @keywords simulation
 #' @export
 #' @examples

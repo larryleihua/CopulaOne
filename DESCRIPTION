@@ -1,6 +1,6 @@
 Package: CopulaOne
 Title: A Collection of full-range tail dependence Copulas
-Version: 0.0.1.200
+Version: 0.0.1.201
 Author: Lei Hua [aut, cre],
 Maintainer: Lei Hua <larry.lei.hua@gmail.com>
 Description: This package implements a collection of full-range tail dependence copulas. 
