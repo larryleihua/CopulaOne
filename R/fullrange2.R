@@ -981,16 +981,28 @@ rPPPP_COP <- function(n, al, be, a, b, seed = NULL)
 
   R1 <- sapply(u1, function(u){qParetoI(u, be)})
   R2 <- sapply(u2, function(u){qParetoI(u, al)})
+  R1[R1==Inf] <- .Machine$double.xmax
+  R2[R2==Inf] <- .Machine$double.xmax
+
   R <- R1 / R2
   
   H1 <- sapply(u3, function(u){qParetoI(u, b)})
   H11 <- sapply(u4, function(u){qParetoI(u, a)})
-  
+  H1[H1==Inf] <- .Machine$double.xmax
+  H11[H11==Inf] <- .Machine$double.xmax
+
   H2 <- sapply(u5, function(u){qParetoI(u, b)})
   H22 <- sapply(u6, function(u){qParetoI(u, a)})
+  H2[H2==Inf] <- .Machine$double.xmax
+  H22[H22==Inf] <- .Machine$double.xmax
 
   X11 <- R * H1 / H11
   X22 <- R * H2 / H22
+
+  X11[X11==0] <- .Machine$double.xmin
+  X22[X22==0] <- .Machine$double.xmin
+  X11[X11==Inf] <- .Machine$double.xmax
+  X22[X22==Inf] <- .Machine$double.xmax
   
   u <- sapply(X11, function(x){pPPPP(x, al, be, a, b)})
   v <- sapply(X22, function(x){pPPPP(x, al, be, a, b)})
