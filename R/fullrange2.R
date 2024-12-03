@@ -652,9 +652,9 @@ g_PPPP <- function(a1,a2,a3,a4)
 #' plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=F)}), type="l",ylab="")
 pPPPP <- function(x, al, be, a, b, log=F)
 {
-  if(x==0)
+  if(x<=.Machine$double.xmin)
   {
-    return(0)
+    return(.Machine$double.xmin)
   }else
   {
     FR <- pPP(x,al,be)
