@@ -1,11 +1,5 @@
 # fullrange2.R full-range tail dependence on both upper and lower tails
 
-###################### 
-xmin <- 1e-10
-xmax <- 1e+10
-umin <- 1e-06
-umax <- 1 - umin
-
 #' Uniform score function
 #'
 #' Transform data to uniform scores, this function is from the R package CopulaModel.
