@@ -230,10 +230,23 @@ Dx2_GGEE <- function(x1, x2, al, be)
 rGGEE_COP <- function(n, al, be, seed = NULL, maxit=100000)
 {
   if(!is.null(seed)){ set.seed(seed) }
-  R1 <- rgamma(n, shape=al, 1) # rgamma can generate 0
+  R1 <- rgamma(n, shape=al, 1) # rgamma can generate 0, shape is suggested to be larger than 0.01 but still may have 0
   R2 <- rgamma(n, shape=be, 1)
-  R1[R1==0] <- .Machine$double.xmin
-  R2[R2==0] <- .Machine$double.xmin
+
+  n1 <- sum(R1==0)
+  while(n1 > 0)
+  {
+    R1[R1==0] <- rgamma(n1, shape=al, 1)
+    n1 <- sum(R1==0)
+  }
+
+  n2 <- sum(R2==0)
+  while(n2 > 0)
+  {
+    R2[R2==0] <- rgamma(n2, shape=be, 1)
+    n2 <- sum(R2==0)
+  }
+  
   R <- R1 / R2
   H1 <- rexp(n)
   H2 <- rexp(n)
