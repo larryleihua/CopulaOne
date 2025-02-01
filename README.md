@@ -25,10 +25,25 @@ _appell_ can be installed by the following R codes:
 ```{r, eval=FALSE}
 install.packages("appell_0.0-4.tar.gz", repos = NULL, type = "source")
 ```
-where appell_0.0-4.tar.gz can be downloaded from the following website: (accessible Oct. 1, 2023)
+where appell_0.0-4.tar.gz can be downloaded from the following website: (accessible Jan. 31, 2025)
 https://cran.r-project.org/src/contrib/Archive/appell/
-If you use Windows OS, then you will need to install Rtools in advance.
 
+1. If you use Windows OS, then you will need to install Rtools in advance.
+   
+1. If you use MacOS, then try the following steps on terminal to install gfortran and its paths:
+  1. Install Homebrew
+     - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  2. Install gfortran (Fortran Compiler) via Homebrew
+     - brew install gcc
+  3. Create ~/.R/Makevars, and add the following to the file (find the paths on your computer first):
+     FC = /opt/homebrew/bin/gfortran
+     F77 = /opt/homebrew/bin/gfortran
+     LDFLAGS += -L/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14  # Ad$
+     FLIBS = -lgfortran
+
+     - use 'which gfortran' to find your path '/opt/homebrew/bin/gfortran'
+     - use 'find /opt/homebrew -name "libgfortran*"' to find path '/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14'
+  4. On R, use 'install.packages("Pathto/appell_0.0-4.tar.gz", repos = NULL, type = "source")' to install _appell_
 
 _hypergeo_ can be installed easily:
 ```{r, eval=FALSE}
