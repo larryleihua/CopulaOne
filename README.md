@@ -43,25 +43,22 @@ https://cran.r-project.org/src/contrib/Archive/appell/
         ```
         FC = /opt/homebrew/bin/gfortran
         F77 = /opt/homebrew/bin/gfortran
-        LDFLAGS += -L/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14  # Ad$
+        LDFLAGS += -L/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14
         FLIBS = -lgfortran
         ```
    
-        - use
+        - use following to find your path '/opt/homebrew/bin/gfortran'
           ```
           which gfortran
-          ```
-          to find your path '/opt/homebrew/bin/gfortran'
-        - use
+          ```          
+        - use following to find path '/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14'
           ```
           find /opt/homebrew -name "libgfortran*"
           ```
-          to find path '/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14'
-     1. On R, use
+     1. On R, use following to install _appell_
         ```
         install.packages("Pathto/appell_0.0-4.tar.gz", repos = NULL, type = "source")
         ```
-        to install _appell_
 
 _hypergeo_ can be installed easily:
 ```{r, eval=FALSE}
