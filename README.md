@@ -36,16 +36,32 @@ https://cran.r-project.org/src/contrib/Archive/appell/
      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
      ```
   3. Install gfortran (Fortran Compiler) via Homebrew
-     - brew install gcc
-  4. Create ~/.R/Makevars, and add the following to the file (find the paths on your computer first):
+     ```
+     brew install gcc
+     ```
+  5. Create ~/.R/Makevars, and add the following to the file (find the paths on your computer first):
+     ```
      FC = /opt/homebrew/bin/gfortran
      F77 = /opt/homebrew/bin/gfortran
      LDFLAGS += -L/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14  # Ad$
      FLIBS = -lgfortran
+     ```
 
-     - use 'which gfortran' to find your path '/opt/homebrew/bin/gfortran'
-     - use 'find /opt/homebrew -name "libgfortran*"' to find path '/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14'
-  5. On R, use 'install.packages("Pathto/appell_0.0-4.tar.gz", repos = NULL, type = "source")' to install _appell_
+     - use
+       ```
+       which gfortran
+       ```
+       to find your path '/opt/homebrew/bin/gfortran'
+     - use
+       ```
+       find /opt/homebrew -name "libgfortran*"
+       ```
+       to find path '/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/14'
+  7. On R, use
+     ```
+     install.packages("Pathto/appell_0.0-4.tar.gz", repos = NULL, type = "source")
+     ```
+     to install _appell_
 
 _hypergeo_ can be installed easily:
 ```{r, eval=FALSE}
