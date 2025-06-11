@@ -18,7 +18,7 @@ Joint CDF of the GGEE copula model
 }
 \examples{
 pGGEE_COP(0.9, 0.3, 1, 1)
-pGGEE_COP(0.9, 0.3, 1, 1, integration=T)
+pGGEE_COP(0.9, 0.3, 1, 1, integration=TRUE)
 }
 \keyword{CDF}
 \keyword{Joint}

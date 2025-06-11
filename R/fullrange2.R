@@ -63,7 +63,7 @@ pGGEE <- function(x, al, be, maxit=100000)
 }
 
 #' Density of univariate margins of the GGEE model
-#' 
+#'
 #' Density of univariate margins of the GGEE model
 #' @param x:   data input.
 #' @param al,be:   parameters.
@@ -73,8 +73,8 @@ pGGEE <- function(x, al, be, maxit=100000)
 #' dGGEE(3, 1, 2)
 dGGEE <- function(x, al, be, maxit=100000)
 {
-  out <- tryCatch((al * be)/(al + be)/(al + be + 1) * Re(hypergeo::hypergeo(2, be + 1, 
-                                                                            al + be + 2, 1 - x, tol = 1e-06, maxiter = maxit)), error = function(err) FALSE, 
+  out <- tryCatch((al * be)/(al + be)/(al + be + 1) * Re(hypergeo::hypergeo(2, be + 1,
+                                                                            al + be + 2, 1 - x, tol = 1e-06, maxiter = maxit)), error = function(err) FALSE,
                   warning = function(err) FALSE)
   if (all(!is.logical(out) & is.finite(out)))
     return(out) else
@@ -95,7 +95,7 @@ intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
 
 
 #' Joint density of the GGEE model
-#' 
+#'
 #' Joint density of the GGEE model
 #' @param x1,x2:   data input.
 #' @param al,be:   parameters.
@@ -105,22 +105,22 @@ intg_jdGGEE <- Vectorize(intg_jdGGEE, "y")
 #' @export
 #' @examples
 #' jdGGEE(10,2, 1, 1)
-#' jdGGEE(10,2, 1, 1, integration = T)
+#' jdGGEE(10,2, 1, 1, integration = TRUE)
 jdGGEE <- function(x1, x2, al, be, flag = 1, integration = F)
 {
   if(integration==F)
   {
     tem1 <- al * be * (al + 1) * (be + 1)/(al + be)/(al + be + 1)/(al + be + 2)/(al + be + 3)
-    tem2 <- tryCatch(Re(appell::appellf1(be + 2, 2, 2, al + be + 4, 1 - x1, 1 - x2, 
+    tem2 <- tryCatch(Re(appell::appellf1(be + 2, 2, 2, al + be + 4, 1 - x1, 1 - x2,
                                          userflag = flag)$val), error = function(err) FALSE, warning = function(err) FALSE)
     if (all(!is.logical(tem2) & is.finite(tem2)))
       return(tem1 * tem2) else
       {
         cat("Warning! NA returned!", "\n")
         return(NA)
-      }  
+      }
   }else{
-    tmp <- tryCatch(integrate(intg_jdGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
+    tmp <- tryCatch(integrate(intg_jdGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2,
                               al = al, be = be, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
@@ -155,12 +155,12 @@ qGGEE <- function(u, al, be, maxit=100000)
     DEN <- 1
     kount <- 0
     t <- 0
-    
+
     # -------------------------------- Now use modified Newton-Raphson
     # --------------------------------
     lower <- -1e+20
     upper <- 1e+20
-    
+
     while ((kount < maxit) && (abs(u - CDF) > tol))
     {
       kount <- kount + 1
@@ -199,7 +199,7 @@ Dx2_GGEE <- function(x1, x2, al, be)
   if (!is.na(tem1))
   {
     intg_Dx2_GGEE <- Vectorize(intg_Dx2_GGEE, "r")
-    tmp <- tryCatch(integrate(intg_Dx2_GGEE, lower = 0, upper = Inf, x1 = x1, x2 = x2, 
+    tmp <- tryCatch(integrate(intg_Dx2_GGEE, lower = 0, upper = Inf, x1 = x1, x2 = x2,
                               al = al, be = be, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
@@ -246,7 +246,7 @@ rGGEE_COP <- function(n, al, be, seed = NULL, maxit=100000)
     R2[R2==0] <- rgamma(n2, shape=be, 1)
     n2 <- sum(R2==0)
   }
-  
+
   R <- R1 / R2
   H1 <- rexp(n)
   H2 <- rexp(n)
@@ -258,7 +258,7 @@ rGGEE_COP <- function(n, al, be, seed = NULL, maxit=100000)
   X22[X22==0] <- .Machine$double.xmin
   X11[X11==Inf] <- .Machine$double.xmax
   X22[X22==Inf] <- .Machine$double.xmax
-  
+
   u <- pGGEE(X11,al,be, maxit=maxit)
   v <- pGGEE(X22,al,be, maxit=maxit)
   cbind(u,v)
@@ -367,7 +367,7 @@ intg_jpGGEE <- Vectorize(intg_jpGGEE, "y")
 #' @export
 #' @examples
 #' jpGGEE(0.2, 0.4, 1, 1)
-#' jpGGEE(0.2, 0.4, 1, 1, integration = T)
+#' jpGGEE(0.2, 0.4, 1, 1, integration = TRUE)
 jpGGEE <- function(x1,x2,al,be,flag=1, integration = F, maxit=100000)
 {
   tem1 <- pGGEE(x1,al,be, maxit=maxit)
@@ -379,7 +379,7 @@ jpGGEE <- function(x1,x2,al,be,flag=1, integration = F, maxit=100000)
     out <- tem1 + tem2 - 1 + tem3 * tem4
     return(out)
   }else{
-    tmp <- tryCatch(integrate(intg_jpGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2, 
+    tmp <- tryCatch(integrate(intg_jpGGEE, lower = 0, upper = 1, x1 = x1, x2 = x2,
                               al = al, be = be, stop.on.error = T), error = function(err) FALSE, warning = function(err) FALSE)
     if (!is.logical(tmp))
     {
@@ -389,7 +389,7 @@ jpGGEE <- function(x1,x2,al,be,flag=1, integration = F, maxit=100000)
     {
       cat("Warning! NA returned! (jpGGEE)", "\n")
       return(NA)
-    }    
+    }
   }
 }
 
@@ -403,7 +403,7 @@ jpGGEE <- function(x1,x2,al,be,flag=1, integration = F, maxit=100000)
 #' @export
 #' @examples
 #' pGGEE_COP(0.9, 0.3, 1, 1)
-#' pGGEE_COP(0.9, 0.3, 1, 1, integration=T)
+#' pGGEE_COP(0.9, 0.3, 1, 1, integration=TRUE)
 pGGEE_COP <- function(u,v,al,be,flag=1, integration=F, maxit=100000)
 {
   q1 <- qGGEE(u,al,be,maxit=maxit)
@@ -415,23 +415,23 @@ intg_tau_E <- function(xy,al,be)
 {
   x <- xy[1]
   y <- xy[2]
-  
+
   if(x==1 | y==1 | x==0 | y==0)
   {
-    return(0) 
+    return(0)
   }else
   {
-    tem1 <- (-y*log((-1+x)*y/((-1+y)*x))+y*log((-1+x)*y/((-1+y)*x))*x-x+y)^2 
+    tem1 <- (-y*log((-1+x)*y/((-1+y)*x))+y*log((-1+x)*y/((-1+y)*x))*x-x+y)^2
     tem2 <- x*(1-x)^(al-1)*(1-y)^(1+al)*(x*y)^be
     tem3 <- (y*(y^2-2*x*y+x^2)^2)
   }
-  
+
   if(x == y)
   {
-    out <- (1/4)*(((1-x)*(1-y))^(al-1))*((x*y)^(be-1))   
+    out <- (1/4)*(((1-x)*(1-y))^(al-1))*((x*y)^(be-1))
   }else
   {
-    out <- tem1 * tem2 / tem3  
+    out <- tem1 * tem2 / tem3
   }
   if(is.finite(out)) out else 0
 }
@@ -481,7 +481,7 @@ tauGGEE_COP_sim <- function(al, be, n=10000000)
   X22[X22==0] <- .Machine$double.xmin
   X11[X11==Inf] <- .Machine$double.xmax
   X22[X22==Inf] <- .Machine$double.xmax
-  
+
   R1_ <- rgamma(n, shape=al, 1)
   R2_ <- rgamma(n, shape=be, 1)
   R1_[R1_==0] <- .Machine$double.xmin
@@ -497,7 +497,7 @@ tauGGEE_COP_sim <- function(al, be, n=10000000)
   X22_[X22_==0] <- .Machine$double.xmin
   X11_[X11_==Inf] <- .Machine$double.xmax
   X22_[X22_==Inf] <- .Machine$double.xmax
-  
+
   out <- 4*(sum((X11 <= X11_)&(X22 <= X22_)) / n) - 1
   out
 }
@@ -526,7 +526,7 @@ sprGGEE_COP <- function(al,be,flag=1, integration=F)
   tmp <- try(cubature::adaptIntegrate(intg_spr_C, al=al, be=be, flag=flag,integration=integration,lowerLimit = c(0,0), upperLimit = c(1,1)), silent = T)
   if(is(tmp,"try-error"))
   {
-   cat("sprGGEE_COP error at: ", al, be, "\n"); return(NA)    
+   cat("sprGGEE_COP error at: ", al, be, "\n"); return(NA)
   }else{intg <- tmp$integral}
   out <- 12 * intg - 3
   out
@@ -542,7 +542,7 @@ HX_PPPP <- function(mu, th1, th2, ga1, ga2)
   tem2 <- ga1+ga2
   tem3 <- mu+ga1
   tem4 <- mu-ga2
-  
+
   if(mu!=-ga1 & mu!=ga2)
   {
     if( 1 >= th2 )
@@ -585,7 +585,7 @@ HX_PPPP <- function(mu, th1, th2, ga1, ga2)
 # HX_PPPP(2, 0.6, 1.7, 1.2, 0.7)
 
 #' CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
-#' 
+#'
 #' CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
@@ -606,7 +606,7 @@ pPP <- function(x, ga1, ga2)
 }
 
 #' density of univariate margins of the PP model (i.e., Pareto I / Pareto I)
-#' 
+#'
 #' density of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
@@ -627,7 +627,7 @@ dPP <- function(x, ga1, ga2)
 }
 
 #' quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
-#' 
+#'
 #' quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 #' @param x:   data input.
 #' @param al,be:   parameters.
@@ -648,7 +648,7 @@ g_PPPP <- function(a1,a2,a3,a4)
 }
 
 #' CDF of univariate margins of the PPPP model
-#' 
+#'
 #' CDF of univariate margins of the PPPP model
 #' @param x:   data input.
 #' @param al,be,a,b:   parameters.
@@ -656,7 +656,7 @@ g_PPPP <- function(a1,a2,a3,a4)
 #' @keywords CDF
 #' @export
 #' @examples
-#' plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=F)}), type="l",ylab="")
+#' plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=FALSE)}), type="l",ylab="")
 pPPPP <- function(x, al, be, a, b, log=F)
 {
   if(x<=.Machine$double.xmin)
@@ -670,7 +670,7 @@ pPPPP <- function(x, al, be, a, b, log=F)
     out <- FR-a/(a+b)*(x^(-b))*I1+b/(a+b)*(x^(a))*I2
     if(log==F)
     {
-      return(out)  
+      return(out)
     }else
     {
       return(log(out))
@@ -692,7 +692,7 @@ pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 }
 
 #' quantile of univariate margins of the PPPP model
-#' 
+#'
 #' quantile of univariate margins of the PPPP model
 #' @param u:   data input.
 #' @param al,be,a,b:   parameters.
@@ -700,8 +700,9 @@ pPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al, be, a, b)
 #' @keywords quantile
 #' @export
 #' @examples
-#' plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1,log=F)}), type="l",ylab="")
-
+#' \dontrun{
+#' plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1)}), type="l",ylab="")
+#' }
 # try Newton
 qPPPP <- function(u, al, be, a, b, maxit=100000)
 {
@@ -716,12 +717,12 @@ qPPPP <- function(u, al, be, a, b, maxit=100000)
     maxiter <- maxit
     kount <- 0
     t <- 0
-    
+
     # -------------------------------- Now use modified Newton-Raphson
     # --------------------------------
     lower <- -1e+20
     upper <- 1e+20
-    
+
     while ((kount < maxiter) && (abs(u - CDF) > tol))
     {
       kount <- kount + 1
@@ -745,12 +746,12 @@ qPPPP <- function(u, al, be, a, b, maxit=100000)
   return(out)
 }
 
-# this is not reliable 
+# this is not reliable
 # qPPPP_not_reliable <- function(u, al, be, a, b, log=T)
 # {
 #   if(log==F)
 #   {
-#     out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root  
+#     out <- uniroot(function(x){pPPPP(x,al,be,a,b)-u}, c(0,9e99))$root
 #   }else
 #   {
 #     out <- uniroot(function(x){pPPPP(x,al,be,a,b,log=log)-log(u)}, c(1e-20,9e99))$root
@@ -759,7 +760,7 @@ qPPPP <- function(u, al, be, a, b, maxit=100000)
 # }
 
 #' Density of univariate margins of the PPPP model (a!=al, b!=be)
-#' 
+#'
 #' Density of univariate margins of the PPPP model (a!=al, b!=be)
 #' @param x:   data input.
 #' @param al,be,a,b:   parameters.
@@ -790,7 +791,7 @@ dPPPP_this_is_the_case_a_not_al_b_not_be <- function(x, al,be,a,b)
 }
 
 #' Joint density of the PPPP model
-#' 
+#'
 #' Joint density of the PPPP model
 #' @param x1,x2:   data input.
 #' @param al,be,a,b:   parameters.
@@ -992,7 +993,7 @@ rPPPP_COP <- function(n, al, be, a, b, seed = NULL)
   R2[R2==Inf] <- .Machine$double.xmax
 
   R <- R1 / R2
-  
+
   H1 <- sapply(u3, function(u){qParetoI(u, b)})
   H11 <- sapply(u4, function(u){qParetoI(u, a)})
   H1[H1==Inf] <- .Machine$double.xmax
@@ -1010,7 +1011,7 @@ rPPPP_COP <- function(n, al, be, a, b, seed = NULL)
   X22[X22==0] <- .Machine$double.xmin
   X11[X11==Inf] <- .Machine$double.xmax
   X22[X22==Inf] <- .Machine$double.xmax
-  
+
   u <- sapply(X11, function(x){pPPPP(x, al, be, a, b)})
   v <- sapply(X22, function(x){pPPPP(x, al, be, a, b)})
   cbind(u,v)
@@ -1070,7 +1071,7 @@ pPPPP_COP <- function(u,v,al,be,a,b)
     out <- v
   }else if(v==1)
   {
-    out <- u 
+    out <- u
   }else
   {
     q1 <- qPPPP(u,al,be,a,b)

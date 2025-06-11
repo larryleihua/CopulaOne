@@ -17,6 +17,8 @@ qPPPP(u, al, be, a, b, maxit = 1e+05)
 quantile of univariate margins of the PPPP model
 }
 \examples{
-plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1,log=F)}), type="l",ylab="")
+\dontrun{
+plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1)}), type="l",ylab="")
+}
 }
 \keyword{quantile}

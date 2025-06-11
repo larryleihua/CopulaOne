@@ -16,7 +16,7 @@ Joint CDF of the GGEE model
 }
 \examples{
 jpGGEE(0.2, 0.4, 1, 1)
-jpGGEE(0.2, 0.4, 1, 1, integration = T)
+jpGGEE(0.2, 0.4, 1, 1, integration = TRUE)
 }
 \keyword{CDF}
 \keyword{Joint}

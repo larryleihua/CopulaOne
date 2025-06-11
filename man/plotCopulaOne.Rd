@@ -30,9 +30,11 @@ plotCopulaOne(
 Contour plots based on either normal scores or uniform scores
 }
 \examples{
+\dontrun{
 plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
 plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
+}
 }
 \keyword{contour}
 \keyword{plot}

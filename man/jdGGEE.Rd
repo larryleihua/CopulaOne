@@ -20,7 +20,7 @@ Joint density of the GGEE model
 }
 \examples{
 jdGGEE(10,2, 1, 1)
-jdGGEE(10,2, 1, 1, integration = T)
+jdGGEE(10,2, 1, 1, integration = TRUE)
 }
 \keyword{Joint}
 \keyword{density}

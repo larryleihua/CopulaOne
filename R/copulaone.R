@@ -41,7 +41,7 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' @keywords fitting
 #' @export
 #' @examples
-#' # DO NOT run, and it takes time!
+#' \dontrun{
 #' data("euro0306")
 #' dat <- uscore(euro0306[,c(2,3)])[1:100,]
 #' par0 <- c(0.3, 0.3)
@@ -54,7 +54,7 @@ seqRun <- function(i, dat, nco, para, flag=1, integration=F, copula_family="PPPP
 #' fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 #' patternpar <- c(1,2,3,3) # the last two parameters are the same and are to be estimated
 #' fit2 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
-
+#' }
 fitCopulaOne <- function(par0, patternpar=seq(1,length(par0)), dat, flag=1, integration=F, opt="L-BFGS-B", se=F, lower=rep(0.1, length(unique(patternpar))), upper=rep(5, length(unique(patternpar))), trace=0, factr=1e9, printlevel=0, copula_family="PPPP")
 {
   dat <- as.matrix(dat)
@@ -137,9 +137,11 @@ fitCopulaOne <- function(par0, patternpar=seq(1,length(par0)), dat, flag=1, inte
 #' @keywords contour plot
 #' @export
 #' @examples
+#' \dontrun{
 #' plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
 #' plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
+#' }
 plotCopulaOne <- function(para, marg="normal", drawlabels=T, flag=1, integration=F, resolution=30, copula_family="PPPP", main=NULL)
 {
   zvec <- seq(-2.5, 2.5, length=resolution)

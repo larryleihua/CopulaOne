@@ -11,7 +11,7 @@ rGGEE_COP(n, al, be, seed = NULL, maxit = 1e+05)
 
 \item{n:}{sample size to be generated.}
 
-\item{seed:}{seed for randomness, and default is 1}
+\item{seed:}{seed for randomness}
 }
 \description{
 Generating random samples based on the bivariate copula that has full-range tail dependence in both upper and lower tails

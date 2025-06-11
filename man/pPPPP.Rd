@@ -17,6 +17,6 @@ pPPPP(x, al, be, a, b, log = F)
 CDF of univariate margins of the PPPP model
 }
 \examples{
-plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=F)}), type="l",ylab="")
+plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=FALSE)}), type="l",ylab="")
 }
 \keyword{CDF}

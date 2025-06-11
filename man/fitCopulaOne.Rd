@@ -39,7 +39,7 @@ fitCopulaOne(
 Fit bivariate data with the full-range tail dependence copula based on maximum likelihood
 }
 \examples{
-# DO NOT run, and it takes time!
+\dontrun{
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:100,]
 par0 <- c(0.3, 0.3)
@@ -52,5 +52,6 @@ patternpar <- c(1,2,0,0) # the last two parameters are not to be estimated and f
 fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 patternpar <- c(1,2,3,3) # the last two parameters are the same and are to be estimated
 fit2 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
+}
 }
 \keyword{fitting}

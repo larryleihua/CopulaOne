@@ -11,7 +11,7 @@ rPPPP_COP(n, al, be, a, b, seed = NULL)
 
 \item{n:}{sample size to be generated.}
 
-\item{seed:}{seed for randomness, and default is 1}
+\item{seed:}{seed for randomness}
 }
 \description{
 Generating random samples based on the PPPP copula
