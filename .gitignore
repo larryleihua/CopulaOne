@@ -12,3 +12,4 @@ prj
 # R Environment Variables
 .Renviron
 .Rbuildignore
+.Rapp.history
