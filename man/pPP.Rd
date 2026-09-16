@@ -7,9 +7,14 @@
 pPP(x, ga1, ga2)
 }
 \arguments{
-\item{x:}{data input.}
+\item{x}{Numeric marginal observations.}
 
-\item{al, be:}{parameters.}
+\item{ga1}{Positive lower-tail shape parameter.}
+
+\item{ga2}{Positive upper-tail shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
@@ -17,4 +22,4 @@ CDF of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 \examples{
 plot(sapply(seq(0,10, length=50), function(x){pPP(x, 2,2)}), type="l")
 }
-\keyword{CDF}
+\keyword{distribution}

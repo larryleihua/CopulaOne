@@ -7,9 +7,14 @@
 qPP(u, ga1, ga2)
 }
 \arguments{
-\item{x:}{data input.}
+\item{u}{Probability or first copula argument.}
 
-\item{al, be:}{parameters.}
+\item{ga1}{Positive lower-tail shape parameter.}
+
+\item{ga2}{Positive upper-tail shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
@@ -17,4 +22,4 @@ quantile of univariate margins of the PP model (i.e., Pareto I / Pareto I)
 \examples{
 plot(sapply(seq(0.99,1-0.001, length=1000), function(x){qPP(x, 0.2,0.3)}), type="l")
 }
-\keyword{quantile}
+\keyword{distribution}

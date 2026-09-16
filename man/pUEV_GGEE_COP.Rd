@@ -7,9 +7,14 @@
 pUEV_GGEE_COP(u, v, b)
 }
 \arguments{
-\item{u, }{v: inputs for the extreme value copula}
+\item{u}{Probability or first copula argument.}
 
-\item{b:}{the parameter of the extreme value copula}
+\item{v}{Second copula argument.}
+
+\item{b}{Dependence parameter; 0 < b < 1 uses the extreme-value formula, otherwise the CDF is u*v.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint cdf of the upper extreme value copula of the GGEE copula
@@ -17,7 +22,4 @@ Joint cdf of the upper extreme value copula of the GGEE copula
 \examples{
 pUEV_GGEE_COP(0.3, 0.4, 1.2)
 }
-\keyword{copula}
-\keyword{extreme}
-\keyword{upper}
-\keyword{value}
+\keyword{distribution}

@@ -7,11 +7,20 @@
 qPPPP(u, al, be, a, b, maxit = 1e+05)
 }
 \arguments{
-\item{al, be, a, b:}{parameters.}
+\item{u}{Probability or first copula argument.}
 
-\item{u:}{data input.}
+\item{al}{Positive first shape parameter.}
 
-\item{log:}{if use log in it but the result is still the original scale}
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 quantile of univariate margins of the PPPP model
@@ -21,4 +30,4 @@ quantile of univariate margins of the PPPP model
 plot(sapply(seq(0.001,0.999, length=100), function(x){qPPPP(x, 0.3, 1.3, 1, 1)}), type="l",ylab="")
 }
 }
-\keyword{quantile}
+\keyword{distribution}

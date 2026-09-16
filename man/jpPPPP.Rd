@@ -7,9 +7,20 @@
 jpPPPP(x1, x2, al, be, a, b)
 }
 \arguments{
-\item{x1, x2:}{data input.}
+\item{x1}{First marginal observation.}
 
-\item{al, be, a, b:}{parameters.}
+\item{x2}{Second marginal observation.}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint CDF of the PPPP model
@@ -17,5 +28,4 @@ Joint CDF of the PPPP model
 \examples{
 jpPPPP(2,2, 1.2, 0.8, 1, 1)
 }
-\keyword{CDF}
-\keyword{Joint}
+\keyword{distribution}

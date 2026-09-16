@@ -7,17 +7,24 @@
 pUEV_PPPP_COP(u, v, be, a, b)
 }
 \arguments{
-\item{u, }{v: inputs for the extreme value copula}
+\item{u}{Probability or first copula argument.}
 
-\item{be, a, b:}{the parameters of the extreme value copula}
+\item{v}{Second copula argument.}
+
+\item{be}{Finite positive parameter. If b <= be the copula is independence. The case a - b + be = 0 uses its analytic limit.}
+
+\item{a}{Finite positive parameter. If b <= be the copula is independence. The case a - b + be = 0 uses its analytic limit.}
+
+\item{b}{Finite positive parameter. If b <= be the copula is independence. The case a - b + be = 0 uses its analytic limit.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint cdf of the upper extreme value copula of the PPPP copula
 }
 \examples{
-pUEV_PPPP_COP(0.2, 0.4, 1.2,1,1)
+pUEV_PPPP_COP(0.2, 0.4, 1.2, 1, 1)
+pUEV_PPPP_COP(0.3, 0.4, 1, 1, 2)
 }
-\keyword{copula}
-\keyword{extreme}
-\keyword{upper}
-\keyword{value}
+\keyword{distribution}

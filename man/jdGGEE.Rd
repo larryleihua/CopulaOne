@@ -7,13 +7,20 @@
 jdGGEE(x1, x2, al, be, flag = 1, integration = F)
 }
 \arguments{
-\item{x1, x2:}{data input.}
+\item{x1}{First marginal observation.}
 
-\item{al, be:}{parameters.}
+\item{x2}{Second marginal observation.}
 
-\item{integration}{if T: use numerical integration instead of appellf1, default is F}
+\item{al}{Positive first shape parameter.}
 
-\item{flag:}{flag used in appell::appellf1()}
+\item{be}{Positive second shape parameter.}
+
+\item{flag}{Method flag passed to appell::appellf1().}
+
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint density of the GGEE model
@@ -22,5 +29,4 @@ Joint density of the GGEE model
 jdGGEE(10,2, 1, 1)
 jdGGEE(10,2, 1, 1, integration = TRUE)
 }
-\keyword{Joint}
-\keyword{density}
+\keyword{distribution}

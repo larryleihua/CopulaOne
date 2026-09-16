@@ -7,9 +7,18 @@
 C2GGEE_COP(u, v, al, be, maxit = 1e+05)
 }
 \arguments{
-\item{u, v:}{data input.}
+\item{u}{Probability or first copula argument.}
 
-\item{al, be:}{parameters.}
+\item{v}{Conditioning probabilities strictly in (0,1).}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Partial derivative wrt the second argument of the GGEE copula
@@ -17,5 +26,4 @@ Partial derivative wrt the second argument of the GGEE copula
 \examples{
 C2GGEE_COP(0.2, 0.6, al = 1.2, be = 0.8)
 }
-\keyword{conditional}
-\keyword{copula}
+\keyword{distribution}

@@ -7,9 +7,20 @@
 dPPPP_COP(u, v, al, be, a, b)
 }
 \arguments{
-\item{u, v}{values in (0,1).}
+\item{u}{Probability or first copula argument.}
 
-\item{al, be, a, b}{the four shape parameters.}
+\item{v}{Second copula argument.}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 PPPP_COP - Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
@@ -17,5 +28,4 @@ PPPP_COP - Copula density function of the bivariate copula that has full-range t
 \examples{
 dPPPP_COP(0.2, 0.4, 1,1,2,2)
 }
-\keyword{copula}
-\keyword{density}
+\keyword{distribution}

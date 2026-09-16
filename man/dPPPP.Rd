@@ -2,19 +2,28 @@
 % Please edit documentation in R/fullrange2.R
 \name{dPPPP}
 \alias{dPPPP}
-\title{Density of univariate margins of the PPPP model (a!=al, b!=be)}
+\title{Density of univariate margins of the PPPP model}
 \usage{
 dPPPP(x, al, be, a, b)
 }
 \arguments{
-\item{al, be, a, b:}{parameters.}
+\item{x}{Numeric marginal observations.}
 
-\item{x:}{data input.}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
-Density of univariate margins of the PPPP model (a!=al, b!=be)
+Density of univariate margins of the PPPP model
 }
 \examples{
 plot(sapply(seq(0,20, length=100), function(x){dPPPP(x, 1,1,2,2)}), type="l",ylab="")
 }
-\keyword{Density}
+\keyword{distribution}

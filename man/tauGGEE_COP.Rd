@@ -7,7 +7,12 @@
 tauGGEE_COP(al, be)
 }
 \arguments{
-\item{al, be}{the two shape parameters.}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Kendall's tau of the bivariate copula that has full-range tail dependence in both upper and lower tails
@@ -15,5 +20,4 @@ Kendall's tau of the bivariate copula that has full-range tail dependence in bot
 \examples{
 tauGGEE_COP(0.5, 1)
 }
-\keyword{Kendall's}
-\keyword{tau}
+\keyword{distribution}

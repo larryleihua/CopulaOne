@@ -7,9 +7,20 @@
 pPPPP_COP(u, v, al, be, a, b)
 }
 \arguments{
-\item{u, v:}{data input.}
+\item{u}{Probability or first copula argument.}
 
-\item{al, }{be, a,b:   parameters.}
+\item{v}{Second copula argument.}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint CDF of the PPPP copula model
@@ -17,5 +28,4 @@ Joint CDF of the PPPP copula model
 \examples{
 pPPPP_COP(0.9, 0.3, 1.2, 0.8, 1, 1)
 }
-\keyword{CDF}
-\keyword{Joint}
+\keyword{distribution}

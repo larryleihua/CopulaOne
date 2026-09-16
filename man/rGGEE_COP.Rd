@@ -7,11 +7,18 @@
 rGGEE_COP(n, al, be, seed = NULL, maxit = 1e+05)
 }
 \arguments{
-\item{al, be:}{the two shape parameters.}
+\item{n}{Number of observations to generate.}
 
-\item{n:}{sample size to be generated.}
+\item{al}{Positive first shape parameter.}
 
-\item{seed:}{seed for randomness}
+\item{be}{Positive second shape parameter.}
+
+\item{seed}{Optional integer random seed.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+A two-column numeric matrix of uniform scores.
 }
 \description{
 Generating random samples based on the bivariate copula that has full-range tail dependence in both upper and lower tails
@@ -19,4 +26,4 @@ Generating random samples based on the bivariate copula that has full-range tail
 \examples{
 rGGEE_COP(20, 1.2, 0.2, seed = 100)
 }
-\keyword{simulation}
+\keyword{distribution}

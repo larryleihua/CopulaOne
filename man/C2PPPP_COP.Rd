@@ -7,9 +7,20 @@
 C2PPPP_COP(u, v, al, be, a, b)
 }
 \arguments{
-\item{u, v:}{data input.}
+\item{u}{Probability or first copula argument.}
 
-\item{al, be, a, b:}{parameters.}
+\item{v}{Conditioning probabilities strictly in (0,1).}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Partial derivative wrt the second argument of the PPPP copula
@@ -17,5 +28,4 @@ Partial derivative wrt the second argument of the PPPP copula
 \examples{
 C2PPPP_COP(0.2, 0.6, al=1.2, be=0.8, a=1, b=1)
 }
-\keyword{conditional}
-\keyword{copula}
+\keyword{distribution}

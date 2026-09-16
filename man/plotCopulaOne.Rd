@@ -7,34 +7,44 @@
 plotCopulaOne(
   para,
   marg = "normal",
-  drawlabels = T,
+  drawlabels = TRUE,
   flag = 1,
-  integration = F,
+  integration = FALSE,
   resolution = 30,
-  copula_family = "PPPP",
+  copula_family = "FRA1",
   main = NULL
 )
 }
 \arguments{
-\item{para:}{vector of parameters (GGEE: a, b; PPPP: al, be, a, b)}
+\item{para}{Parameters: eta, theta for FRA1; al, be for GGEE; al, be, a, b for PPPP.}
 
-\item{marg:}{indicate normal scores or uniform scores (default: marg = "normal")}
+\item{marg}{Plot margins: normal or uniform.}
 
-\item{resolution:}{number of evaluations for each dimension (default is 30)}
+\item{drawlabels}{Logical; label contour lines.}
 
-\item{flag:}{used in the appell function (default is 1)}
+\item{flag}{Method flag passed to appell::appellf1().}
 
-\item{main:}{title of the plot, default: details of the plot}
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
+
+\item{resolution}{Number of grid evaluations per dimension, an integer of at least 2.}
+
+\item{copula_family}{Copula family: FRA1 (default), GGEE, or PPPP.}
+
+\item{main}{Optional plot title.}
+}
+\value{
+The evaluated density vector, invisibly; draws a contour plot.
 }
 \description{
 Contour plots based on either normal scores or uniform scores
 }
 \examples{
 \dontrun{
+plotCopulaOne(c(0.6, -0.4)) # FRA1: eta=0.6, theta=-0.4
+plotCopulaOne(c(0.6, -0.4), marg="uniform")
 plotCopulaOne(c(0.5, 1.8), copula_family="GGEE")
 plotCopulaOne(c(0.5, 1.8), marg="uniform", resolution=20, copula_family="GGEE")
 plotCopulaOne(c(0.5, 2.1,1,1), resolution=100, copula_family="PPPP")
 }
 }
-\keyword{contour}
-\keyword{plot}
+\keyword{distribution}

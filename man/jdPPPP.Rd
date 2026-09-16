@@ -7,9 +7,20 @@
 jdPPPP(x1, x2, al, be, a, b)
 }
 \arguments{
-\item{x1, x2:}{data input.}
+\item{x1}{First marginal observation.}
 
-\item{al, be, a, b:}{parameters.}
+\item{x2}{Second marginal observation.}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint density of the PPPP model
@@ -17,5 +28,4 @@ Joint density of the PPPP model
 \examples{
 jdPPPP(10,2, 1, 1,2,2)
 }
-\keyword{Joint}
-\keyword{density}
+\keyword{distribution}

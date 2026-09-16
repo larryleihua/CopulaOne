@@ -7,9 +7,16 @@
 qGGEE(u, al, be, maxit = 1e+05)
 }
 \arguments{
-\item{al, be:}{parameters.}
+\item{u}{Probability or first copula argument.}
 
-\item{u:}{quantile between 0 and 1.}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Quantiel of univariate margins of the GGEE model
@@ -17,4 +24,4 @@ Quantiel of univariate margins of the GGEE model
 \examples{
 qGGEE(0.9, 1, 1)
 }
-\keyword{Quantile}
+\keyword{distribution}

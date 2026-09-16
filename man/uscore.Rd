@@ -7,7 +7,12 @@
 uscore(data, aunif = -0.5)
 }
 \arguments{
-\item{data:}{data to be transformed.}
+\item{data}{Numeric vector, matrix, or data frame. Ties use average ranks. Missing values remain NA and are excluded from the sample size separately for each column.}
+
+\item{aunif}{Finite plotting-position offset greater than -1. Scores are (rank + aunif)/(n + 1 + 2*aunif), where n counts non-missing values.}
+}
+\value{
+Uniform scores with the input dimensions and names; data frames return a numeric matrix.
 }
 \description{
 Transform data to uniform scores, this function is from the R package CopulaModel.
@@ -16,5 +21,4 @@ Transform data to uniform scores, this function is from the R package CopulaMode
 data  <- cbind(rnorm(10), rnorm(10))
 uscore(data)
 }
-\keyword{score}
-\keyword{uniform}
+\keyword{distribution}

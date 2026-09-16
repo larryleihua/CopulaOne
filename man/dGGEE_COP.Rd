@@ -4,16 +4,25 @@
 \alias{dGGEE_COP}
 \title{Copula Density Function - GGEE_COP}
 \usage{
-dGGEE_COP(u, v, al, be, flag = 1, integration = F, maxit = 1e+05)
+dGGEE_COP(u, v, al, be, flag = 1, integration = FALSE, maxit = 1e+05)
 }
 \arguments{
-\item{u, v}{values in (0,1).}
+\item{u}{Probability or first copula argument.}
 
-\item{al, be}{the two shape parameters.}
+\item{v}{Second copula argument.}
 
-\item{flag}{used in the Appell's F1 function appellf1() of the R package 'appell'.}
+\item{al}{Positive first shape parameter.}
 
-\item{integration}{if T: use numerical integration instead of appellf1, default is F}
+\item{be}{Positive second shape parameter.}
+
+\item{flag}{Method flag passed to appell::appellf1().}
+
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Copula density function of the bivariate copula that has full-range tail dependence in both upper and lower tails
@@ -21,5 +30,4 @@ Copula density function of the bivariate copula that has full-range tail depende
 \examples{
 dGGEE_COP(0.2, 0.4, 1.2, 0.2)
 }
-\keyword{copula}
-\keyword{density}
+\keyword{distribution}

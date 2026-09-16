@@ -7,11 +7,20 @@
 rPPPP_COP(n, al, be, a, b, seed = NULL)
 }
 \arguments{
-\item{al, }{be, a,b: the two shape parameters.}
+\item{n}{Number of observations to generate.}
 
-\item{n:}{sample size to be generated.}
+\item{al}{Positive first shape parameter.}
 
-\item{seed:}{seed for randomness}
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+
+\item{seed}{Optional integer random seed.}
+}
+\value{
+A two-column numeric matrix of uniform scores.
 }
 \description{
 Generating random samples based on the PPPP copula
@@ -19,4 +28,4 @@ Generating random samples based on the PPPP copula
 \examples{
 plot(rPPPP_COP(100, 1.2, 0.2, 1, 1, seed = 100))
 }
-\keyword{simulation}
+\keyword{distribution}

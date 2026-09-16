@@ -1,17 +1,21 @@
 Package: CopulaOne
-Title: A Collection of full-range tail dependence Copulas
-Version: 0.0.1.201
-Author: Lei Hua [aut, cre],
-Maintainer: Lei Hua <larry.lei.hua@gmail.com>
-Description: This package implements a collection of full-range tail dependence copulas. 
+Title: Full-Range Tail Dependence Copulas
+Version: 0.1.0.000
+Authors@R: person("Lei", "Hua", email = "larry.lei.hua@gmail.com", role = c("aut", "cre"))
+Description: Implements bivariate FRA1, GGEE, and PPPP copulas with full-range
+    upper and lower tail dependence. Provides density and distribution
+    functions, simulation, dependence measures, and maximum likelihood fitting.
 Depends:
     R (>= 4.3)
-License: GPL (>= 3)
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
 Imports:
     hypergeo,
     appell,
     parallel,
-    cubature
+    cubature,
+    stats,
+    graphics,
+    methods
+Config/roxygen2/version: 8.1.0

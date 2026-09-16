@@ -5,48 +5,70 @@
 \title{Model fitting with CopulaOne}
 \usage{
 fitCopulaOne(
-  par0,
-  patternpar = seq(1, length(par0)),
+  par0 = if (copula_family == "PPPP") c(0.2, 0.2, 1, 1) else c(0.2, 0.2),
+  patternpar = seq_along(par0),
   dat,
   flag = 1,
-  integration = F,
+  integration = FALSE,
   opt = "L-BFGS-B",
-  se = F,
-  lower = rep(0.1, length(unique(patternpar))),
-  upper = rep(5, length(unique(patternpar))),
+  se = FALSE,
+  lower = if (copula_family == "FRA1") -1 else 0.1,
+  upper = if (copula_family == "FRA1") 0.95 else 5,
   trace = 0,
   factr = 1e+09,
   printlevel = 0,
-  copula_family = "PPPP"
+  copula_family = "FRA1",
+  workers = getOption("CopulaOne.workers", 1L)
 )
 }
 \arguments{
-\item{trace, }{printlevel: integers for optim() and nlm(), respectively. (default: 0,0)}
+\item{par0}{Initial parameters: eta, theta for FRA1; al, be for GGEE; al, be, a, b for PPPP.}
 
-\item{par:}{initial parameters for (a, b)}
+\item{patternpar}{Nonnegative integer group labels, one per parameter. Zero fixes a parameter at par0; equal positive labels tie parameters. Groups are ordered by label.}
 
-\item{patternpar:}{a vector for assigning parameters to be estimated, and this allows same values of different parameters. For example, if patternpar=c(1,2,3,0,3), then there are 3 parameters to estimate, the 3rd and 5th ones are the same, and the 4th parameter is fixed as specified in the initial parameters (i.e., par)}
+\item{dat}{Two numeric columns of finite scores strictly in (0,1), with at least two observations.}
 
-\item{dat:}{input of data.}
+\item{flag}{Method flag passed to appell::appellf1().}
 
-\item{flag:}{indicate which numerical method for the appell function (default: flag = 1)}
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
 
-\item{integration:}{(Experimental!) using integration instead of appellf1()}
+\item{opt}{Optimization method: L-BFGS-B or nlm. Both enforce the supplied bounds.}
 
-\item{se:}{whether standard errors of parameters are reported (default: se = F)}
+\item{se}{Logical; request Hessian standard errors. Unavailable estimates are NA with a warning.}
+
+\item{lower}{Lower bound, one scalar or one value per free group. Positive for GGEE/PPPP; at least -1 for FRA1.}
+
+\item{upper}{Upper bound, one scalar or one value per free group. Must be less than 1 for FRA1.}
+
+\item{trace}{Trace level for optim().}
+
+\item{factr}{Convergence tolerance multiplier for L-BFGS-B.}
+
+\item{printlevel}{Print level for nlm().}
+
+\item{copula_family}{Copula family: FRA1 (default), GGEE, or PPPP.}
+
+\item{workers}{Positive worker count for GGEE/PPPP; defaults to option CopulaOne.workers or 1. FRA1 is evaluated serially.}
+}
+\value{
+A list with free parameters par, fullpar, value (negative log-likelihood), loglik, convergence, neg, and optional err. For nlm, estimate and minimum are also returned. FRA1 additionally returns branch_results.
 }
 \description{
 Fit bivariate data with the full-range tail dependence copula based on maximum likelihood
 }
 \examples{
 \dontrun{
+uv <- rFRA1_COP(500, eta=0.3, theta=0.4, seed=123)
+fit <- fitCopulaOne(dat=uv) # FRA1, with default initial values
+fit$fullpar # eta, theta
+fit <- fitCopulaOne(c(0.3, 0.4), dat=uv, copula_family="FRA1")
 data("euro0306")
 dat <- uscore(euro0306[,c(2,3)])[1:100,]
 par0 <- c(0.3, 0.3)
 fit <- fitCopulaOne(par0, dat=dat, copula_family="GGEE")
 par0 <- c(0.3, 0.3, 1, 1)
-lower <- rep(0.1, 2)
-upper <- rep(5, 2)
+lower <- 0.1
+upper <- 5
 par0 <- c(0.3, 0.3, 1, 1)
 patternpar <- c(1,2,0,0) # the last two parameters are not to be estimated and fixed to be 1 as indicated in par0
 fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
@@ -54,4 +76,4 @@ patternpar <- c(1,2,3,3) # the last two parameters are the same and are to be es
 fit2 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, lower=lower, upper=upper, copula_family="PPPP")
 }
 }
-\keyword{fitting}
+\keyword{distribution}

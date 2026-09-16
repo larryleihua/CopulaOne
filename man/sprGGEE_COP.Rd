@@ -7,15 +7,23 @@
 sprGGEE_COP(al, be, flag = 1, integration = F)
 }
 \arguments{
-\item{al, be:}{the two shape parameters.}
+\item{al}{Positive first shape parameter.}
 
-\item{flag:}{flag used in the appell::appellf1() function (default is -1L for auto choices)}
+\item{be}{Positive second shape parameter.}
+
+\item{flag}{Method flag passed to appell::appellf1().}
+
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Spearman's rho of the GGEE copula
 }
 \examples{
+\dontrun{
 sprGGEE_COP(1.2, 0.6)
 }
-\keyword{Spearman's}
-\keyword{rho}
+}
+\keyword{distribution}

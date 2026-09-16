@@ -1,24 +1,40 @@
 # CopulaOne - an R package for full-range tail dependence copulas
 
-Warning: This is the development version of the package, please use with caution!
 
-The R package *CopulaOne* implements functions for bivariate copulas that must satisfy the following two properties:
-* It can account for full-range tail dependence for both upper and lower tails.
-* It can account for both reflection symmetry and asymmetry between upper and lower tails.
+The R package *CopulaOne* implements functions for bivariate full-range tail dependence copulas.
 
-Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are numerous parametric bivariate copula families. It is often very time consuming to select copula families from many different candidate copula families. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails, and the upper and lower tails can be either reflection symmetric or asymmetric.
-The package is under active development, and the following copulas have been implemented: GGEE, PPPP. The following figures show how flexible the GGEE and PPPP copulas are. Please refer to [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003) for more details about the GGEE copula, and [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009) for the details about the PPPP copula.
+Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are many parametric bivariate copula families, but they often have specific dependence patterns, which limit their use in real applications. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails. The package is under active development, and the following copulas have been implemented: GGEE, PPPP, FRA1. The following figures show how flexible these copulas are. Please refer to [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003) for more details about the GGEE copula, [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009) for the details about the PPPP copula, and [Hua (2026)] for the details about the FRA1 copula.
 
-|                           |                           | 
-| ------------------------- | ------------------------- |
-| <img src="https://github.com/larryleihua/CopulaOne/blob/master/inst/extdata/GGEE.gif" width="250" height="280" />  |  <img src="https://github.com/larryleihua/CopulaOne/blob/master/inst/extdata/PPPP.gif" width="250" height="280" /> |
+|                       |                       |                       |
+| --------------------- | --------------------- | --------------------- |
+| <img src="https://github.com/larryleihua/CopulaOne/blob/master/inst/extdata/FRA1.gif" width="200" height="224" />  | <img src="https://github.com/larryleihua/CopulaOne/blob/master/inst/extdata/GGEE.gif" width="200" height="224" />  |  <img src="https://github.com/larryleihua/CopulaOne/blob/master/inst/extdata/PPPP.gif" width="200" height="224" /> |
+
+
+CopulaOne implements bivariate copulas with flexible upper and lower tail dependence.
+The default family is **FRA1**; **GGEE** and **PPPP** are also available.
 
 ## Installation
-- The R package CopulaOne can be easily installed from github by the following two lines.
-```{r, eval=FALSE}
-library(devtools)
-install_github("larryleihua/CopulaOne", force=T)
+
+Install `hypergeo`, `appell`, and `cubature` in the library used by your R session,
+then install this source package:
+
+```r
+install.packages(c("hypergeo", "appell", "cubature"))
+install.packages("remotes")
+remotes::install_github("larryleihua/CopulaOne", force=T)
+
+devtools::install_github("larryleihua/CopulaOne", force=T) # alternative method
 ```
+
+If `appell` is unavailable from your repository, its source archive is an alternative:
+
+```r
+install.packages(
+  "https://cran.r-project.org/src/contrib/Archive/appell/appell_0.0-4.tar.gz",
+  repos = NULL, type = "source"
+)
+```
+
 - If there are some issues from the above codes, you may need to install the following R packages first: _appell_ and _hypergeo_.
 
 _appell_ can be installed by the following R codes:
@@ -65,69 +81,85 @@ _hypergeo_ can be installed easily:
 install.packages("hypergeo", dependencies = T)
 ```
 
-## Basic functions
-- Naming rules: The name *GGEE_COP* is used for the two-parameter copula that are based on Gamma-Gamma-Exponential-Exponential mixtures. The name *CopulaOne* is used as a unified platform for implementing various functions that can be used as coherent as possible. For other copulas, replace GGEE by the corresponding names, such as PPPP.
+Installing compiled dependencies from source requires the compiler toolchain for
+that R installation (Rtools on Windows). Check `R.version.string` and `.libPaths()`
+when an installed dependency cannot be found. The package requires R >= 4.3;
+its regression checks have been exercised with R 4.5.3.
 
-- Simulation based on the copula can be done as follows:
-```{r}
+## FRA1
+
+Parameters are ordered `eta` (lower tail), then `theta` (upper tail), each in
+`[-1,1)`. Independence is `eta = theta = -1`.
+
+```r
 library(CopulaOne)
-UU <- rGGEE_COP(10, a=0.5, b=0.8)
+uv <- rFRA1_COP(800, eta = 0.3, theta = 0.4, seed = 123)
+pFRA1_COP(0.3, 0.4, eta = 0.3, theta = 0.4)
+dFRA1_COP(0.3, 0.4, eta = 0.3, theta = 0.4)
+logdFRA1_COP(0.3, 0.4, eta = 0.3, theta = 0.4)
+C2FRA1_COP(0.3, 0.4, eta = 0.3, theta = 0.4)
+C2invFRA1_COP(0.5, 0.4, eta = 0.3, theta = 0.4)
+tailFRA1_COP(eta = 0.3, theta = 0.4)
+dependenceFRA1_COP(eta = 0.3, theta = 0.4)
+fit <- fitCopulaOne(dat = uv)
+fit$fullpar
+plotCopulaOne(fit$fullpar)
 ```
 
-- Joint density, cdf functions can be derived as
-```{r}
-den <- dGGEE_COP(0.2, 0.3, 1.2, 0.5)
-cdf <- pGGEE_COP(0.2, 0.3, 1.2, 0.5)
-cat("The copula density and cdf are:", den, cdf, "\n")
+## GGEE and PPPP
+
+GGEE uses positive parameters `al, be`; PPPP uses positive parameters
+`al, be, a, b`. The distribution and density functions use the same parameter order.
+
+```r
+rGGEE_COP(10, al = 0.5, be = 0.8, seed = 1)
+rPPPP_COP(10, al = 0.5, be = 0.8, a = 1, b = 1, seed = 1)
+dGGEE_COP(0.2, 0.3, al = 1.2, be = 0.5)
+pPPPP_COP(0.2, 0.3, al = 1.2, be = 0.5, a = 1, b = 1)
 ```
 
-- Contour plots can be plotted directly for a given copula as follows.
-```{r fig.width=11, fig.height=6}
-layout(matrix(c(1,2),1,2))
-plotCopulaOne(c(1.2, 0.5), marg = "normal", copula_family = "GGEE")
-plotCopulaOne(c(1.2, 0.5), marg = "uniform", copula_family = "GGEE")
+## Fitting and uniform scores
+
+```r
+data(euro0306)
+x <- euro0306[, c(2, 3)]
+x <- x[complete.cases(x), ]
+uv <- uscore(x)
+fit_PPPP <- fitCopulaOne(c(0.3, 0.3, 1, 1), dat = uv,
+                         patternpar = c(1, 2, 0, 0), copula_family = "PPPP")
+fit_FRA1 <- fitCopulaOne(dat=uv)
 ```
 
-- Kendall's tau and Spearman's rho of the GGEE copula can be evaluated by
-```{r}
-tauGGEE_COP(a=0.7, b=0.4)
-sprGGEE_COP(a=0.7, b=0.4)
+GGEE/PPPP fitting defaults to one worker. Use `workers = 2` or set
+`options(CopulaOne.workers = 2)` to enable parallel evaluation. FRA1 is vectorized
+and runs serially. Worker processes inherit the current library paths.
+
+## Development checks
+
+Run from the repository root with the intended R installation and library:
+
+```sh
+Rscript scripts/check.R
 ```
 
-- Upper extreme value copula of the GGEE copula can also be evaluated with the following joint cdf and pdf functions. Lower extreme value copula should be the same if one exchanges a and b.
-```{r}
-pUEV_GGEE_COP(0.3, 0.4, b=1.2)
-dUEV_GGEE_COP(0.3, 0.4, b=1.2)
-```
+The script builds a source archive and runs `R CMD check --no-manual` in a
+temporary directory, including the regression tests. A Windows CI workflow
+runs the same checks. Generate help files after changing roxygen comments with
+`roxygen2::roxygenise()`.
 
-## Model fitting
-- An example of fitting dependence between exchange rates returns by the GGEE copula [Warning: this step can be slow on your computer!]
-```{r}
-data("euro0306")
-dat <- uscore(euro0306[,c(2,3)])[1:50,]
-par <- c(0.3, 0.3)
-fit <- fitCopulaOne(par, dat=dat, copula_family = "GGEE")
-```
-- An example of fitting dependence between exchange rates returns by the PPPP copula 
-```{r}
-data("euro0306")
-dat <- uscore(euro0306[,c(2,3)])[1:50,]
-par0 <- c(0.3,0.3,1,1)
-patternpar <- c(1,2,0,0)
-fit1 <- fitCopulaOne(par0, patternpar=patternpar, dat=dat, se=F, copula_family = "PPPP")
-```
+## References
 
-## Known issues (i.e., to-do list)
-- [solved] rGGEE_COP has issues when al and/or be are too small, say, 0.01, and rgamma() will generate vary small values so hypergeo::hypergeo will generate lots of boundary values 2.0, making the copula not working.
-
+GGEE: [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003).
+PPPP: [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009).
+FRA1: [Hua (2026)]
 
 ## Citation, please use the following bibtex for citation
 
 ```
-@misc{Hua2018,
+@misc{Hua2026,
   author = {Lei Hua},
   title  = {Copula{O}ne - an {R} package for full-range tail dependence copulas},
-  year   = {2018},
+  year   = {2026},
   howpublished = "\url{https://github.com/larryleihua/CopulaOne}"
 }
 ```

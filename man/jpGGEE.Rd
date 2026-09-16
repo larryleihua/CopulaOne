@@ -7,9 +7,22 @@
 jpGGEE(x1, x2, al, be, flag = 1, integration = F, maxit = 1e+05)
 }
 \arguments{
-\item{x1, x2:}{data input.}
+\item{x1}{First marginal observation.}
 
-\item{al, be:}{parameters.}
+\item{x2}{Second marginal observation.}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{flag}{Method flag passed to appell::appellf1().}
+
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint CDF of the GGEE model
@@ -18,5 +31,4 @@ Joint CDF of the GGEE model
 jpGGEE(0.2, 0.4, 1, 1)
 jpGGEE(0.2, 0.4, 1, 1, integration = TRUE)
 }
-\keyword{CDF}
-\keyword{Joint}
+\keyword{distribution}

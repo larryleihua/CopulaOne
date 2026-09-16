@@ -4,16 +4,22 @@
 \alias{tauGGEE_COP_sim}
 \title{Kendall's tau of the GGEE copula (based on simulations)}
 \usage{
-tauGGEE_COP_sim(al, be, n = 1e+07)
+tauGGEE_COP_sim(al, be, n = 1e+05)
 }
 \arguments{
-\item{al, be}{the two shape parameters.}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{n}{Number of observations to generate.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Kendall's tau of the bivariate copula that has full-range tail dependence in both upper and lower tails
 }
 \examples{
-tauGGEE_COP_sim(0.5, 1)
+tauGGEE_COP_sim(0.5, 1, n=10000)
 }
-\keyword{Kendall's}
-\keyword{tau}
+\keyword{distribution}

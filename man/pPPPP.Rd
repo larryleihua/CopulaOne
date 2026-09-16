@@ -4,14 +4,23 @@
 \alias{pPPPP}
 \title{CDF of univariate margins of the PPPP model}
 \usage{
-pPPPP(x, al, be, a, b, log = F)
+pPPPP(x, al, be, a, b, log = FALSE)
 }
 \arguments{
-\item{al, be, a, b:}{parameters.}
+\item{x}{Numeric marginal observations.}
 
-\item{x:}{data input.}
+\item{al}{Positive first shape parameter.}
 
-\item{log:}{return log or not}
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+
+\item{log}{Logical; return the logarithm of the CDF.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 CDF of univariate margins of the PPPP model
@@ -19,4 +28,4 @@ CDF of univariate margins of the PPPP model
 \examples{
 plot(sapply(seq(0.0001,20, length=50), function(x){pPPPP(x, 1,1,2,2,log=FALSE)}), type="l",ylab="")
 }
-\keyword{CDF}
+\keyword{distribution}

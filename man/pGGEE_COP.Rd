@@ -4,14 +4,25 @@
 \alias{pGGEE_COP}
 \title{Joint CDF of the GGEE copula model}
 \usage{
-pGGEE_COP(u, v, al, be, flag = 1, integration = F, maxit = 1e+05)
+pGGEE_COP(u, v, al, be, flag = 1, integration = FALSE, maxit = 1e+05)
 }
 \arguments{
-\item{u, v:}{data input.}
+\item{u}{Probability or first copula argument.}
 
-\item{al, be:}{parameters.}
+\item{v}{Second copula argument.}
 
-\item{flag:}{flag used in the appell::appellf1() function.}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{flag}{Method flag passed to appell::appellf1().}
+
+\item{integration}{Logical; use numerical integration instead of Appell's function.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Joint CDF of the GGEE copula model
@@ -20,5 +31,4 @@ Joint CDF of the GGEE copula model
 pGGEE_COP(0.9, 0.3, 1, 1)
 pGGEE_COP(0.9, 0.3, 1, 1, integration=TRUE)
 }
-\keyword{CDF}
-\keyword{Joint}
+\keyword{distribution}

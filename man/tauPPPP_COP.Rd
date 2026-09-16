@@ -7,13 +7,23 @@
 tauPPPP_COP(al, be, a, b)
 }
 \arguments{
-\item{al, be, a, b}{the 4 parameters}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{a}{Positive shape parameter.}
+
+\item{b}{Positive shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Kendall's tau of the PPPP copula
 }
 \examples{
+\dontrun{
 tauPPPP_COP(3, 6, 5.9, 6.7)
 }
-\keyword{Kendall's}
-\keyword{tau}
+}
+\keyword{distribution}

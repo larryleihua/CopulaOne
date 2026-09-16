@@ -7,9 +7,16 @@
 pGGEE(x, al, be, maxit = 1e+05)
 }
 \arguments{
-\item{al, be:}{parameters.}
+\item{x}{Numeric marginal observations.}
 
-\item{x:}{data input.}
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+
+\item{maxit}{Positive maximum number of numerical iterations. Nonconvergence is reported.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 CDF of univariate margins of the GGEE model
@@ -17,4 +24,4 @@ CDF of univariate margins of the GGEE model
 \examples{
 pGGEE(2, 1, 2)
 }
-\keyword{CDF}
+\keyword{distribution}

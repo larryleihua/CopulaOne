@@ -7,9 +7,14 @@
 dUEV_GGEE_COP(u, v, b)
 }
 \arguments{
-\item{u, }{v: inputs for the extreme value copula}
+\item{u}{Probability or first copula argument.}
 
-\item{b:}{the parameter of the extreme value copula}
+\item{v}{Second copula argument.}
+
+\item{b}{Dependence parameter; 0 < b < 1 uses the extreme-value formula, otherwise the density is 1.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Density function of the upper extreme value copula for the GGEE copula
@@ -17,7 +22,4 @@ Density function of the upper extreme value copula for the GGEE copula
 \examples{
 dUEV_GGEE_COP(0.3, 0.4, 1.2)
 }
-\keyword{copula}
-\keyword{extreme}
-\keyword{upper}
-\keyword{value}
+\keyword{distribution}

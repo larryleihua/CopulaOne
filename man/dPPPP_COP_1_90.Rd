@@ -7,9 +7,16 @@
 dPPPP_COP_1_90(uvec, vvec, al, be)
 }
 \arguments{
-\item{al, be}{the four shape parameters.}
+\item{uvec}{First copula arguments.}
 
-\item{u, v}{values in (0,1).}
+\item{vvec}{Second copula arguments.}
+
+\item{al}{Positive first shape parameter.}
+
+\item{be}{Positive second shape parameter.}
+}
+\value{
+Numeric function values. Invalid parameters or numerical failures are reported.
 }
 \description{
 Copula density function of PPPP_COP that is rotated for 90 degrees counter clock-wise (when a=b=1)
@@ -19,3 +26,4 @@ dPPPP_COP_1_90(0.2, 0.4, 1,1)
 dPPPP_COP_1_90(0.8, 0.3, 1,1)
 dPPPP_COP_1_90(c(0.2,0.8), c(0.4, 0.3), 1,1)
 }
+\keyword{distribution}
