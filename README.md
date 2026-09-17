@@ -3,7 +3,7 @@
 
 The R package *CopulaOne* implements functions for bivariate full-range tail dependence copulas.
 
-Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are many parametric bivariate copula families, but they often have specific dependence patterns, which limit their use in real applications. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails. The package is under active development, and the following copulas have been implemented: GGEE, PPPP, FRA1. The following figures show how flexible these copulas are. Please refer to [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003) for more details about the GGEE copula, [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009) for the details about the PPPP copula, and [Hua (2026)] for the details about the FRA1 copula.
+Bivariate copulas have been widely used either in modeling bivariate dependence structures or building multivariate dependence models such as Vine copulas and factor copulas. In the literature, there are many parametric bivariate copula families, but they often have specific dependence patterns, which limit their use in real applications. The R package *CopulaOne* aims at implementing a collection of very flexible bivariate copulas that are parsimonious and very flexible. The copulas implemented in *CopulaOne* should be able to account for most bivariate dependence patterns by a single copula, and this is also why we name the package as *CopulaOne*. Compared to those existing bivariate parametric copula families, the main merit of the bivariate copulas implemented here is that, they can account for full-range tail dependence in both upper and lower tails. The package is under active development, and the following copulas have been implemented: GGEE, PPPP, FRA1. The following figures show how flexible these copulas are. Please refer to [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003) for more details about the GGEE copula, [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009) for the details about the PPPP copula, and [Hua (2026)](https://arxiv.org/abs/2609.18742) for the details about the FRA1 copula.
 
 |                       |                       |                       |
 | --------------------- | --------------------- | --------------------- |
@@ -151,7 +151,7 @@ runs the same checks. Generate help files after changing roxygen comments with
 
 GGEE: [Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.01.003).
 PPPP: [Su and Hua (2017)](https://doi.org/10.1016/j.insmatheco.2017.08.009).
-FRA1: [Hua (2026)]
+FRA1: [Hua (2026)](https://arxiv.org/abs/2609.18742).
 
 ## Citation, please use the following bibtex for citation
 
